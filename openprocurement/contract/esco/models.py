@@ -12,6 +12,6 @@ class IESCOContract(IContract):
 
 @implementer(IESCOContract)
 class Contract(BaseContract):
-    """ Contract """
+    """ ESCO Contract """
 
     contractType = StringType(choices=['common', 'esco.EU'], default='esco.EU')
