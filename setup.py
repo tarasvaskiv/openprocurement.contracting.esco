@@ -5,6 +5,7 @@ version = '2.3'
 requires = [
     'setuptools',
     'openprocurement.contracting.api',  # TODO set version
+    'openprocurement.tender.esco',
 ]
 test_requires = requires + [
     'webtest',
@@ -15,6 +16,9 @@ docs_requires = requires + [
 ]
 
 entry_points = {
+    'openprocurement.contracting.api.plugins': [
+        'contract.esco.EU = openprocurement.contract.esco:includeme'
+    ]
 }
 
 setup(name='openprocurement.contract.esco',
