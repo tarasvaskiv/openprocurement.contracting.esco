@@ -13,6 +13,9 @@ NBU_DISCOUNT_RATE = 0.22
 test_contract_data = deepcopy(base_test_contract_data)
 test_contract_data['contractType'] = 'esco.EU'
 test_contract_data['NBUdiscountRate'] = NBU_DISCOUNT_RATE
+test_contract_data['value'] = {'yearlyPayments': 0.9,
+                               'annualCostsReduction': 751.5,
+                               'contractDuration': 10}
 
 
 class BaseWebTest(BaseBaseWebTest):
