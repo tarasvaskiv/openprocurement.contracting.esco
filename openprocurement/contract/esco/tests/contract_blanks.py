@@ -52,6 +52,7 @@ def patch_contract_NBUdiscountRate(self):
     tender_token = self.initial_data['tender_token']
     self.assertIn('NBUdiscountRate', response.json['data'])
     self.assertEqual(contract['NBUdiscountRate'], self.initial_data['NBUdiscountRate'])
+    self.assertNotEqual(response.json['data']['NBUdiscountRate'], 0.33)
 
     response = self.app.patch_json('/contracts/{}/credentials?acc_token={}'.format(contract['id'], tender_token),
                                    {'data': ''})
@@ -63,6 +64,25 @@ def patch_contract_NBUdiscountRate(self):
                                    {'data': {'NBUdiscountRate': 0.33}})
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.json, None)
+
+    response = self.app.get('/contracts/{}'.format(contract['id']))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['data']['NBUdiscountRate'], self.initial_data['NBUdiscountRate'])
+
+    # check NBUdiscountRate patch for teminated contract
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(contract['id'], token),
+                                   {"data": {"status": "terminated",
+                                             "amountPaid": {"amount": 100500},
+                                             "terminationDetails": "sink"}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.json['data']['status'], 'terminated')
+    self.assertEqual(response.json['data']['amountPaid']['amount'], 100500)
+    self.assertEqual(response.json['data']['terminationDetails'], 'sink')
+
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(contract['id'], token),
+                                   {'data': {'NBUdiscountRate': 0.33}}, status=403)
+    self.assertEqual(response.status, '403 Forbidden')
 
     response = self.app.get('/contracts/{}'.format(contract['id']))
     self.assertEqual(response.status, '200 OK')
