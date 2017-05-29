@@ -16,6 +16,10 @@ from openprocurement.contract.esco.tests.contract_blanks import (
     # ContractESCOResourceTest
     create_contract_generated,
     patch_contract_NBUdiscountRate,
+    # ContractResource4AdministratorTest
+    contract_administrator_change,
+    # ContractResource4BrokersTest
+    patch_tender_contract,
 )
 from openprocurement.contracting.api.tests.contract_blanks import (
     # ContractESCOResourceTest
@@ -32,9 +36,6 @@ from openprocurement.contracting.api.tests.contract_blanks import (
     # ContractResource4BrokersTest
     contract_status_change,
     contract_items_change,
-    patch_tender_contract,
-    # ContractResource4AdministratorTest
-    contract_administrator_change,
     # ContractCredentialsTest
     get_credentials,
     generate_credentials,
