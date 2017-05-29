@@ -8,8 +8,11 @@ from openprocurement.contracting.api.tests.base import (
    BaseWebTest as BaseBaseWebTest
 )
 
+NBU_DISCOUNT_RATE = 0.22
+
 test_contract_data = deepcopy(base_test_contract_data)
 test_contract_data['contractType'] = 'esco.EU'
+test_contract_data['NBUdiscountRate'] = NBU_DISCOUNT_RATE
 
 
 class BaseWebTest(BaseBaseWebTest):
