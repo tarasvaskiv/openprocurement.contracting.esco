@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-from openprocurement.contracting.api.utils import (
-    contractingresource,
-)
+from openprocurement.contracting.api.utils import contractingresource
 from openprocurement.contracting.api.views.contract import (
     ContractResource as BaseContractResource,
 )
