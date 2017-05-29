@@ -15,6 +15,7 @@ from openprocurement.contract.esco.tests.contract_blanks import (
     simple_add_esco_contract,
     # ContractESCOResourceTest
     create_contract_generated,
+    patch_contract_NBUdiscountRate,
 )
 from openprocurement.contracting.api.tests.contract_blanks import (
     # ContractESCOResourceTest
@@ -60,6 +61,7 @@ class ContractResourceTest(BaseWebTest):
     test_create_contract_generated = snitch(create_contract_generated)
     test_create_contract = snitch(create_contract)
     test_contract_type_check = snitch(contract_type_check)
+    test_patch_contract_NBUdiscountRate = snitch(patch_contract_NBUdiscountRate)
 
 
 class ContractWDocumentsWithDSResourceTest(BaseWebTest):

@@ -38,7 +38,33 @@ def create_contract_generated(self):
     self.assertEqual(set(contract), set([
         u'id', u'dateModified', u'contractID', u'status', u'suppliers',
         u'contractNumber', u'period', u'dateSigned', u'value', u'awardID',
-        u'items', u'owner', u'tender_id', u'procuringEntity', u'contractType']))
+        u'items', u'owner', u'tender_id', u'procuringEntity', u'contractType', u'NBUdiscountRate']))
     self.assertEqual(data['id'], contract['id'])
     self.assertNotEqual(data['doc_id'], contract['id'])
     self.assertEqual(data['contractID'], contract['contractID'])
+
+
+def patch_contract_NBUdiscountRate(self):
+    response = self.app.post_json('/contracts', {"data": self.initial_data})
+    self.assertEqual(response.status, '201 Created')
+    self.assertEqual(response.content_type, 'application/json')
+    contract = response.json['data']
+    tender_token = self.initial_data['tender_token']
+    self.assertIn('NBUdiscountRate', response.json['data'])
+    self.assertEqual(contract['NBUdiscountRate'], self.initial_data['NBUdiscountRate'])
+
+    response = self.app.patch_json('/contracts/{}/credentials?acc_token={}'.format(contract['id'], tender_token),
+                                   {'data': ''})
+    self.assertEqual(response.status, '200 OK')
+    token = response.json['access']['token']
+
+    # NBUdiscountRate field forbidden for patch
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(contract['id'], token),
+                                   {'data': {'NBUdiscountRate': 0.33}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.json, None)
+
+    response = self.app.get('/contracts/{}'.format(contract['id']))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['data']['NBUdiscountRate'], self.initial_data['NBUdiscountRate'])
