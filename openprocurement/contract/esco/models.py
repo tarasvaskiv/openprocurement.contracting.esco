@@ -40,8 +40,8 @@ class ESCOValue(BaseESCOValue):
             'auction_post': whitelist('amount', 'yearlyPayments', 'annualCostsReduction', 'contractDuration', 'currency', 'valueAddedTaxIncluded'),
         }
 
-    @serializable
-    def amount(self):
+    @serializable(serialized_name="amount")
+    def amount_npv(self):
         """ Calculated energy service contract perfomance indicator """
         return calculate_npv(self.__parent__.NBUdiscountRate,
                              self.annualCostsReduction,
