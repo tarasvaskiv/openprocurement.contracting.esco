@@ -1,3 +1,5 @@
+openprocurement.contract.esco
+=============================
 
 The Open Procurement `ESCO procedure <https://github.com/openprocurement/openprocurement.tender.esco>`_ is plugin to `Open Procurement API <http://api-docs.openprocurement.org/>`_ software. 
 
