@@ -24,7 +24,7 @@ entry_points = {
 setup(name='openprocurement.contract.esco',
       version=version,
       description="",
-      long_description=open("README.txt").read(),
+      long_description=open("README.rst").read(),
       # Get more strings from
       # http://pypi.python.org/pypi?:action=list_classifiers
       classifiers=[
