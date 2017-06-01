@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from zope.interface import implementer
 from schematics.transforms import whitelist
-from schematics.types import StringType, FloatType, BooleanType
+from schematics.types import StringType, FloatType
 from schematics.types.compound import ModelType
 from schematics.types.serializable import serializable
 from openprocurement.contracting.api.models import (
@@ -28,17 +28,6 @@ class IESCOContract(IContract):
 
 class ESCOValue(BaseESCOValue):
     """ ESCO Value for Contract """
-
-    currency = StringType(required=True, default=u'UAH', max_length=3, min_length=3)  # The currency in 3-letter ISO 4217 format.
-    valueAddedTaxIncluded = BooleanType(required=True, default=True)
-
-    class Options:
-        roles = {
-            'create': whitelist('amount', 'yearlyPayments', 'annualCostsReduction', 'contractDuration', 'currency', 'valueAddedTaxIncluded'),
-            'edit': whitelist('amount', 'yearlyPayments', 'annualCostsReduction', 'contractDuration', 'currency', 'valueAddedTaxIncluded'),
-            'auction_view': whitelist('amount', 'yearlyPayments', 'annualCostsReduction', 'contractDuration', 'currency', 'valueAddedTaxIncluded'),
-            'auction_post': whitelist('amount', 'yearlyPayments', 'annualCostsReduction', 'contractDuration', 'currency', 'valueAddedTaxIncluded'),
-        }
 
     @serializable(serialized_name="amount")
     def amount_npv(self):
