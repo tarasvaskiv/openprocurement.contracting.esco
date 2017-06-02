@@ -16,27 +16,11 @@ from openprocurement.contracting.api.models import (
     contract_create_role, contract_edit_role,
     contract_view_role, contract_administrator_role
 )
-from openprocurement.tender.esco.models import (
-    ESCOValue as BaseESCOValue
-)
-from openprocurement.tender.esco.utils import calculate_npv
+from openprocurement.tender.esco.models import ESCOValue
 
 
 class IESCOContract(IContract):
     """ ESCO Contract marker interface """
-
-
-class ESCOValue(BaseESCOValue):
-    """ ESCO Value for Contract """
-
-    @serializable(serialized_name="amount")
-    def amount_npv(self):
-        """ Calculated energy service contract perfomance indicator """
-        return calculate_npv(self.__parent__.NBUdiscountRate,
-                             self.annualCostsReduction,
-                             self.yearlyPayments,
-                             self.contractDuration)
-
 
 
 @implementer(IESCOContract)
