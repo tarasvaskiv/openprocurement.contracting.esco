@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from uuid import uuid4
 from datetime import timedelta
-from openprocurement.contract.esco.models import Contract
+from openprocurement.contracting.esco.models import Contract
 from openprocurement.api.utils import get_now
 
 # ContractTest

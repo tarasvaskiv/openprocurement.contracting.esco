@@ -5,9 +5,9 @@ from openprocurement.contracting.api.views.contract import (
 )
 
 
-@contractingresource(name='esco.EU:Contract',
+@contractingresource(name='esco:Contract',
                      path='/contracts/{contract_id}',
-                     contractType='esco.EU',
+                     contractType='esco',
                      description="Contract")
 class ContractResource(BaseContractResource):
     """ ESCO Contract Resource """

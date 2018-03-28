@@ -4,7 +4,7 @@ version = '2.3'
 
 requires = [
     'setuptools',
-    'openprocurement.contracting.api',  # TODO set version
+    'openprocurement.contracting.core',  # TODO set version
     'openprocurement.tender.esco',
 ]
 test_requires = requires + [
@@ -16,12 +16,12 @@ docs_requires = requires + [
 ]
 
 entry_points = {
-    'openprocurement.contracting.api.plugins': [
-        'contract.esco.EU = openprocurement.contract.esco:includeme'
+    'openprocurement.contracting.core.plugins': [
+        'contract.esco = openprocurement.contracting.esco:includeme'
     ]
 }
 
-setup(name='openprocurement.contract.esco',
+setup(name='openprocurement.contracting.esco',
       version=version,
       description="",
       long_description=open("README.rst").read(),
@@ -34,10 +34,10 @@ setup(name='openprocurement.contract.esco',
       keywords='',
       author='Quintagroup, Ltd.',
       author_email='info@quintagroup.com',
-      url='https://github.com/openprocurement/openprocurement.contract.esco',
+      url='https://github.com/openprocurement/openprocurement.contracting.esco',
       license='Apache License 2.0',
       packages=find_packages(exclude=['ez_setup']),
-      namespace_packages=['openprocurement', 'openprocurement.contract'],
+      namespace_packages=['openprocurement', 'openprocurement.contracting'],
       include_package_data=True,
       zip_safe=False,
       install_requires=requires,

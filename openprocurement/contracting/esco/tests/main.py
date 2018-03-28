@@ -2,7 +2,7 @@
 
 import unittest
 
-from openprocurement.contract.esco.tests import contract, document, change
+from openprocurement.contracting.esco.tests import contract, document, change
 
 
 def suite():

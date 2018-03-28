@@ -9,7 +9,6 @@ LOGGER = getLogger(PKG.project_name)
 
 def includeme(config):
     LOGGER.info('Init esco contracts plugin.')
-    from openprocurement.contract.esco.models import Contract
+    from openprocurement.contracting.esco.models import Contract
     config.add_contract_contractType(Contract)
     config.scan("openprocurement.contract.esco.views")
-

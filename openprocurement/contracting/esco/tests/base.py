@@ -19,7 +19,7 @@ test_contract_data['value'] = {'yearlyPayments': 0.9,
 
 
 class BaseWebTest(BaseBaseWebTest):
-    """Base Web Test to test openprocurement.contract.esco.
+    """Base Web Test to test openprocurement.contracting.esco.
 
     It setups the database before each test and delete it after.
     """
