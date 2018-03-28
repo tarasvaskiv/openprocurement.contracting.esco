@@ -4,13 +4,13 @@ from copy import deepcopy
 
 from openprocurement.api.tests.base import snitch
 
-from openprocurement.contract.esco.tests.base import (
+from openprocurement.contracting.esco.tests.base import (
     test_contract_data,
     BaseWebTest,
     documents,
     BaseContractWebTest
 )
-from openprocurement.contract.esco.tests.contract_blanks import (
+from openprocurement.contracting.esco.tests.contract_blanks import (
     # ContractESCOTest
     simple_add_esco_contract,
     # ContractESCOResourceTest
