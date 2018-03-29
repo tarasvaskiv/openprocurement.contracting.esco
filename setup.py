@@ -17,7 +17,7 @@ docs_requires = requires + [
 
 entry_points = {
     'openprocurement.contracting.core.plugins': [
-        'contract.esco = openprocurement.contracting.esco:includeme'
+        'contract.esco = openprocurement.contracting.esco.includeme:includeme'
     ]
 }
 
