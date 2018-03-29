@@ -1,0 +1,150 @@
+{
+  "status": "active",
+  "tender_id": "4f90c49aa1684769b9a41c8196d875fe",
+  "tender_token": "e60d286e5c6f43a990679660da817aec",
+  "owner": "broker",
+  "procuringEntity": {
+    "contactPoint": {
+      "telephone": "+380933907440",
+      "name": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\"",
+      "email": "e.zhogan@ksteplo.com.ua"
+    },
+    "identifier": {
+      "scheme": "UA-EDR",
+      "id": "40957551",
+      "legalName": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\""
+    },
+    "name": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\"",
+    "address": {
+      "postalCode": "",
+      "countryName": "Україна",
+      "streetAddress": "01004, м.Київ, БЕССАРАБСЬКА ПЛОЩА, будинок 9/1 Б, офіс 2",
+      "region": "",
+      "locality": ""
+    }
+  },
+  "documents": [
+    {
+      "hash": "md5:72ceddef8e88528954778d6ad02dbc17",
+      "language": "uk",
+      "format": "application/pdf",
+      "url": "https://public.docs.openprocurement.org/get/ce6a2e19c22948c8ac75c7569042d1d1?KeyID=52462340&Signature=4zt1SvLc%252Bw2CvU%252ByJ6Q3JcYdUv3LTqrjcK4ve8LH07N1fZtUGcMQ6yTSdHIDtOnfMY02mz09xc9yk1lNixzTAQ%253D%253D",
+      "title": "договір17.pdf",
+      "documentOf": "tender",
+      "datePublished": "2018-03-29T19:16:53.281259+03:00",
+      "documentType": "contractSigned",
+      "dateModified": "2018-03-29T19:16:53.281276+03:00",
+      "id": "ba4f994e65764ef1b546f5b6dab786ec"
+    },
+    {
+      "hash": "md5:c17a1ac12e4407671e0ee0f621805c2f",
+      "language": "uk",
+      "format": "application/pkcs7-signature",
+      "url": "https://public.docs.openprocurement.org/get/cb700710a7a1434b8664205de5fe9d65?KeyID=52462340&Signature=Ft3m5qfTWyUOKngAsXSFyzI9WwKibNlow6DKkYAOAoD9ECS%252BCTVRqwPrR7U0KMCNi5vHi8GuyOw2uJRJLZvbDw%253D%253D",
+      "title": "sign.p7s",
+      "documentOf": "tender",
+      "datePublished": "2018-03-29T19:20:35.451117+03:00",
+      "dateModified": "2018-03-29T19:20:35.451145+03:00",
+      "id": "b3fbb1c6ca664361b63a53b1e54a8354"
+    }
+  ],
+  "description": "",
+  "title": "Енергосервіс будівлі Комунальної установи Сумська загальноосвітня школа І-ІІІ ступенів № 26 м.Суми, Сумсбкої області",
+  "items": [
+    {
+      "description": "ЕНергосервіс будівлі Комунальної установи Сумська загальноосвітня школа І-ІІІ ступенів № 26 м. Суми, Сумської області",
+      "classification": {
+        "scheme": "ДК021",
+        "description": "Не відображене в інших розділах",
+        "id": "99999999-9"
+      },
+      "description_en": "Energy service of the public institution building of Sumy secondary school Nr 26",
+      "additionalClassifications": [
+        {
+          "scheme": "specialNorms",
+          "id": "000",
+          "description": "Специальные нормы и другое"
+        }
+      ],
+      "deliveryAddress": {
+        "postalCode": "40007",
+        "countryName": "Україна",
+        "streetAddress": "Охтирська, 21",
+        "region": "Сумська обл.",
+        "locality": "Суми"
+      },
+      "id": "660e66a4ffd0486f8f90041f36105f05"
+    }
+  ],
+  "suppliers": [
+    {
+      "contactPoint": {
+        "telephone": "+380933907440",
+        "name": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\"",
+        "email": "e.zhogan@ksteplo.com.ua"
+      },
+      "identifier": {
+        "scheme": "UA-EDR",
+        "id": "40957551",
+        "legalName": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\""
+      },
+      "name": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\"",
+      "address": {
+        "postalCode": "",
+        "countryName": "Україна",
+        "streetAddress": "01004, м.Київ, БЕССАРАБСЬКА ПЛОЩА, будинок 9/1 Б, офіс 2",
+        "region": "",
+        "locality": ""
+      }
+    }
+  ],
+  "contractNumber": "17",
+  "period": {
+    "endDate": "2025-11-05T00:00:00+02:00"
+  },
+  "dateSigned": "2018-03-29T00:00:00+03:00",
+  "value": {
+    "yearlyPaymentsPercentage": 0.92,
+    "amountPerformance": 439375.76,
+    "currency": "UAH",
+    "amount": 1356199.76,
+    "contractDuration": {
+      "days": 310,
+      "years": 6
+    },
+    "valueAddedTaxIncluded": true,
+    "annualCostsReduction": [
+      0,
+      178997.04,
+      225643.72,
+      225643.72,
+      225643.72,
+      225643.72,
+      225643.72,
+      225643.72,
+      141782.47,
+      141782.47,
+      141782.47,
+      141782.47,
+      141782.47,
+      141782.47,
+      141782.47,
+      141782.47,
+      141782.47,
+      141782.47,
+      141782.47,
+      141782.47,
+      141782.47
+    ]
+  },
+  "yearlyPaymentsPercentageRange": 0.8,
+  "minValue": {
+    "currency": "UAH",
+    "amount": 0,
+    "valueAddedTaxIncluded": true
+  },
+  "date": "2018-03-29T19:20:40.151651+03:00",
+  "awardID": "29c01dd058c347f38e381f13d4a6a118",
+  "contractID": "UA-2017-11-21-001567-c-a1",
+  "noticePublicationDate": "2017-11-21T14:39:05.950935+02:00"
+}
