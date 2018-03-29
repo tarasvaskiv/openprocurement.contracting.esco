@@ -4,7 +4,7 @@ from schematics.transforms import whitelist
 from schematics.types import StringType, FloatType
 from schematics.types.compound import ModelType
 from schematics.types.serializable import serializable
-from openprocurement.contracting.api.models import (
+from openprocurement.contracting.core.models import (
     IContract,
     Contract as BaseContract
 )
@@ -12,7 +12,7 @@ from openprocurement.api.models import (
     plain_role, schematics_default_role,
     Value,
 )
-from openprocurement.contracting.api.models import (
+from openprocurement.contracting.core.models import (
     contract_create_role, contract_edit_role,
     contract_view_role, contract_administrator_role
 )
