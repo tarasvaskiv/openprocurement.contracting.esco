@@ -93,6 +93,33 @@ def patch_contract_NBUdiscountRate(self):
     self.assertEqual(response.json['data']['NBUdiscountRate'], self.initial_data['NBUdiscountRate'])
 
 
+def contract_type_check(self):
+    expected_contract_type = getattr(self, 'contract_type')
+    response = self.app.post_json('/contracts', {"data": self.initial_data})
+    self.assertEqual(response.status, '201 Created')
+    self.assertEqual(response.content_type, 'application/json')
+    contract = response.json['data']
+    tender_token = self.initial_data['tender_token']
+    self.assertIn('contractType', response.json['data'])
+    self.assertEqual(contract['contractType'], expected_contract_type)
+
+    response = self.app.patch_json('/contracts/{}/credentials?acc_token={}'.format(contract['id'], tender_token),
+                                   {'data': ''})
+    self.assertEqual(response.status, '200 OK')
+    token = response.json['access']['token']
+
+    # get appropriate contract type for patch, but not the same as current contract type
+    patch_contract_type = [x for x in Contract.contractType.choices if x != expected_contract_type]
+
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(contract['id'], token),
+                                   {'data': {'contractType': patch_contract_type[0],
+                                             'description': 'new description'}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.json['data']['description'], 'new description')
+    self.assertNotEqual(response.json['data']['contractType'], patch_contract_type)
+    self.assertEqual(response.json['data']['contractType'], expected_contract_type)
+
+
 def patch_tender_contract(self):
     response = self.app.patch_json('/contracts/{}'.format(self.contract['id']), {"data": {"title": "New Title"}}, status=403)
     self.assertEqual(response.status, '403 Forbidden')

@@ -20,8 +20,9 @@ from openprocurement.contracting.esco.tests.contract_blanks import (
     contract_administrator_change,
     # ContractResource4BrokersTest
     patch_tender_contract,
+    contract_type_check,
 )
-from openprocurement.contracting.api.tests.contract_blanks import (
+from openprocurement.contracting.core.tests.contract_blanks import (
     # ContractESCOResourceTest
     empty_listing,
     listing,
@@ -30,7 +31,6 @@ from openprocurement.contracting.api.tests.contract_blanks import (
     not_found,
     create_contract_invalid,
     create_contract,
-    contract_type_check,
     # ContractESCOWDocumentsWithDSResourceTest
     create_contract_w_documents,
     # ContractResource4BrokersTest
@@ -52,7 +52,7 @@ class ContractResourceTest(BaseWebTest):
     """ esco contract resource test """
     initial_data = test_contract_data
 
-    contract_type = 'esco.EU'
+    contract_type = 'esco'
     test_empty_listing = snitch(empty_listing)
     test_listing = snitch(listing)
     test_listing_changes = snitch(listing_changes)
