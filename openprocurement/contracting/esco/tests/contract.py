@@ -86,6 +86,7 @@ class ContractResource4BrokersTest(BaseContractWebTest):
 class ContractResource4AdministratorTest(BaseContractWebTest):
     """ esco contract resource test """
     initial_auth = ('Basic', ('administrator', ''))
+    initial_data = test_contract_data
 
     test_contract_administrator_change = snitch(contract_administrator_change)
 

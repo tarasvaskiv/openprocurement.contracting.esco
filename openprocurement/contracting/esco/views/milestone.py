@@ -1,50 +1,24 @@
 # -*- coding: utf-8 -*-
+from openprocurement.api.models import schematics_default_role
 from openprocurement.api.utils import (
     json_view,
     context_unpack,
     APIResource,
 )
 
-from openprocurement.contracting.api.utils import contractingresource, \
-    save_contract, apply_patch
+from openprocurement.contracting.api.utils import save_contract
+from openprocurement.contracting.core.utils import apply_patch
+from openprocurement.contracting.esco.utils import milestoneresource
 
 
-@contractingresource(name='esco:Contract Milestones',
+@milestoneresource(name='esco:Contract Milestones',
                      collection_path='/contracts/{contract_id}/milestones',
                      path='/contracts/{contract_id}/milestones/{milestone_id}',
                      contractType="esco",
                      description="Contract milestones")
 class ContractMilestoneResource(APIResource):
 
-    @json_view(content_type="application/json", permission='create_milestone',
-               validators=())
-    def collection_post(self):
-        """Registration of new milestone
-
-        Creating new Milestone
-        -------------------------
-        # TODO: add example later no model yet exist
-        Example request to create milestone:
-
-        """
-
-        contract = self.request.validated['contract']
-        milestone = self.request.validated['milestone']
-        contract.milestones.append(milestone)
-
-        if save_contract(self.request):
-            self.LOGGER.info(
-                'Created contract milestone {}'.format(milestone.id),
-                extra=context_unpack(self.request, {
-                    'MESSAGE_ID': 'contract_milestone_create'},
-                                     {'milestone_id': milestone.id}))
-            self.request.response.status = 201
-            self.request.response.headers['Location'] = self.request.route_url(
-                '{}:Contract Milestones'.format(contract.contractType),
-                contract_id=contract.id, milestone_id=milestone['id'])
-            return {'data': milestone.serialize('view')}
-
-    @json_view(permission='view_milestone', validators=())
+    @json_view(permission='view_contract')
     def collection_get(self):
         """Milestones Listing
 
@@ -56,11 +30,9 @@ class ContractMilestoneResource(APIResource):
 
         """
         contract = self.request.validated['contract']
-        return {
-            'data': [i.serialize("view") for i
-                     in contract.milestones]}
+        return {'data': [i.serialize("view") for i in contract.milestones]}
 
-    @json_view(permission='view_milestone')
+    @json_view(permission='view_contract')
     def get(self):
         """Retrieving the milestone
 

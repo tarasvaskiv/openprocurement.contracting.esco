@@ -41,7 +41,7 @@ def create_contract_generated(self):
         u'id', u'dateModified', u'contractID', u'status', u'suppliers',
         u'contractNumber', u'period', u'dateSigned', u'value', u'awardID',
         u'items', u'owner', u'tender_id', u'procuringEntity', u'contractType',
-        u'NBUdiscountRate', u'value', u'description', u'title']))
+        u'NBUdiscountRate', u'value', u'description', u'title', u'milestones']))
     self.assertEqual(data['id'], contract['id'])
     self.assertNotEqual(data['doc_id'], contract['id'])
     self.assertEqual(data['contractID'], contract['contractID'])

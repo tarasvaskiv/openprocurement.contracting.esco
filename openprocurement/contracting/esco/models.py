@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from uuid import uuid4
 from zope.interface import implementer
-from schematics.transforms import whitelist
+from schematics.transforms import whitelist, blacklist
 from schematics.types import StringType, FloatType, IntType, MD5Type
 from schematics.types.compound import ModelType
 from schematics.types.serializable import serializable
@@ -90,14 +90,14 @@ class Milestone(Model):
     """ Contract Milestone """
 
     id = MD5Type(required=True, default=lambda: uuid4().hex)
-    date = IsoDateTimeType(default=get_now().isoformat())
-    dateModified = IsoDateTimeType(default=get_now().isoformat())
+    date = IsoDateTimeType()
+    dateModified = IsoDateTimeType()
     description = StringType()
     period = ModelType(Period)
     sequenceNumber = IntType(required=True)
     status = StringType(
         required=True,
-        choices=['scheduled', 'met', 'notMet', 'partiallyMet'],
+        choices=['scheduled', 'met', 'notMet', 'partiallyMet', 'pending'],
         default='scheduled'
     )
     value = ModelType(Value, required=True)
@@ -106,6 +106,11 @@ class Milestone(Model):
         default={'amount': 0, 'currency': 'UAH', 'valueAddedTaxIncluded': True}
     )
     title = StringType()
+
+    class Options:
+        roles = {
+            'view': schematics_default_role
+        }
 
 
 @implementer(IESCOContract)
@@ -124,7 +129,7 @@ class Contract(BaseContract):
     class Options:
         roles = {
             'plain': plain_role,
-            'create': contract_create_role + whitelist('NBUdiscountRate', 'noticePublicationDate', 'yearlyPaymentsPercentageRange', 'minValue'),
+            'create': contract_create_role + whitelist('NBUdiscountRate', 'noticePublicationDate', 'yearlyPaymentsPercentageRange', 'minValue', 'milestones'),
             'edit_active': contract_edit_role,
             'edit_terminated': whitelist(),
             'view': contract_view_role + whitelist('NBUdiscountRate', 'contractType', 'milestones'),
