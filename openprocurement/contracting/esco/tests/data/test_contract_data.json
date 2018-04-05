@@ -23,31 +23,6 @@
       "locality": ""
     }
   },
-  "documents": [
-    {
-      "hash": "md5:72ceddef8e88528954778d6ad02dbc17",
-      "language": "uk",
-      "format": "application/pdf",
-      "url": "https://public.docs.openprocurement.org/get/ce6a2e19c22948c8ac75c7569042d1d1?KeyID=52462340&Signature=4zt1SvLc%252Bw2CvU%252ByJ6Q3JcYdUv3LTqrjcK4ve8LH07N1fZtUGcMQ6yTSdHIDtOnfMY02mz09xc9yk1lNixzTAQ%253D%253D",
-      "title": "договір17.pdf",
-      "documentOf": "tender",
-      "datePublished": "2018-03-29T19:16:53.281259+03:00",
-      "documentType": "contractSigned",
-      "dateModified": "2018-03-29T19:16:53.281276+03:00",
-      "id": "ba4f994e65764ef1b546f5b6dab786ec"
-    },
-    {
-      "hash": "md5:c17a1ac12e4407671e0ee0f621805c2f",
-      "language": "uk",
-      "format": "application/pkcs7-signature",
-      "url": "https://public.docs.openprocurement.org/get/cb700710a7a1434b8664205de5fe9d65?KeyID=52462340&Signature=Ft3m5qfTWyUOKngAsXSFyzI9WwKibNlow6DKkYAOAoD9ECS%252BCTVRqwPrR7U0KMCNi5vHi8GuyOw2uJRJLZvbDw%253D%253D",
-      "title": "sign.p7s",
-      "documentOf": "tender",
-      "datePublished": "2018-03-29T19:20:35.451117+03:00",
-      "dateModified": "2018-03-29T19:20:35.451145+03:00",
-      "id": "b3fbb1c6ca664361b63a53b1e54a8354"
-    }
-  ],
   "description": "",
   "title": "Енергосервіс будівлі Комунальної установи Сумська загальноосвітня школа І-ІІІ ступенів № 26 м.Суми, Сумсбкої області",
   "items": [
@@ -143,6 +118,280 @@
     "amount": 0,
     "valueAddedTaxIncluded": true
   },
+  "milestones": [
+    {
+      "id": "89964e803dbe4d42854250cab04e65c5",
+      "description": "First Milestone",
+      "date": "2018-03-29T00:00:00+03:00",
+      "dateModified": "2018-03-29T00:00:00+03:00",
+      "period": {
+        "startDate": "2018-03-29T00:00:00+03:00",
+        "endDate": "2019-01-01T00:00:00+03:00"
+      },
+      "sequenceNumber": 1,
+      "value": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "title": "Title of first milestone"
+    },
+    {
+      "id": "c11dac3e385f4277857d629d58a45d1d",
+      "description": "Second Milestone",
+      "date": "2018-03-29T00:00:00+03:00",
+      "dateModified": "2018-03-29T00:00:00+03:00",
+      "period": {
+        "startDate": "2019-01-01T00:00:00+03:00",
+        "endDate": "2020-01-01T00:00:00+03:00"
+      },
+      "sequenceNumber": 2,
+      "value": {
+        "amount": 191522.08,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "title": "Title of second milestone"
+    },
+    {
+      "id": "060cc722796f4096a3c8e790cd525023",
+      "description": "Third Milestone",
+      "date": "2018-03-29T00:00:00+03:00",
+      "dateModified": "2018-03-29T00:00:00+03:00",
+      "period": {
+        "startDate": "2020-01-01T00:00:00+03:00",
+        "endDate": "2021-01-01T00:00:00+03:00"
+      },
+      "sequenceNumber": 3,
+      "value": {
+        "amount": 234437.01,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "title": "Title of third milestone"
+    },
+    {
+      "id": "be35e388d50b49c38d1eba3c8e709131",
+      "description": "Fourth Milestone",
+      "date": "2018-03-29T00:00:00+03:00",
+      "dateModified": "2018-03-29T00:00:00+03:00",
+      "period": {
+        "startDate": "2021-01-01T00:00:00+03:00",
+        "endDate": "2022-01-01T00:00:00+03:00"
+      },
+      "sequenceNumber": 4,
+      "value": {
+        "amount": 234437.01,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "title": "Title of fourth milestone"
+    },
+    {
+      "id": "31f26a268a774b2f87107d9585f4f8b6",
+      "description": "Fifth Milestone",
+      "date": "2018-03-29T00:00:00+03:00",
+      "dateModified": "2018-03-29T00:00:00+03:00",
+      "period": {
+        "startDate": "2022-01-01T00:00:00+03:00",
+        "endDate": "2023-01-01T00:00:00+03:00"
+      },
+      "sequenceNumber": 5,
+      "value": {
+        "amount": 234437.01,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "title": "Title of fifth milestone"
+    },
+    {
+      "id": "1c463a19e0664e069f4b3630f392f81c",
+      "description": "Sixth Milestone",
+      "date": "2018-03-29T00:00:00+03:00",
+      "dateModified": "2018-03-29T00:00:00+03:00",
+      "period": {
+        "startDate": "2023-01-01T00:00:00+03:00",
+        "endDate": "2024-01-01T00:00:00+03:00"
+      },
+      "sequenceNumber": 6,
+      "value": {
+        "amount": 234437.01,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "title": "Title of sixth milestone"
+    },
+    {
+      "id": "f6b0ba3865bf4b4eab16039d30580d5b",
+      "description": "Seventh Milestone",
+      "date": "2018-03-29T00:00:00+03:00",
+      "dateModified": "2018-03-29T00:00:00+03:00",
+      "period": {
+        "startDate": "2024-01-01T00:00:00+03:00",
+        "endDate": "2025-01-01T00:00:00+03:00"
+      },
+      "sequenceNumber": 7,
+      "value": {
+        "amount": 130439.87,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "title": "Title of seventh milestone"
+    },
+    {
+      "id": "f8f4f98d881349bc9280e98a58cf9659",
+      "description": "Eight Milestone",
+      "date": "2018-03-29T00:00:00+03:00",
+      "dateModified": "2018-03-29T00:00:00+03:00",
+      "period": {
+        "startDate": "2025-01-01T00:00:00+03:00",
+        "endDate": "2026-01-01T00:00:00+03:00"
+      },
+      "sequenceNumber": 8,
+      "value": {
+        "amount": 96489.77,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "title": "Title of eight milestone"
+    },
+    {
+      "id": "3b32187e1cd24c3a862c8cee9ccd4e95",
+      "description": "Ninth Milestone",
+      "date": "2018-03-29T00:00:00+03:00",
+      "dateModified": "2018-03-29T00:00:00+03:00",
+      "period": {
+        "startDate": "2026-01-01T00:00:00+03:00",
+        "endDate": "2027-01-01T00:00:00+03:00"
+      },
+      "sequenceNumber": 9,
+      "value": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "title": "Title of ninth milestone"
+    },
+    {
+      "id": "bfc692d9a8a84e6f827bcb51c71af784",
+      "description": "Ten Milestone",
+      "date": "2018-03-29T00:00:00+03:00",
+      "dateModified": "2018-03-29T00:00:00+03:00",
+      "period": {
+        "startDate": "2027-01-01T00:00:00+03:00",
+        "endDate": "2028-01-01T00:00:00+03:00"
+      },
+      "sequenceNumber": 10,
+      "value": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "title": "Title of ten milestone"
+    },
+    {
+      "id": "95c96e4778f04f5a99e9326621a8b6ef",
+      "description": "Eleven Milestone",
+      "date": "2018-03-29T00:00:00+03:00",
+      "dateModified": "2018-03-29T00:00:00+03:00",
+      "period": {
+        "startDate": "2028-01-01T00:00:00+03:00",
+        "endDate": "2029-01-01T00:00:00+03:00"
+      },
+      "sequenceNumber": 11,
+      "value": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "title": "Title of eleven milestone"
+    },
+    {
+      "id": "34bfad8f5396454a8778edac9b8d874d",
+      "description": "Twelve Milestone",
+      "date": "2018-03-29T00:00:00+03:00",
+      "dateModified": "2018-03-29T00:00:00+03:00",
+      "period": {
+        "startDate": "2029-01-01T00:00:00+03:00",
+        "endDate": "2030-01-01T00:00:00+03:00"
+      },
+      "sequenceNumber": 12,
+      "value": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "title": "Title of twelve milestone"
+    },
+    {
+      "id": "8f27705c5efb483793ea8301e7ab4b84",
+      "description": "Thirteen Milestone",
+      "date": "2018-03-29T00:00:00+03:00",
+      "dateModified": "2018-03-29T00:00:00+03:00",
+      "period": {
+        "startDate": "2030-01-01T00:00:00+03:00",
+        "endDate": "2031-01-01T00:00:00+03:00"
+      },
+      "sequenceNumber": 13,
+      "value": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "title": "Title of thirteen milestone"
+    },
+    {
+      "id": "e5f8750cab5143ceb518581aa7cb3913",
+      "description": "Fourteen Milestone",
+      "date": "2018-03-29T00:00:00+03:00",
+      "dateModified": "2018-03-29T00:00:00+03:00",
+      "period": {
+        "startDate": "2031-01-01T00:00:00+03:00",
+        "endDate": "2032-01-01T00:00:00+03:00"
+      },
+      "sequenceNumber": 14,
+      "value": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "title": "Title of fourteen milestone"
+    },
+    {
+      "id": "889204d6b1bb413c84268cdacaf8076d",
+      "description": "Fifteen Milestone",
+      "date": "2018-03-29T00:00:00+03:00",
+      "dateModified": "2018-03-29T00:00:00+03:00",
+      "period": {
+        "startDate": "2032-01-01T00:00:00+03:00",
+        "endDate": "2033-01-01T00:00:00+03:00"
+      },
+      "sequenceNumber": 15,
+      "value": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "title": "Title of fifteen milestone"
+    },
+    {
+      "id": "ea4871dd9bd44c36911d0a64118007d0",
+      "description": "Sixteen Milestone",
+      "date": "2018-03-29T00:00:00+03:00",
+      "dateModified": "2018-03-29T00:00:00+03:00",
+      "period": {
+        "startDate": "2033-01-01T00:00:00+03:00",
+        "endDate": "2034-01-01T00:00:00+03:00"
+      },
+      "sequenceNumber": 16,
+      "value": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "title": "Title of sixteen milestone"
+    }
+  ],
   "date": "2018-03-29T19:20:40.151651+03:00",
   "awardID": "29c01dd058c347f38e381f13d4a6a118",
   "contractID": "UA-2017-11-21-001567-c-a1",

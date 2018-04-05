@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from uuid import uuid4
 from zope.interface import implementer
-from schematics.transforms import whitelist
+from schematics.transforms import whitelist, blacklist
 from schematics.types import StringType, FloatType, IntType, MD5Type
 from schematics.types.compound import ModelType
 from schematics.types.serializable import serializable
@@ -9,6 +9,7 @@ from openprocurement.contracting.core.models import (
     IContract, IsoDateTimeType,
     Contract as BaseContract, Document as BaseDocument
 )
+from openprocurement.api.utils import get_now
 from openprocurement.api.models import (
     plain_role, schematics_default_role,
     Value, Period, Model, ListType, DecimalType
@@ -96,7 +97,7 @@ class Milestone(Model):
     sequenceNumber = IntType(required=True)
     status = StringType(
         required=True,
-        choices=['scheduled', 'met', 'notMet', 'partiallyMet'],
+        choices=['scheduled', 'met', 'notMet', 'partiallyMet', 'pending'],
         default='scheduled'
     )
     value = ModelType(Value, required=True)
@@ -106,17 +107,19 @@ class Milestone(Model):
     )
     title = StringType()
 
-    def validate_amountPaid(self, data, value):
-        pass
+    class Options:
+        roles = {
+            'view': schematics_default_role
+        }
 
 
 @implementer(IESCOContract)
 class Contract(BaseContract):
     """ ESCO Contract """
 
-    contractType = StringType(choices=['common', 'esco'], default='esco')
+    contractType = StringType(default='esco')
     fundingKind = StringType(choices=['budget', 'other'], default='other')
-    milesones = ListType(ModelType(Milestone), default=list())
+    milestones = ListType(ModelType(Milestone), default=list())
     minValue = ModelType(Value, required=True)
     NBUdiscountRate = FloatType(required=True, min_value=0, max_value=0.99)
     noticePublicationDate = IsoDateTimeType()
@@ -126,10 +129,10 @@ class Contract(BaseContract):
     class Options:
         roles = {
             'plain': plain_role,
-            'create': contract_create_role + whitelist('NBUdiscountRate', 'noticePublicationDate', 'yearlyPaymentsPercentageRange', 'minValue'),
+            'create': contract_create_role + whitelist('NBUdiscountRate', 'noticePublicationDate', 'yearlyPaymentsPercentageRange', 'minValue', 'milestones'),
             'edit_active': contract_edit_role,
             'edit_terminated': whitelist(),
-            'view': contract_view_role + whitelist('NBUdiscountRate'),
+            'view': contract_view_role + whitelist('NBUdiscountRate', 'contractType', 'milestones'),
             'Administrator': contract_administrator_role,
             'default': schematics_default_role,
         }
