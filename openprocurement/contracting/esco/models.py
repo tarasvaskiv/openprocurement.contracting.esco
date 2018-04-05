@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from uuid import uuid4
 from zope.interface import implementer
+from schematics.exceptions import ValidationError
 from schematics.transforms import whitelist, blacklist
 from schematics.types import StringType, FloatType, IntType, MD5Type
 from schematics.types.compound import ModelType
@@ -15,7 +16,7 @@ from openprocurement.api.models import (
     Value, Period, Model, ListType, DecimalType
 )
 from openprocurement.contracting.core.models import (
-    contract_create_role, contract_edit_role,
+    contract_create_role as base_contract_create_role, contract_edit_role as base_contract_edit_role,
     contract_view_role, contract_administrator_role
 )
 from openprocurement.tender.esco.models import (
@@ -23,6 +24,10 @@ from openprocurement.tender.esco.models import (
 )
 from esculator import escp, npv
 
+
+contract_create_role = base_contract_create_role + \
+    whitelist('NBUdiscountRate', 'noticePublicationDate', 'yearlyPaymentsPercentageRange', 'minValue', 'milestones')
+contract_edit_role = base_contract_edit_role + whitelist('milestones')
 
 
 class IESCOContract(IContract):
@@ -109,8 +114,20 @@ class Milestone(Model):
 
     class Options:
         roles = {
-            'view': schematics_default_role
+            'view': schematics_default_role,
+            'edit': whitelist('status', 'amountPaid', 'value', 'title', 'description')
         }
+
+    def validate_status(self, data, status):
+        if status == 'met' and not data['amountPaid'].amount >= data['value'].amount:
+            raise ValidationError(u"Milestone can't be in status 'met' if amountPaid.amount less than value.amount")
+        elif status == 'notMet' and data['amountPaid'].amount > 0:
+            raise ValidationError(u"Milestone can't be in status 'notMet' if amountPaid.amount greater than 0")
+        elif status == 'partiallyMet' and not 0 < data['amountPaid'].amount < data['value'].amount:
+            raise ValidationError(
+                u"Milestone can't be in status 'partiallyMet' if amountPaid.amount not greater then 0 "
+                "or not less value.amount"
+            )
 
 
 @implementer(IESCOContract)
@@ -129,7 +146,7 @@ class Contract(BaseContract):
     class Options:
         roles = {
             'plain': plain_role,
-            'create': contract_create_role + whitelist('NBUdiscountRate', 'noticePublicationDate', 'yearlyPaymentsPercentageRange', 'minValue', 'milestones'),
+            'create': contract_create_role,
             'edit_active': contract_edit_role,
             'edit_terminated': whitelist(),
             'view': contract_view_role + whitelist('NBUdiscountRate', 'contractType', 'milestones'),

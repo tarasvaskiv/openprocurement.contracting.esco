@@ -7,8 +7,13 @@
     "contactPoint": {
       "telephone": "+380933907440",
       "name": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\"",
-      "email": "e.zhogan@ksteplo.com.ua"
+      "email": "e.zhogan@ksteplo.com.ua",
+      "availableLanguage": "en"
     },
+    "additionalContactPoints": [{
+      "name": "Державне управління справами2",
+      "telephone": "0440000001"
+    }],
     "identifier": {
       "scheme": "UA-EDR",
       "id": "40957551",
@@ -123,6 +128,7 @@
       "id": "89964e803dbe4d42854250cab04e65c5",
       "description": "First Milestone",
       "date": "2018-03-29T00:00:00+03:00",
+      "status": "pending",
       "dateModified": "2018-03-29T00:00:00+03:00",
       "period": {
         "startDate": "2018-03-29T00:00:00+03:00",

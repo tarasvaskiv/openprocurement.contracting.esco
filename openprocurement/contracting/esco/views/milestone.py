@@ -8,7 +8,11 @@ from openprocurement.api.utils import (
 
 from openprocurement.contracting.api.utils import save_contract
 from openprocurement.contracting.core.utils import apply_patch
-from openprocurement.contracting.esco.utils import milestoneresource
+from openprocurement.contracting.esco.utils import milestoneresource, filter_milestones_by_contract_period_end_date
+from openprocurement.contracting.esco.validation import (
+    validate_patch_milestone_data, validate_update_milestone_in_allowed_status, validate_milestones_sum_amount_paid,
+    validate_update_milestone_value
+)
 
 
 @milestoneresource(name='esco:Contract Milestones',
@@ -30,7 +34,7 @@ class ContractMilestoneResource(APIResource):
 
         """
         contract = self.request.validated['contract']
-        return {'data': [i.serialize("view") for i in contract.milestones]}
+        return {'data': filter_milestones_by_contract_period_end_date(contract)}
 
     @json_view(permission='view_contract')
     def get(self):
@@ -46,8 +50,13 @@ class ContractMilestoneResource(APIResource):
 
         return {'data': self.request.context.serialize("view")}
 
-    @json_view(content_type="application/json", permission='edit_milestone',
-               validators=())
+    @json_view(
+        content_type="application/json", permission='edit_contract',
+        validators=(
+            validate_patch_milestone_data, validate_update_milestone_in_allowed_status,
+            validate_update_milestone_value, validate_milestones_sum_amount_paid
+        )
+    )
     def patch(self):
         """Update of milestone
 
@@ -55,36 +64,15 @@ class ContractMilestoneResource(APIResource):
         # TODO: add example later no model yet exist
 
         """
-
+        contract = self.request.context.__parent__
+        if self.request.validated['data']['status'] in ['met', 'notMet', 'partiallyMet'] and \
+                self.request.context.sequenceNumber < 16:
+            next_milestone_end_year = contract.milestones[self.request.context.sequenceNumber].period.endDate.year
+            if contract.period.endDate.year >= next_milestone_end_year:
+                self.request.context.__parent__.milestones[self.request.context.sequenceNumber].status = u"pending"
         if apply_patch(self.request, src=self.request.context.serialize()):
             self.LOGGER.info(
-                'Updated contract milestone {}'.format(
-                    self.request.context.id),
-                extra=context_unpack(self.request,
-                                     {
-                                         'MESSAGE_ID': 'contract_milestone_patch'}))
-            return {'data': self.request.context.serialize("view")}
-
-    @json_view(permission='edit_milestone', validators=())
-    def delete(self):
-        """Cancelling the milestone
-
-        Example request for cancelling the proposal:
-        # TODO: add example later no model yet exist
-
-        """
-        milestone = self.request.context
-        res = milestone.serialize("view")
-        self.request.validated['contract'].milestones.remove(milestone)
-
-        # why do we need this
-        self.request.validated['contract'].modified = False
-
-        if save_contract(self.request):
-            self.LOGGER.info(
-                'Deleted contract milestone {}'.format(
-                    self.request.context.id),
-                extra=context_unpack(self.request,
-                    {'MESSAGE_ID': 'contract_milestone_delete'})
+                'Updated contract milestone {}'.format(self.request.context.id),
+                extra=context_unpack(self.request, {'MESSAGE_ID': 'contract_milestone_patch'})
             )
-            return {'data': res}
+            return {'data': self.request.context.serialize("view")}

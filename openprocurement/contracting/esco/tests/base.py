@@ -54,7 +54,7 @@ class BaseContractWebTest(BaseWebTest):
         self.app.authorization = ('Basic', ('contracting', ''))
         response = self.app.post_json('/contracts', {'data': data})
         self.contract = response.json['data']
-        # self.contract_token = response.json['access']['token']
+        self.contract_token = response.json['access']['token']
         self.contract_id = self.contract['id']
         self.app.authorization = orig_auth
 
