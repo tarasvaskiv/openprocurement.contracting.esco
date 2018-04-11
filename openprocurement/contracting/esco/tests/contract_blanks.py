@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from copy import deepcopy
 from uuid import uuid4
 from datetime import timedelta
 from openprocurement.contracting.esco.models import Contract
@@ -28,6 +29,47 @@ def simple_add_esco_contract(self):
     u.delete_instance(self.db)
 
 # ContractResourceTest
+
+def create_contract(self):
+    response = self.app.get('/contracts')
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(len(response.json['data']), 0)
+
+    response = self.app.post_json('/contracts', {"data": self.initial_data})
+    self.assertEqual(response.status, '201 Created')
+    self.assertEqual(response.content_type, 'application/json')
+    contract = response.json['data']
+    self.assertEqual(contract['status'], 'active')
+
+    response = self.app.get('/contracts/{}'.format(contract['id']))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(set(response.json['data']), set(contract))
+    self.assertEqual(response.json['data'], contract)
+
+    data = deepcopy(self.initial_data)
+    data['id'] = uuid4().hex
+    response = self.app.post_json('/contracts?opt_jsonp=callback', {"data": data})
+    self.assertEqual(response.status, '201 Created')
+    self.assertEqual(response.content_type, 'application/javascript')
+    self.assertIn('callback({"', response.body)
+
+    data['id'] = uuid4().hex
+    response = self.app.post_json('/contracts?opt_pretty=1', {"data": data})
+    self.assertEqual(response.status, '201 Created')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertIn('{\n    "', response.body)
+
+    data['id'] = uuid4().hex
+    response = self.app.post_json('/contracts', {"data": data, "options": {"pretty": True}})
+    self.assertEqual(response.status, '201 Created')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertIn('{\n    "', response.body)
+
+    # broker has no permissions to create contract
+    self.app.authorization = ('Basic', ('broker', ''))
+    response = self.app.post_json('/contracts', {"data": self.initial_data}, status=403)
+    self.assertEqual(response.status, '403 Forbidden')
 
 
 def create_contract_generated(self):

@@ -14,6 +14,7 @@ from openprocurement.contracting.esco.tests.contract_blanks import (
     # ContractESCOTest
     simple_add_esco_contract,
     # ContractESCOResourceTest
+    create_contract,
     create_contract_generated,
     patch_contract_NBUdiscountRate,
     # ContractResource4AdministratorTest
@@ -30,7 +31,6 @@ from openprocurement.contracting.common.tests.contract_blanks import (
     get_contract,
     not_found,
     create_contract_invalid,
-    create_contract,
     # ContractESCOWDocumentsWithDSResourceTest
     create_contract_w_documents,
     # ContractResource4BrokersTest
