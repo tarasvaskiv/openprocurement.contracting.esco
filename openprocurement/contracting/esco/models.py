@@ -59,6 +59,7 @@ class ESCOValue(BaseESCOValue):
             self.annualCostsReduction,
             self.__parent__.noticePublicationDate))
 
+
 class Document(BaseDocument):
     """ Contract Document """
 
