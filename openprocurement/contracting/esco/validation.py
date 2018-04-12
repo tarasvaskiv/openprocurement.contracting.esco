@@ -40,3 +40,21 @@ def validate_update_milestone_value(request):
         v = getattr(milestone.value, key)
         if v != value[key] and not pending_change:
             raise_operation_error(request, u"Contract don't have any change in 'pending' status.")
+
+
+def validate_terminated_milestone_document_operation(request):
+    data = request.validated['data']
+    if "relatedItem" in data and data.get('documentOf') == 'milestone':
+        for m in request.validated['contract'].milestones:
+            if m.id == data['relatedItem'] and m.status in ['met', 'notMet', 'partiallyMet']:
+                raise_operation_error(request, "Can't add document in current ({}) milestone status".format(m.status))
+
+
+def validate_scheduled_milestone_document_operation(request):
+    data = request.validated['data']
+    changes = request.context.__parent__.changes
+    pending_change = True if len(changes) > 0 and changes[-1].status == 'pending' else False
+    if "relatedItem" in data and data.get('documentOf') == 'milestone':
+        for m in request.validated['contract'].milestones:
+            if m.id == data['relatedItem'] and m.status == 'scheduled' and not pending_change:
+                raise_operation_error(request, "Can't add document to scheduled milestone without pending change")

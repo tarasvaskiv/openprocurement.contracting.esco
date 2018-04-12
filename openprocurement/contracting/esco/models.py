@@ -6,14 +6,16 @@ from schematics.transforms import whitelist, blacklist
 from schematics.types import StringType, FloatType, IntType, MD5Type
 from schematics.types.compound import ModelType
 from schematics.types.serializable import serializable
-from openprocurement.contracting.core.models import (
-    IContract, IsoDateTimeType,
-    Contract as BaseContract, Document as BaseDocument
-)
+
 from openprocurement.api.utils import get_now
 from openprocurement.api.models import (
     plain_role, schematics_default_role,
     Value, Period, Model, ListType, DecimalType
+)
+from openprocurement.contracting.core.models import (
+    IContract, IsoDateTimeType,
+    Contract as BaseContract, Document as BaseDocument,
+    get_contract,
 )
 from openprocurement.contracting.core.models import (
     contract_create_role as base_contract_create_role, contract_edit_role as base_contract_edit_role,
@@ -85,7 +87,7 @@ class Document(BaseDocument):
                         u"relatedItem should be one of items"
                     )
                 if data.get('documentOf') == 'milestone' and \
-                        relatedItem not in [i.id for i in contract.milesones]:
+                        relatedItem not in [i.id for i in contract.milestones]:
                     raise ValidationError(
                         u"relatedItem should be one of milestones"
                     )
@@ -142,6 +144,8 @@ class Contract(BaseContract):
     noticePublicationDate = IsoDateTimeType()
     value = ModelType(ESCOValue)
     yearlyPaymentsPercentageRange = FloatType(required=True)
+    documents = ListType(ModelType(Document), default=list())
+
 
     class Options:
         roles = {
