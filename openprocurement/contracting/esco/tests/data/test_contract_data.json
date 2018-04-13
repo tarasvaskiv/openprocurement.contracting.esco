@@ -141,6 +141,11 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "amountPaid": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
       "title": "Title of first milestone"
     },
     {
@@ -155,6 +160,11 @@
       "sequenceNumber": 2,
       "value": {
         "amount": 191522.08,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "amountPaid": {
+        "amount": 0,
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
@@ -175,6 +185,11 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "amountPaid": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
       "title": "Title of third milestone"
     },
     {
@@ -189,6 +204,11 @@
       "sequenceNumber": 4,
       "value": {
         "amount": 234437.01,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "amountPaid": {
+        "amount": 0,
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
@@ -209,6 +229,11 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "amountPaid": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
       "title": "Title of fifth milestone"
     },
     {
@@ -223,6 +248,11 @@
       "sequenceNumber": 6,
       "value": {
         "amount": 234437.01,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "amountPaid": {
+        "amount": 0,
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
@@ -243,6 +273,11 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "amountPaid": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
       "title": "Title of seventh milestone"
     },
     {
@@ -260,6 +295,11 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "amountPaid": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
       "title": "Title of eight milestone"
     },
     {
@@ -273,6 +313,11 @@
       },
       "sequenceNumber": 9,
       "value": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "amountPaid": {
         "amount": 0,
         "currency": "UAH",
         "valueAddedTaxIncluded": true
@@ -294,6 +339,11 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "amountPaid": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
       "title": "Title of ten milestone"
     },
     {
@@ -307,6 +357,11 @@
       },
       "sequenceNumber": 11,
       "value": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "amountPaid": {
         "amount": 0,
         "currency": "UAH",
         "valueAddedTaxIncluded": true
@@ -328,6 +383,11 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "amountPaid": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
       "title": "Title of twelve milestone"
     },
     {
@@ -341,6 +401,11 @@
       },
       "sequenceNumber": 13,
       "value": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "amountPaid": {
         "amount": 0,
         "currency": "UAH",
         "valueAddedTaxIncluded": true
@@ -362,6 +427,11 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "amountPaid": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
       "title": "Title of fourteen milestone"
     },
     {
@@ -379,6 +449,11 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "amountPaid": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
       "title": "Title of fifteen milestone"
     },
     {
@@ -392,6 +467,11 @@
       },
       "sequenceNumber": 16,
       "value": {
+        "amount": 0,
+        "currency": "UAH",
+        "valueAddedTaxIncluded": true
+      },
+      "amountPaid": {
         "amount": 0,
         "currency": "UAH",
         "valueAddedTaxIncluded": true
