@@ -1,18 +1,22 @@
 # -*- coding: utf-8 -*-
-from openprocurement.api.models import schematics_default_role
 from openprocurement.api.utils import (
     get_now,
     json_view,
     context_unpack,
     APIResource,
 )
-
-from openprocurement.contracting.api.utils import save_contract
 from openprocurement.contracting.core.utils import apply_patch
-from openprocurement.contracting.esco.utils import milestoneresource, filter_milestones_by_contract_period_end_date
+from openprocurement.contracting.esco.utils import (
+    milestoneresource,
+    filter_milestones_by_contract_period_end_date,
+)
 from openprocurement.contracting.esco.validation import (
-    validate_patch_milestone_data, validate_update_milestone_in_allowed_status, validate_milestones_sum_amount_paid,
-    validate_update_milestone_value
+    validate_patch_milestone_data,
+    validate_update_milestone_value,
+    validate_milestones_sum_amount_paid,
+    validate_update_milestone_amountPaid,
+    validate_update_milestone_in_scheduled_status,
+    validate_update_milestone_in_terminated_status,
 )
 
 
