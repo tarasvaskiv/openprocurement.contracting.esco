@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from openprocurement.api.models import schematics_default_role
 from openprocurement.api.utils import (
+    get_now,
     json_view,
     context_unpack,
     APIResource,
@@ -40,7 +41,7 @@ class ContractMilestoneResource(APIResource):
     def get(self):
         """Retrieving the milestone
 
-        Example request for retrieving the proposal:
+        Example request for retrieving specific milestone:
 
         .. sourcecode:: http
         # TODO: add example later no model yet exist
@@ -60,16 +61,22 @@ class ContractMilestoneResource(APIResource):
     def patch(self):
         """Update of milestone
 
-        Example request to change bid proposal:
+        Example request to change milestone:
         # TODO: add example later no model yet exist
 
         """
         contract = self.request.context.__parent__
+        milestone = self.request.context
+        date_modified = get_now()
+        milestone.dateModified = date_modified
         if self.request.validated['data']['status'] in ['met', 'notMet', 'partiallyMet'] and \
                 self.request.context.sequenceNumber < 16:
-            next_milestone_end_year = contract.milestones[self.request.context.sequenceNumber].period.endDate.year
+            milestone.date = date_modified
+            next_milestone = contract.milestones[self.request.context.sequenceNumber]
+            next_milestone_end_year = next_milestone.period.endDate.year
             if contract.period.endDate.year >= next_milestone_end_year:
-                self.request.context.__parent__.milestones[self.request.context.sequenceNumber].status = u"pending"
+                next_milestone.dateModified = next_milestone.date = date_modified
+                next_milestone.status = u"pending"
         if apply_patch(self.request, src=self.request.context.serialize()):
             self.LOGGER.info(
                 'Updated contract milestone {}'.format(self.request.context.id),
