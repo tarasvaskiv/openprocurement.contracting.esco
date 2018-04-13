@@ -8,6 +8,7 @@ from openprocurement.contracting.esco.tests.milestone_blanks import (
     listing_milestones,
     get_milestone_by_id,
     patch_milestones_status_change,
+    patch_milestone,
 )
 
 
@@ -19,6 +20,7 @@ class ContractMilestoneResourceTest(BaseContractWebTest):
     test_listing_milestones = snitch(listing_milestones)
     test_get_milestone_by_id = snitch(get_milestone_by_id)
     test_patch_milestones_status_change = snitch(patch_milestones_status_change)
+    test_patch_milestone = snitch(patch_milestone)
 
 
 def suite():
