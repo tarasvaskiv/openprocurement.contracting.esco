@@ -22,12 +22,11 @@ class TestMilestone(unittest.TestCase):
                 'amount': 1000,
                 'currency': 'UAH',
                 'valueAddedTaxIncluded': True
-            }
+            },
+            "status": "scheduled"
         }
         milestone = Milestone(milestone_data)
         milestone.validate()
-        # import pdb; pdb.set_trace()
-
 
 
 def suite():

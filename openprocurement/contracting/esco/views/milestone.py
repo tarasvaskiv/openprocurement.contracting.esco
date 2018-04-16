@@ -13,6 +13,7 @@ from openprocurement.contracting.esco.utils import (
 from openprocurement.contracting.esco.validation import (
     validate_patch_milestone_data,
     validate_update_milestone_value,
+    validate_milestone_status_change,
     validate_milestones_sum_amount_paid,
     validate_update_milestone_amountPaid,
     validate_update_milestone_in_scheduled_status,
@@ -59,8 +60,8 @@ class ContractMilestoneResource(APIResource):
         content_type="application/json", permission='edit_contract',
         validators=(
             validate_patch_milestone_data, validate_update_milestone_in_terminated_status,
-            validate_update_milestone_in_scheduled_status, validate_update_milestone_value,
-            validate_update_milestone_amountPaid, validate_milestones_sum_amount_paid,
+            validate_milestone_status_change, validate_update_milestone_in_scheduled_status,
+            validate_update_milestone_value, validate_update_milestone_amountPaid, validate_milestones_sum_amount_paid,
         )
     )
     def patch(self):

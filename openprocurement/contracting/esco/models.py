@@ -106,7 +106,6 @@ class Milestone(Model):
     status = StringType(
         required=True,
         choices=['scheduled', 'met', 'notMet', 'partiallyMet', 'pending'],
-        default='scheduled'
     )
     value = ModelType(Value, required=True)
     amountPaid = ModelType(Value)

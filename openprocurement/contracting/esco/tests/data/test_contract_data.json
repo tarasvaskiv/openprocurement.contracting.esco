@@ -146,6 +146,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "status": "pending",
       "title": "Title of first milestone"
     },
     {
@@ -168,6 +169,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "status": "scheduled",
       "title": "Title of second milestone"
     },
     {
@@ -190,6 +192,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "status": "scheduled",
       "title": "Title of third milestone"
     },
     {
@@ -212,6 +215,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "status": "scheduled",
       "title": "Title of fourth milestone"
     },
     {
@@ -234,6 +238,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "status": "scheduled",
       "title": "Title of fifth milestone"
     },
     {
@@ -256,6 +261,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "status": "scheduled",
       "title": "Title of sixth milestone"
     },
     {
@@ -278,6 +284,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "status": "scheduled",
       "title": "Title of seventh milestone"
     },
     {
@@ -300,6 +307,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "status": "scheduled",
       "title": "Title of eight milestone"
     },
     {
@@ -322,6 +330,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "status": "scheduled",
       "title": "Title of ninth milestone"
     },
     {
@@ -344,6 +353,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "status": "scheduled",
       "title": "Title of ten milestone"
     },
     {
@@ -366,6 +376,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "status": "scheduled",
       "title": "Title of eleven milestone"
     },
     {
@@ -388,6 +399,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "status": "scheduled",
       "title": "Title of twelve milestone"
     },
     {
@@ -410,6 +422,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "status": "scheduled",
       "title": "Title of thirteen milestone"
     },
     {
@@ -432,6 +445,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "status": "scheduled",
       "title": "Title of fourteen milestone"
     },
     {
@@ -454,6 +468,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "status": "scheduled",
       "title": "Title of fifteen milestone"
     },
     {
@@ -476,6 +491,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
+      "status": "scheduled",
       "title": "Title of sixteen milestone"
     }
   ],
