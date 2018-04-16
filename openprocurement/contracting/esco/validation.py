@@ -18,28 +18,40 @@ def validate_milestones_sum_amount_paid(request):
         )
 
 
-def validate_update_milestone_in_allowed_status(request):
+def validate_update_milestone_in_terminated_status(request):
+    milestone = request.context
+    if milestone.status in ['met', 'notMet', 'partiallyMet']:
+        raise_operation_error(request, "Can't update milestone in current ({}) status".format(milestone.status))
+
+
+def validate_update_milestone_in_scheduled_status(request):
     milestone = request.context
     changes = milestone.__parent__.changes
     pending_change = True if len(changes) > 0 and changes[-1].status == 'pending' else False
-    # Modify 'scheduled' milestone allow only if available change in 'pending' status
-    if pending_change and milestone.status not in ['pending', 'scheduled']:
-        raise_operation_error(request, "Can't update milestone in current ({}) status".format(milestone.status))
-    elif not pending_change and milestone.status != 'pending':
-        raise_operation_error(request, "Can't update milestone in current ({}) status".format(milestone.status))
+    if not pending_change and milestone.status == 'scheduled':
+        raise_operation_error(request, "Can't update milestone in scheduled status without pending change")
 
 
 def validate_update_milestone_value(request):
-    if 'value' not in request.json_body['data']:
-        return
     milestone = request.context
     changes = milestone.__parent__.changes
     pending_change = True if len(changes) > 0 and changes[-1].status == 'pending' else False
-    value = request.validated['data']['value']
-    for key in value.keys():
-        v = getattr(milestone.value, key)
-        if v != value[key] and not pending_change:
-            raise_operation_error(request, u"Contract don't have any change in 'pending' status.")
+    if not pending_change and milestone.status in ['pending', 'scheduled']:
+        value = request.validated['data']['value']
+        for k in value.keys():
+            v = getattr(milestone.value, k)
+            if v != value[k]:
+                raise_operation_error(request, "Contract doesn't have any change in 'pending' status.")
+
+
+def validate_update_milestone_amountPaid(request):
+    milestone = request.context
+    if milestone.status == 'scheduled':
+        amountPaid = request.validated['data']['amountPaid']
+        for k in amountPaid.keys():
+            v = getattr(milestone.amountPaid, k)
+            if v != amountPaid[k]:
+                raise_operation_error(request, "Can't update 'amountPaid' for scheduled milestone")
 
 
 def validate_terminated_milestone_document_operation(request):

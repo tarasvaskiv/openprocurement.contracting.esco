@@ -109,10 +109,7 @@ class Milestone(Model):
         default='scheduled'
     )
     value = ModelType(Value, required=True)
-    amountPaid = ModelType(
-        Value,
-        default={'amount': 0, 'currency': 'UAH', 'valueAddedTaxIncluded': True}
-    )
+    amountPaid = ModelType(Value)
     title = StringType()
 
     class Options:

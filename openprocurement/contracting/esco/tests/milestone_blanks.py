@@ -77,7 +77,7 @@ def patch_milestones_status_change(self):
         {
             u'status': u'error',
             u'errors': [{
-                u'description': u"Can't update milestone in current (scheduled) status",
+                u'description': u"Can't update milestone in scheduled status without pending change",
                 u'location': u'body',
                 u'name': u'data'
             }]
@@ -283,7 +283,7 @@ def patch_milestones_status_change(self):
         {
             u'status': u'error',
             u'errors': [{
-                u'description': u"Contract don't have any change in 'pending' status.",
+                u'description': u"Contract doesn't have any change in 'pending' status.",
                 u'location': u'body',
                 u'name': u'data'
             }]
@@ -291,5 +291,168 @@ def patch_milestones_status_change(self):
     )
 
 
-def successfull_patch_milestone(self):
-    pass
+def patch_milestone(self):
+    # pending milestone updates
+    # get correct pending milestone
+    response = self.app.get('/contracts/{}'.format(self.contract_id))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    milestone = response.json['data']['milestones'][0]
+    # make sure it's pending milestone!
+    self.assertEqual(milestone['status'], 'pending')
+
+    # update of title, description, amountPaid is allowed w\o pending change
+    # TODO - after this patch contract.amountPaid should change
+    response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+        self.contract_id, milestone['id'], self.contract_token), {'data': {
+            "title": "new title",
+            "description": "new description",
+            "amountPaid": {"amount": 500000}}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json["data"]["title"], "new title")
+    self.assertEqual(response.json["data"]["description"], "new description")
+    self.assertEqual(response.json["data"]["amountPaid"]["amount"], 500000)
+
+    # update of value is not allowed w/o pending change
+    response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+        self.contract_id, milestone['id'], self.contract_token), {'data': {
+            "value": {"amount": 700000}}}, status=403)
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(response.json['errors'], [
+        {"location": "body", "name": "data", "description": "Contract doesn't have any change in 'pending' status."}])
+
+    # create pending change
+    response = self.app.post_json('/contracts/{}/changes?acc_token={}'.format(
+        self.contract_id, self.contract_token), {'data': {
+            'rationale': u'причина зміни укр',
+            'rationale_en': 'change cause en',
+            'rationaleTypes': ['itemPriceVariation']}})
+    self.assertEqual(response.status, '201 Created')
+    self.assertEqual(response.content_type, 'application/json')
+    change = response.json['data']
+    self.assertEqual(change['status'], 'pending')
+
+    # now update of value is allowed
+    # TODO - after this patch contract.value should change
+    response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+        self.contract_id, milestone['id'], self.contract_token), {'data': {
+            "value": {"amount": 700000}}})
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json["data"]["value"]["amount"], 700000)
+
+    # activate change - now there is no pending changes
+    response = self.app.patch_json('/contracts/{}/changes/{}?acc_token={}'.format(
+        self.contract['id'], change['id'], self.contract_token), {'data': {
+            'status': 'active',
+            'dateSigned': get_now().isoformat()}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.json['data']['status'], 'active')
+
+    # terminated milestone updates
+    # set milestone's status to terminal - partiallyMet for example
+    response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+        self.contract_id, milestone['id'], self.contract_token), {'data': {
+            "status": "partiallyMet"}})
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.json['data']['status'], 'partiallyMet')
+
+    # update of title, description, amountPaid, value is forbidden
+    response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+        self.contract_id, milestone['id'], self.contract_token), {'data': {
+            "value": {"amount": 800000}}}, status=403)
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(response.json['errors'], [
+        {"location": "body", "name": "data", "description": "Can't update milestone in current (partiallyMet) status"}])
+
+    response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+        self.contract_id, milestone['id'], self.contract_token), {'data': {
+            "amountPaid": {"amount": 600000}}}, status=403)
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(response.json['errors'], [
+        {"location": "body", "name": "data", "description": "Can't update milestone in current (partiallyMet) status"}])
+
+    response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+        self.contract_id, milestone['id'], self.contract_token), {'data': {
+            "title": "new new",
+            "description": "new new new"}}, status=403)
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(response.json['errors'], [
+        {"location": "body", "name": "data", "description": "Can't update milestone in current (partiallyMet) status"}])
+
+    # scheduled milestone updates
+    # get correct scheduled milestone - third one
+    response = self.app.get('/contracts/{}'.format(self.contract_id))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    milestone = response.json['data']['milestones'][2]
+    # make sure it's scheduled milestone!
+    self.assertEqual(milestone['status'], 'scheduled')
+
+    # update of title/description, value, amountPaid is not allowed w/o pending change
+    response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+        self.contract_id, milestone['id'], self.contract_token), {'data': {
+            "title": "new new",
+            "description": "new new new"}}, status=403)
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(response.json['errors'], [
+        {"location": "body", "name": "data",
+         "description": "Can't update milestone in scheduled status without pending change"}])
+
+    response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+        self.contract_id, milestone['id'], self.contract_token), {'data': {
+            "value": {"amount": 700000}}}, status=403)
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(response.json['errors'], [
+        {"location": "body", "name": "data",
+         "description": "Can't update milestone in scheduled status without pending change"}])
+
+    response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+        self.contract_id, milestone['id'], self.contract_token), {'data': {
+            "amountPaid": {"amount": 700000}}}, status=403)
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(response.json['errors'], [
+        {"location": "body", "name": "data",
+         "description": "Can't update milestone in scheduled status without pending change"}])
+
+    # create pending change
+    response = self.app.post_json('/contracts/{}/changes?acc_token={}'.format(
+        self.contract_id, self.contract_token), {'data': {
+            'rationale': u'причина зміни укр',
+            'rationale_en': 'change cause en',
+            'rationaleTypes': ['itemPriceVariation']}})
+    self.assertEqual(response.status, '201 Created')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['data']['status'], 'pending')
+
+    # update of amountPaid is still not allowed - at all
+    response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+        self.contract_id, milestone['id'], self.contract_token), {'data': {
+            "amountPaid": {"amount": 700000}}}, status=403)
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(response.json['errors'], [
+        {"location": "body", "name": "data", "description": "Can't update 'amountPaid' for scheduled milestone"}])
+
+    # update of title, description, value is allowed with pending change
+    # TODO - after this patch contract.value should change
+    response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+        self.contract_id, milestone['id'], self.contract_token), {'data': {
+            "title": "new title",
+            "description": "new description",
+            "value": {"amount": 500000}}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json["data"]["title"], "new title")
+    self.assertEqual(response.json["data"]["description"], "new description")
+    self.assertEqual(response.json["data"]["value"]["amount"], 500000)
