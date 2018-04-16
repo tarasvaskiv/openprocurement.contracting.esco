@@ -1,3 +1,8 @@
+.. image:: https://coveralls.io/repos/github/openprocurement/openprocurement.contracting.esco/badge.svg
+    :target: https://coveralls.io/github/openprocurement/openprocurement.contracting.esco
+.. image:: https://travis-ci.org/openprocurement/openprocurement.contracting.esco.svg?branch=master
+    :target: https://travis-ci.org/openprocurement/openprocurement.contracting.esco
+
 openprocurement.contracting.esco
 =============================
 
