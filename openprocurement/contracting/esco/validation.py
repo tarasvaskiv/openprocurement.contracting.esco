@@ -17,6 +17,13 @@ def validate_milestones_sum_amount_paid(request):
             request, u"The sum of milestones amountPaid.amount can't be greater than contract.value.amount"
         )
 
+def validate_milestone_status_change(request):
+    milestone = request.context
+    data = request.validated['data']
+    # can't update status from scheduled and to scheduled :)
+    if milestone.status != data['status'] and (milestone.status == 'scheduled' or data['status'] == 'scheduled'):
+        raise_operation_error(request, "Can't update milestone to {} status".format(data['status']))
+
 
 def validate_update_milestone_in_terminated_status(request):
     milestone = request.context
