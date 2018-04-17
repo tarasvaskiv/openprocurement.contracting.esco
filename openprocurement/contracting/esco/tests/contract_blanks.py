@@ -150,16 +150,16 @@ def contract_type_check(self):
     self.assertEqual(response.status, '200 OK')
     token = response.json['access']['token']
 
-    # # get appropriate contract type for patch, but not the same as current contract type
-    # patch_contract_type = [x for x in Contract.contractType.choices if x != expected_contract_type]
-    #
-    # response = self.app.patch_json('/contracts/{}?acc_token={}'.format(contract['id'], token),
-    #                                {'data': {'contractType': patch_contract_type[0],
-    #                                          'description': 'new description'}})
-    # self.assertEqual(response.status, '200 OK')
-    # self.assertEqual(response.json['data']['description'], 'new description')
-    # self.assertNotEqual(response.json['data']['contractType'], patch_contract_type)
-    # self.assertEqual(response.json['data']['contractType'], expected_contract_type)
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(contract['id'], token),
+        {'data': {'contractType': 'common'}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.body, 'null')
+
+    response = self.app.get('/contracts/{}'.format(contract['id']))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertNotEqual(response.json['data']['contractType'], 'common')
+    self.assertEqual(response.json['data']['contractType'], 'esco')
 
 
 def patch_tender_contract(self):
