@@ -10,7 +10,7 @@ from schematics.types.serializable import serializable
 from openprocurement.api.utils import get_now
 from openprocurement.api.models import (
     plain_role, schematics_default_role,
-    Value, Period, Model, ListType, DecimalType
+    Value, Period, Model, ListType, DecimalType, SifterListType
 )
 from openprocurement.contracting.core.models import (
     IContract, IsoDateTimeType,
@@ -105,7 +105,7 @@ class Milestone(Model):
     sequenceNumber = IntType(required=True)
     status = StringType(
         required=True,
-        choices=['scheduled', 'met', 'notMet', 'partiallyMet', 'pending'],
+        choices=['scheduled', 'met', 'notMet', 'partiallyMet', 'pending', 'spare'],
     )
     value = ModelType(Value, required=True)
     amountPaid = ModelType(Value)
@@ -113,7 +113,13 @@ class Milestone(Model):
 
     class Options:
         roles = {
-            'view': schematics_default_role,
+            'view': whitelist(),
+            'spare': whitelist(),
+            'scheduled': schematics_default_role,
+            'pending': schematics_default_role,
+            'met': schematics_default_role,
+            'notMet': schematics_default_role,
+            'partiallyMet': schematics_default_role,
             'edit': whitelist('status', 'amountPaid', 'value', 'title', 'description')
         }
 
@@ -135,7 +141,10 @@ class Contract(BaseContract):
 
     contractType = StringType(default='esco')
     fundingKind = StringType(choices=['budget', 'other'], default='other')
-    milestones = ListType(ModelType(Milestone), default=list())
+    milestones = SifterListType(
+        ModelType(Milestone), default=list(), filter_by='status',
+        filter_in_values=['scheduled', 'pending', 'met', 'notMet', 'partiallyMet']
+    )
     minValue = ModelType(Value, required=True)
     NBUdiscountRate = FloatType(required=True, min_value=0, max_value=0.99)
     noticePublicationDate = IsoDateTimeType()

@@ -129,7 +129,6 @@
       "id": "89964e803dbe4d42854250cab04e65c5",
       "description": "First Milestone",
       "date": "2018-03-29T00:00:00+03:00",
-      "status": "pending",
       "dateModified": "2018-03-29T00:00:00+03:00",
       "period": {
         "startDate": "2018-03-29T00:00:00+03:00",
@@ -330,7 +329,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
-      "status": "scheduled",
+      "status": "spare",
       "title": "Title of ninth milestone"
     },
     {
@@ -353,7 +352,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
-      "status": "scheduled",
+      "status": "spare",
       "title": "Title of ten milestone"
     },
     {
@@ -376,7 +375,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
-      "status": "scheduled",
+      "status": "spare",
       "title": "Title of eleven milestone"
     },
     {
@@ -399,7 +398,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
-      "status": "scheduled",
+      "status": "spare",
       "title": "Title of twelve milestone"
     },
     {
@@ -422,7 +421,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
-      "status": "scheduled",
+      "status": "spare",
       "title": "Title of thirteen milestone"
     },
     {
@@ -445,7 +444,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
-      "status": "scheduled",
+      "status": "spare",
       "title": "Title of fourteen milestone"
     },
     {
@@ -468,7 +467,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
-      "status": "scheduled",
+      "status": "spare",
       "title": "Title of fifteen milestone"
     },
     {
@@ -491,7 +490,7 @@
         "currency": "UAH",
         "valueAddedTaxIncluded": true
       },
-      "status": "scheduled",
+      "status": "spare",
       "title": "Title of sixteen milestone"
     }
   ],

@@ -8,7 +8,6 @@ from openprocurement.api.utils import (
 from openprocurement.contracting.core.utils import apply_patch
 from openprocurement.contracting.esco.utils import (
     milestoneresource,
-    filter_milestones_by_contract_period_end_date,
 )
 from openprocurement.contracting.esco.validation import (
     validate_patch_milestone_data,
@@ -40,7 +39,7 @@ class ContractMilestoneResource(APIResource):
 
         """
         contract = self.request.validated['contract']
-        return {'data': filter_milestones_by_contract_period_end_date(contract)}
+        return {'data': [i.serialize(i.status) for i in contract.milestones if i.serialize(i.status)]}
 
     @json_view(permission='view_contract')
     def get(self):
@@ -53,8 +52,7 @@ class ContractMilestoneResource(APIResource):
 
 
         """
-
-        return {'data': self.request.context.serialize("view")}
+        return {'data': self.request.context.serialize(self.request.context.status)}
 
     @json_view(
         content_type="application/json", permission='edit_contract',
@@ -88,4 +86,4 @@ class ContractMilestoneResource(APIResource):
                 'Updated contract milestone {}'.format(self.request.context.id),
                 extra=context_unpack(self.request, {'MESSAGE_ID': 'contract_milestone_patch'})
             )
-            return {'data': self.request.context.serialize("view")}
+            return {'data': self.request.context.serialize(self.request.context.status)}

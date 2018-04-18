@@ -20,14 +20,16 @@ def validate_milestones_sum_amount_paid(request):
 def validate_milestone_status_change(request):
     milestone = request.context
     data = request.validated['data']
-    # can't update status from scheduled and to scheduled :)
-    if milestone.status != data['status'] and (milestone.status == 'scheduled' or data['status'] == 'scheduled'):
+    # can't update status from scheduled and to scheduled and to spare:)
+    if milestone.status != data['status'] and (milestone.status == 'scheduled' or
+                                               data['status'] == 'scheduled' or
+                                               data['status'] == 'spare'):
         raise_operation_error(request, "Can't update milestone to {} status".format(data['status']))
 
 
 def validate_update_milestone_in_terminated_status(request):
     milestone = request.context
-    if milestone.status in ['met', 'notMet', 'partiallyMet']:
+    if milestone.status in ['met', 'notMet', 'partiallyMet', 'spare']:
         raise_operation_error(request, "Can't update milestone in current ({}) status".format(milestone.status))
 
 
