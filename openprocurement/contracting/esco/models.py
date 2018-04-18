@@ -52,14 +52,9 @@ class ESCOValue(BaseESCOValue):
             self.__parent__.noticePublicationDate,
             self.__parent__.NBUdiscountRate))
 
-    @serializable(serialized_name='amount', type=DecimalType(precision=-2))
+    @serializable(serialized_name='amount', type=FloatType())
     def amount_escp(self):
-        return to_decimal(escp(
-            self.contractDuration.years,
-            self.contractDuration.days,
-            self.yearlyPaymentsPercentage,
-            self.annualCostsReduction,
-            self.__parent__.noticePublicationDate))
+        return sum([milestone.value.amount for milestone in self.__parent__.milestones])
 
 
 class Document(BaseDocument):
@@ -166,7 +161,7 @@ class Contract(BaseContract):
 
     @serializable(serialized_name='amountPaid', serialize_when_none=False, type=ModelType(Value))
     def contract_amountPaid(self):
-        if self.amountPaid:
-            return Value(dict(amount=self.amountPaid.amount,
-                              currency=self.value.currency,
-                              valueAddedTaxIncluded=self.value.valueAddedTaxIncluded))
+        amount = sum([milestone.amountPaid.amount for milestone in self.milestones])
+        return Value(dict(amount=amount,
+                          currency=self.value.currency,
+                          valueAddedTaxIncluded=self.value.valueAddedTaxIncluded))
