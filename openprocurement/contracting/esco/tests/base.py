@@ -25,9 +25,6 @@ test_contract_data['contractType'] = 'esco'
 test_contract_data['NBUdiscountRate'] = NBU_DISCOUNT_RATE
 test_contract_data["yearlyPaymentsPercentageRange"] = 0.8
 test_contract_data["dateSigned"] = get_now().isoformat()
-# test_contract_data['value'] = {'yearlyPayments': 0.9,
-#                                'annualCostsReduction': 751.5,
-#                                'contractDuration': 10}
 
 
 class BaseWebTest(BaseBaseWebTest):

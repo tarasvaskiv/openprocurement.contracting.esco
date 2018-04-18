@@ -29,11 +29,3 @@ milestoneresource = partial(
     error_handler=error_handler,
     factory=factory
 )
-
-
-def filter_milestones_by_contract_period_end_date(contract):
-    return [
-        i.serialize("view")
-        for i in contract.milestones
-        if i.period.endDate.year <= contract.period.endDate.year
-    ]

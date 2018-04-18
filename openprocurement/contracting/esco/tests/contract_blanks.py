@@ -30,6 +30,32 @@ def simple_add_esco_contract(self):
 
 # ContractResourceTest
 
+def esco_contract_milestones_check(self):
+    response = self.app.get('/contracts')
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(len(response.json['data']), 0)
+
+    response = self.app.post_json('/contracts', {"data": self.initial_data})
+    self.assertEqual(response.status, '201 Created')
+    self.assertEqual(response.content_type, 'application/json')
+    contract = response.json['data']
+    self.assertEqual(contract['status'], 'active')
+
+    response = self.app.get('/contracts/{}'.format(contract['id']))
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '200 OK')
+    data = response.json['data']['milestones']
+    self.assertEqual(len(data), 8)
+    sequenceNumber = 1
+    for milestone in data:
+        if sequenceNumber == 1:
+            self.assertEqual(milestone['status'], 'pending')
+        else:
+            self.assertEqual(milestone['status'], 'scheduled')
+        self.assertEqual(milestone['sequenceNumber'], sequenceNumber)
+        sequenceNumber += 1
+
+
 def create_contract(self):
     response = self.app.get('/contracts')
     self.assertEqual(response.status, '200 OK')

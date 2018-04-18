@@ -8,7 +8,7 @@ def listing_milestones(self):
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.status, '200 OK')
     data = response.json['data']
-    self.assertEqual(len(data), 7)
+    self.assertEqual(len(data), 8)
     sequenceNumber = 1
     for milestone in data:
         if sequenceNumber == 1:
@@ -22,6 +22,8 @@ def listing_milestones(self):
 def get_milestone_by_id(self):
     milestone_id = self.initial_data['milestones'][1]['id']
     contract_id = self.contract['id']
+
+    # Receive milestone by id
     response = self.app.get(
         '/contracts/{}/milestones/{}'.format(contract_id, milestone_id)
     )
@@ -40,6 +42,17 @@ def get_milestone_by_id(self):
     self.assertIn('date', milestone)
     self.assertIn('dateModified', milestone)
 
+    # Try get milestone in spare status
+    milestone_id = self.initial_data['milestones'][9]['id']
+    self.assertEqual(self.initial_data['milestones'][9]['status'], 'spare')
+    response = self.app.get(
+        '/contracts/{}/milestones/{}'.format(contract_id, milestone_id)
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '200 OK')
+    self.assertIs(response.json['data'], None)
+
+    # Try receive milestone by invalid id
     response = self.app.get(
         '/contracts/{}/milestones/invalid_id'.format(contract_id),
         status=404
@@ -84,6 +97,44 @@ def patch_milestones_status_change(self):
         }
     )
 
+    # Not allow patch milestone status scheduled -> spare
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(contract_id, scheduled_milestone_id, self.contract_token),
+        {"data": {"status": "spare"}}, status=403
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(
+        response.json,
+        {
+            u'status': u'error',
+            u'errors': [{
+                u'description': u"Can't update milestone to spare status",
+                u'location': u'body',
+                u'name': u'data'
+            }]
+        }
+    )
+
+    # Not allow patch milestone status pending -> spare
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(contract_id, pending_milestone_id, self.contract_token),
+        {"data": {"status": "spare"}}, status=403
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(
+        response.json,
+        {
+            "status": "error",
+            "errors": [{
+                "location": "body",
+                "name": "data",
+                "description": "Can't update milestone to spare status"
+            }]
+        }
+    )
+
     # Patch first pending milestone only amountPaid.amount and check changing only dateModified of milestone
     start_dateModified = self.initial_data['milestones'][0]['dateModified']
     start_date = self.initial_data['milestones'][0]['date']
@@ -119,6 +170,24 @@ def patch_milestones_status_change(self):
     current_milestone_sequenceNumber = milestone['sequenceNumber']
     current_milestone_date = milestone['date']
     current_milestone_dateModified = milestone['dateModified']
+
+    # Not allow patch milestone status met -> spare
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(contract_id, pending_milestone_id, self.contract_token),
+        {"data": {"status": "spare"}}, status=403
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(
+        response.json,
+        {
+            u'status': u'error',
+            u'errors': [{
+                u'description': u"Can't update milestone in current (met) status",
+                u'location': u'body', u'name': u'data'
+            }]
+        }
+    )
 
     # Check status next milestone and check date and dateModified must be equal to current milestone
     next_milestone_id = self.initial_data['milestones'][1]['id']
@@ -284,6 +353,53 @@ def patch_milestones_status_change(self):
             u'status': u'error',
             u'errors': [{
                 u'description': u"Contract doesn't have any change in 'pending' status.",
+                u'location': u'body',
+                u'name': u'data'
+            }]
+        }
+    )
+
+    # SPARE milestone
+    # Not allows any action with milestone in spare status via patch
+    spare_milestone = self.initial_data['milestones'][-2]
+    self.assertEqual(spare_milestone['status'], 'spare')
+
+    # try get spare milestone
+    response = self.app.get(
+        '/contracts/{}/milestones/{}'.format(contract_id, spare_milestone['id'])
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '200 OK')
+    self.assertIs(response.json['data'], None)
+
+    # Not allow patch milestone from spare status to another
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(contract_id, spare_milestone['id'], self.contract_token),
+        {"data": {"status": "pending"}}, status=403
+    )
+    self.assertEqual(
+        response.json,
+        {
+            u'status': u'error',
+            u'errors': [{
+                u'description': u"Can't update milestone in current (spare) status",
+                u'location': u'body',
+                u'name': u'data'
+            }]
+        }
+    )
+
+    # Not allow patch milestone in spare status
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(contract_id, spare_milestone['id'], self.contract_token),
+        {"data": {"amountPaid": {"amount": 123450}}}, status=403
+    )
+    self.assertEqual(
+        response.json,
+        {
+            u'status': u'error',
+            u'errors': [{
+                u'description': u"Can't update milestone in current (spare) status",
                 u'location': u'body',
                 u'name': u'data'
             }]

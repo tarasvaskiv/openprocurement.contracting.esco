@@ -101,7 +101,7 @@ def contract_milestone_document(self):
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.status, '403 Forbidden')
     self.assertEqual(response.json['errors'], [
-        {"location": "body", "name": "data", 
+        {"location": "body", "name": "data",
          "description": "Can't add document to scheduled milestone without pending change"}])
 
     # create pending change
@@ -112,7 +112,7 @@ def contract_milestone_document(self):
             'rationaleTypes': ['itemPriceVariation']}})
     self.assertEqual(response.status, '201 Created')
     self.assertEqual(response.content_type, 'application/json')
-    self.assertEqual(response.json['data']['status'], 'pending')   
+    self.assertEqual(response.json['data']['status'], 'pending')
 
     # now loading docs for scheduled milestone is allowed
     response = self.app.patch_json('/contracts/{}/documents/{}?acc_token={}'.format(

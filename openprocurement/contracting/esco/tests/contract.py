@@ -22,6 +22,7 @@ from openprocurement.contracting.esco.tests.contract_blanks import (
     # ContractResource4BrokersTest
     patch_tender_contract,
     contract_type_check,
+    esco_contract_milestones_check,
 )
 from openprocurement.contracting.common.tests.contract_blanks import (
     # ContractESCOResourceTest
@@ -57,6 +58,7 @@ class ContractResourceTest(BaseWebTest):
     test_listing = snitch(listing)
     test_listing_changes = snitch(listing_changes)
     test_get_contract = snitch(get_contract)
+    test_esco_contract_milestones_check = snitch(esco_contract_milestones_check)
     test_not_found = snitch(not_found)
     test_create_contract_invalid = snitch(create_contract_invalid)
     test_create_contract_generated = snitch(create_contract_generated)
