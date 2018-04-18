@@ -714,7 +714,6 @@ def patch_milestone(self):
     self.assertEqual(milestone['status'], 'pending')
 
     # update of title, description, amountPaid is allowed w\o pending change
-    # TODO - after this patch contract.amountPaid should change
     response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
         self.contract_id, milestone['id'], self.contract_token), {'data': {
             "status": "pending",
@@ -725,6 +724,12 @@ def patch_milestone(self):
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json["data"]["title"], "new title")
     self.assertEqual(response.json["data"]["description"], "new description")
+    self.assertEqual(response.json["data"]["amountPaid"]["amount"], 500000)
+
+    response = self.app.get('/contracts/{}'.format(self.contract_id))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    # self.assertGreater(response.json['data']['amountPaid']['amount'], self.initial_data['amountPaid']['amount'])
     self.assertEqual(response.json["data"]["amountPaid"]["amount"], 500000)
 
     # update of value is not allowed w/o pending change
@@ -748,7 +753,6 @@ def patch_milestone(self):
     self.assertEqual(change['status'], 'pending')
 
     # now update of value is allowed
-    # TODO - after this patch contract.value should change
     response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
         self.contract_id, milestone['id'], self.contract_token), {'data': {
             "value": {"amount": 700000}}})
@@ -756,6 +760,11 @@ def patch_milestone(self):
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json["data"]["value"]["amount"], 700000)
+
+    response = self.app.get('/contracts/{}'.format(self.contract_id))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertGreater(response.json['data']['value']['amount'], self.initial_data['value']['amount'])
 
     # activate change - now there is no pending changes
     response = self.app.patch_json('/contracts/{}/changes/{}?acc_token={}'.format(
@@ -859,7 +868,6 @@ def patch_milestone(self):
         {"location": "body", "name": "data", "description": "Can't update 'amountPaid' for scheduled milestone"}])
 
     # update of title, description, value is allowed with pending change
-    # TODO - after this patch contract.value should change
     response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
         self.contract_id, milestone['id'], self.contract_token), {'data': {
             "title": "new title",
@@ -871,3 +879,8 @@ def patch_milestone(self):
     self.assertEqual(response.json["data"]["title"], "new title")
     self.assertEqual(response.json["data"]["description"], "new description")
     self.assertEqual(response.json["data"]["value"]["amount"], 500000)
+
+    response = self.app.get('/contracts/{}'.format(self.contract_id))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertGreater(response.json['data']['value']['amount'], self.initial_data['value']['amount'])

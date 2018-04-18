@@ -23,6 +23,7 @@ from openprocurement.contracting.esco.tests.contract_blanks import (
     patch_tender_contract,
     contract_type_check,
     esco_contract_milestones_check,
+    contract_status_change,
 )
 from openprocurement.contracting.common.tests.contract_blanks import (
     # ContractESCOResourceTest
@@ -35,7 +36,6 @@ from openprocurement.contracting.common.tests.contract_blanks import (
     # ContractESCOWDocumentsWithDSResourceTest
     create_contract_w_documents,
     # ContractResource4BrokersTest
-    contract_status_change,
     contract_items_change,
     # ContractCredentialsTest
     get_credentials,
