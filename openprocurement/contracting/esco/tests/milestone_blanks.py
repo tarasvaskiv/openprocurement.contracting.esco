@@ -72,6 +72,439 @@ def get_milestone_by_id(self):
     )
 
 
+def patch_milestone_description(self):
+    # Receive available milestones
+    response = self.app.get('/contracts/{}/milestones'.format(self.contract['id']))
+    milestones = response.json['data']
+
+    pending_milestone = milestones[0]
+    scheduled_milestone = milestones[-1]
+    self.assertEqual(pending_milestone['status'], 'pending')
+    self.assertEqual(scheduled_milestone['status'], 'scheduled')
+    self.assertNotEqual(len(pending_milestone['description']), 0)
+    self.assertNotEqual(len(scheduled_milestone['description']), 0)
+
+    # Remove description in pending milestone
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], pending_milestone['id'], self.contract_token
+        ),
+        {'data': {'description': ""}}
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '200 OK')
+    milestone = response.json['data']
+    self.assertEqual(milestone['description'], "")
+    self.assertEqual(milestone['id'], pending_milestone['id'])
+
+    # Set amountPaid.amount in pending milestone
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], pending_milestone['id'], self.contract_token
+        ),
+        {'data': {'amountPaid': {"amount": 123456}}}
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '200 OK')
+    milestone = response.json['data']
+    self.assertEqual(milestone['amountPaid']['amount'], 123456)
+    self.assertEqual(milestone['description'], "")
+    self.assertEqual(milestone['id'], pending_milestone['id'])
+
+    # Not allow switch milestone in one of terminated statuses (met, notMet and partiallyMet) if description empty
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], pending_milestone['id'], self.contract_token
+        ),
+        {'data': {'status': "met"}},
+        status=422
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '422 Unprocessable Entity')
+    self.assertEqual(
+        response.json,
+        {
+            u'status': u'error',
+            u'errors': [{
+                u'description': [u"Description can't be empty in follow statuses (met, notMet, partiallyMet)"],
+                u'location': u'body',
+                u'name': u'status'
+            }]
+        }
+    )
+
+    # Successfull switch milestone in one of terminated statuses (met, notMet, partiallyMet)
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], pending_milestone['id'], self.contract_token
+        ),
+        {'data': {'status': "met", 'description': 'Milestone #1'}},
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '200 OK')
+    milestone = response.json['data']
+    self.assertEqual(milestone['status'], 'met')
+    self.assertEqual(milestone['description'], 'Milestone #1')
+    self.assertEqual(milestone['amountPaid']['amount'], 123456)
+
+    # Not allow change description in terminated milestones
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], pending_milestone['id'], self.contract_token
+        ),
+        {'data': {'description': 'New description of milestone #1'}},
+        status=403
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(
+        response.json,
+        {
+            u'status': u'error',
+            u'errors': [{
+                u'description': u"Can't update milestone in current (met) status",
+                u'location': u'body',
+                u'name': u'data'
+            }]
+        }
+    )
+
+    # Not allow remove description in scheduled milestone without pending change
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], scheduled_milestone['id'], self.contract_token
+        ),
+        {'data': {'description': ""}},
+        status=403
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(
+        response.json,
+        {
+            "status": "error",
+            "errors": [{
+                "location": "body",
+                "name": "data",
+                "description": "Can't update milestone in scheduled status without pending change"
+            }]
+        }
+    )
+
+    # Not allow change milestone description in spare status
+    spare_milestone_id = self.initial_data['milestones'][-1]['id']
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], spare_milestone_id, self.contract_token
+        ),
+        {'data': {'description': ""}},
+        status=403
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(
+        response.json,
+        {
+            "status": "error",
+            "errors": [{
+                "location": "body",
+                "name": "data",
+                "description": "Can't update milestone in current (spare) status"
+            }]
+        }
+    )
+
+    # Change description with pending change
+    response = self.app.post_json('/contracts/{}/changes?acc_token={}'.format(
+        self.contract_id, self.contract_token), {'data': {
+            'rationale': u'причина зміни укр',
+            'rationale_en': 'change cause en',
+            'rationaleTypes': ['itemPriceVariation']}})
+    self.assertEqual(response.status, '201 Created')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['data']['status'], 'pending')
+
+    # Not allow change milestone description in spare status with pending change
+    spare_milestone_id = self.initial_data['milestones'][-1]['id']
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], spare_milestone_id, self.contract_token
+        ),
+        {'data': {'description': ""}},
+        status=403
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(
+        response.json,
+        {
+            "status": "error",
+            "errors": [{
+                "location": "body",
+                "name": "data",
+                "description": "Can't update milestone in current (spare) status"
+            }]
+        }
+    )
+
+    # Not allow change description in terminated milestones with pending change
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], pending_milestone['id'], self.contract_token
+        ),
+        {'data': {'description': 'New description of milestone #1'}},
+        status=403
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(
+        response.json,
+        {
+            u'status': u'error',
+            u'errors': [{
+                u'description': u"Can't update milestone in current (met) status",
+                u'location': u'body',
+                u'name': u'data'
+            }]
+        }
+    )
+
+    # Get scheduled milestone
+    response = self.app.get('/contracts/{}/milestones/{}'.format(self.contract['id'], scheduled_milestone['id']))
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.json['data']['id'], scheduled_milestone['id'])
+    self.assertEqual(response.json['data']['status'], 'scheduled')
+    self.assertNotEqual(response.json['data']['description'], 'New description of milestone #scheduled')
+
+    # Allow change description in scheduled milestone with pending change
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], scheduled_milestone['id'], self.contract_token
+        ),
+        {'data': {'description': 'New description of milestone #scheduled'}},
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.json['data']['description'], 'New description of milestone #scheduled')
+
+def patch_milestone_title(self):
+    # Receive available milestones
+    response = self.app.get('/contracts/{}/milestones'.format(self.contract['id']))
+    milestones = response.json['data']
+
+    pending_milestone = milestones[0]
+    scheduled_milestone = milestones[-1]
+    self.assertEqual(pending_milestone['status'], 'pending')
+    self.assertEqual(scheduled_milestone['status'], 'scheduled')
+    self.assertNotEqual(len(pending_milestone['title']), 0)
+    self.assertNotEqual(len(scheduled_milestone['title']), 0)
+
+    # Remove title in pending milestone
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], pending_milestone['id'], self.contract_token
+        ),
+        {'data': {'title': ""}}
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '200 OK')
+    milestone = response.json['data']
+    self.assertEqual(milestone['title'], "")
+    self.assertEqual(milestone['id'], pending_milestone['id'])
+
+    # Set amountPaid.amount in pending milestone
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], pending_milestone['id'], self.contract_token
+        ),
+        {'data': {'amountPaid': {"amount": 123456}}}
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '200 OK')
+    milestone = response.json['data']
+    self.assertEqual(milestone['amountPaid']['amount'], 123456)
+    self.assertEqual(milestone['title'], "")
+    self.assertEqual(milestone['id'], pending_milestone['id'])
+
+    # Not allow switch milestone in one of terminated statuses (met, notMet and partiallyMet) if title empty
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], pending_milestone['id'], self.contract_token
+        ),
+        {'data': {'status': "met"}},
+        status=422
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '422 Unprocessable Entity')
+    self.assertEqual(
+        response.json,
+        {
+            u'status': u'error',
+            u'errors': [{
+                u'description': [u"Title can't be empty in follow statuses (met, notMet, partiallyMet)"],
+                u'location': u'body',
+                u'name': u'status'
+            }]
+        }
+    )
+
+    # Successfull switch milestone in one of terminated statuses (met, notMet, partiallyMet)
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], pending_milestone['id'], self.contract_token
+        ),
+        {'data': {'status': "met", 'title': 'Milestone #1'}},
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '200 OK')
+    milestone = response.json['data']
+    self.assertEqual(milestone['status'], 'met')
+    self.assertEqual(milestone['title'], 'Milestone #1')
+    self.assertEqual(milestone['amountPaid']['amount'], 123456)
+
+    # Not allow change title in terminated milestones
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], pending_milestone['id'], self.contract_token
+        ),
+        {'data': {'title': 'New title of milestone #1'}},
+        status=403
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(
+        response.json,
+        {
+            u'status': u'error',
+            u'errors': [{
+                u'description': u"Can't update milestone in current (met) status",
+                u'location': u'body',
+                u'name': u'data'
+            }]
+        }
+    )
+
+    # Not allow remove title in scheduled milestone without pending change
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], scheduled_milestone['id'], self.contract_token
+        ),
+        {'data': {'title': ""}},
+        status=403
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(
+        response.json,
+        {
+            "status": "error",
+            "errors": [{
+                "location": "body",
+                "name": "data",
+                "description": "Can't update milestone in scheduled status without pending change"
+            }]
+        }
+    )
+
+    # Not allow change milestone title in spare status
+    spare_milestone_id = self.initial_data['milestones'][-1]['id']
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], spare_milestone_id, self.contract_token
+        ),
+        {'data': {'title': ""}},
+        status=403
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(
+        response.json,
+        {
+            "status": "error",
+            "errors": [{
+                "location": "body",
+                "name": "data",
+                "description": "Can't update milestone in current (spare) status"
+            }]
+        }
+    )
+
+    # Change title with pending change
+    response = self.app.post_json('/contracts/{}/changes?acc_token={}'.format(
+        self.contract_id, self.contract_token), {'data': {
+            'rationale': u'причина зміни укр',
+            'rationale_en': 'change cause en',
+            'rationaleTypes': ['itemPriceVariation']}})
+    self.assertEqual(response.status, '201 Created')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['data']['status'], 'pending')
+
+    # Not allow change milestone title in spare status with pending change
+    spare_milestone_id = self.initial_data['milestones'][-1]['id']
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], spare_milestone_id, self.contract_token
+        ),
+        {'data': {'title': ""}},
+        status=403
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(
+        response.json,
+        {
+            "status": "error",
+            "errors": [{
+                "location": "body",
+                "name": "data",
+                "description": "Can't update milestone in current (spare) status"
+            }]
+        }
+    )
+
+    # Not allow change title in terminated milestones with pending change
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], pending_milestone['id'], self.contract_token
+        ),
+        {'data': {'title': 'New title of milestone #1'}},
+        status=403
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(
+        response.json,
+        {
+            u'status': u'error',
+            u'errors': [{
+                u'description': u"Can't update milestone in current (met) status",
+                u'location': u'body',
+                u'name': u'data'
+            }]
+        }
+    )
+
+    # Get scheduled milestone
+    response = self.app.get('/contracts/{}/milestones/{}'.format(self.contract['id'], scheduled_milestone['id']))
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.json['data']['id'], scheduled_milestone['id'])
+    self.assertEqual(response.json['data']['status'], 'scheduled')
+    self.assertNotEqual(response.json['data']['title'], 'New title of milestone #scheduled')
+
+    # Allow change title in scheduled milestone with pending change
+    response = self.app.patch_json(
+        '/contracts/{}/milestones/{}?acc_token={}'.format(
+            self.contract['id'], scheduled_milestone['id'], self.contract_token
+        ),
+        {'data': {'title': 'New title of milestone #scheduled'}},
+    )
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.json['data']['title'], 'New title of milestone #scheduled')
+
+
 def patch_milestones_status_change(self):
     scheduled_milestone_id = self.initial_data['milestones'][2]['id']
     pending_milestone_id = self.initial_data['milestones'][0]['id']

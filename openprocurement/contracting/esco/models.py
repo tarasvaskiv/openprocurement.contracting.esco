@@ -119,6 +119,11 @@ class Milestone(Model):
         }
 
     def validate_status(self, data, status):
+        if status in ['met', 'partiallyMet', 'notMet']:
+            if len(data['title']) == 0:
+                raise ValidationError(u"Title can't be empty in follow statuses (met, notMet, partiallyMet)")
+            if len(data['description']) == 0:
+                raise ValidationError(u"Description can't be empty in follow statuses (met, notMet, partiallyMet)")
         if status == 'met' and not data['amountPaid'].amount >= data['value'].amount:
             raise ValidationError(u"Milestone can't be in status 'met' if amountPaid.amount less than value.amount")
         elif status == 'notMet' and data['amountPaid'].amount > 0:
