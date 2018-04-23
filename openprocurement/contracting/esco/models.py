@@ -18,7 +18,7 @@ from openprocurement.contracting.core.models import (
     get_contract,
 )
 from openprocurement.contracting.core.models import (
-    contract_create_role as base_contract_create_role, contract_edit_role as base_contract_edit_role,
+    contract_create_role as base_contract_create_role, contract_edit_role,
     contract_view_role, contract_administrator_role
 )
 from openprocurement.tender.esco.models import (
@@ -29,7 +29,6 @@ from esculator import escp, npv
 
 contract_create_role = base_contract_create_role + \
     whitelist('NBUdiscountRate', 'noticePublicationDate', 'yearlyPaymentsPercentageRange', 'minValue', 'milestones')
-contract_edit_role = base_contract_edit_role + whitelist('milestones')
 
 
 class IESCOContract(IContract):

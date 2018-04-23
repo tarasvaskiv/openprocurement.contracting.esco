@@ -268,6 +268,31 @@ def patch_tender_contract(self):
     self.assertEqual(response.json['data']['value']['valueAddedTaxIncluded'], False)
     self.assertEqual(response.json['data']['value']['amount'], self.initial_data['value']['amount'])
 
+    # can't patch milestones from contract
+    response = self.app.get('/contracts/{}'.format(self.contract['id']))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    milestones = response.json['data']['milestones']
+
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
+        self.contract['id'], token), {"data": {"milestones": []}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.body, 'null')
+
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
+        self.contract['id'], token), {"data": {"milestones": [{'title': 'new title'}, {}, {}]}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.body, 'null')
+
+    response = self.app.get('/contracts/{}'.format(self.contract['id']))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertNotEqual(response.json['data']['milestones'][0]['title'], 'new title')
+    self.assertEqual(len(response.json['data']['milestones']), len(milestones))
+    self.assertEqual(response.json['data']['milestones'], milestones)
+
     custom_period_start_date = get_now().isoformat()
     custom_period_end_date = (get_now() + timedelta(days=3)).isoformat()
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
