@@ -207,7 +207,7 @@ def patch_tender_contract(self):
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.json['data']['title'], "New Title")
 
-    # can't patch contract amountPaid
+    # can't patch contract amountPaid amount, currency and vat
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
         self.contract['id'], token), {"data": {
             "amountPaid": {"amount": 900, "currency": "USD", "valueAddedTaxIncluded": False}}})
@@ -232,7 +232,7 @@ def patch_tender_contract(self):
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json["data"]["amountPaid"]["amount"], 100000)
 
-    # contract amountPaid not changed, equal sum of milestones.amountPaid
+    # contract amountPaid.amount not changed, equal sum of milestones.amountPaid
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
         self.contract['id'], token), {"data": {
             "amountPaid": {"amount": 900, "currency": "USD", "valueAddedTaxIncluded": False}}})
@@ -247,26 +247,24 @@ def patch_tender_contract(self):
     self.assertEqual(response.json['data']['amountPaid']['currency'], "UAH")
     self.assertEqual(response.json['data']['amountPaid']['valueAddedTaxIncluded'], True)
 
-    # can't patch value amount
+    # can't patch value amount, currency and vat
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
         self.contract['id'], token), {"data": {"value": {'amount': 1000}}})
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.body, 'null')
 
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
+        self.contract['id'], token), {"data": {"value": {"currency": "USD", "valueAddedTaxIncluded": False}}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.body, 'null')
+
     response = self.app.get('/contracts/{}'.format(self.contract['id']))
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json['data']['value']['amount'], self.initial_data['value']['amount'])
-    self.assertEqual(response.json['data']['value']['currency'], "UAH")
-    self.assertEqual(response.json['data']['value']['valueAddedTaxIncluded'], True)
-
-    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
-        self.contract['id'], token), {"data": {"value": {"currency": "USD", "valueAddedTaxIncluded": False}}})
-    self.assertEqual(response.status, '200 OK')
-    self.assertEqual(response.json['data']['value']['currency'], "USD")
-    self.assertEqual(response.json['data']['value']['valueAddedTaxIncluded'], False)
-    self.assertEqual(response.json['data']['value']['amount'], self.initial_data['value']['amount'])
+    self.assertEqual(response.json['data']['value']['currency'], self.initial_data['value']['currency'])
+    self.assertEqual(response.json['data']['value']['valueAddedTaxIncluded'], self.initial_data['value']['valueAddedTaxIncluded'])
 
     # can't patch milestones from contract
     response = self.app.get('/contracts/{}'.format(self.contract['id']))

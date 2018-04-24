@@ -10,7 +10,7 @@ from schematics.types.serializable import serializable
 from openprocurement.api.utils import get_now
 from openprocurement.api.models import (
     plain_role, schematics_default_role,
-    Value, Period, Model, ListType, DecimalType, SifterListType
+    Value as BaseValue, Period, Model, ListType, DecimalType, SifterListType
 )
 from openprocurement.contracting.core.models import (
     IContract, IsoDateTimeType,
@@ -18,7 +18,7 @@ from openprocurement.contracting.core.models import (
     get_contract,
 )
 from openprocurement.contracting.core.models import (
-    contract_create_role as base_contract_create_role, contract_edit_role,
+    contract_create_role as base_contract_create_role,
     contract_view_role, contract_administrator_role
 )
 from openprocurement.tender.esco.models import (
@@ -29,6 +29,11 @@ from esculator import escp, npv
 
 contract_create_role = base_contract_create_role + \
     whitelist('NBUdiscountRate', 'noticePublicationDate', 'yearlyPaymentsPercentageRange', 'minValue', 'milestones')
+
+contract_edit_role = (whitelist(
+    'title', 'title_en', 'title_ru', 'description', 'description_en',
+    'description_ru', 'status', 'period', 'items', 'terminationDetails',
+))
 
 
 class IESCOContract(IContract):
@@ -54,6 +59,13 @@ class ESCOValue(BaseESCOValue):
     @serializable(serialized_name='amount', type=FloatType())
     def amount_escp(self):
         return sum([milestone.value.amount for milestone in self.__parent__.milestones])
+
+
+class Value(BaseValue):
+    class Options:
+        roles = {
+            'edit': whitelist('amount')
+        }
 
 
 class Document(BaseDocument):
