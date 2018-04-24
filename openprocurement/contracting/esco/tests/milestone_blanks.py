@@ -288,6 +288,7 @@ def patch_milestone_description(self):
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.json['data']['description'], 'New description of milestone #scheduled')
 
+
 def patch_milestone_title(self):
     # Receive available milestones
     response = self.app.get('/contracts/{}/milestones'.format(self.contract['id']))
@@ -1159,11 +1160,26 @@ def patch_milestone(self):
     self.assertEqual(response.json["data"]["description"], "new description")
     self.assertEqual(response.json["data"]["amountPaid"]["amount"], 500000)
 
+    # can't update amountPaind currency and vat
+    response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+        self.contract_id, milestone['id'], self.contract_token), {'data': {
+            "amountPaid": {"currency": "USD", "valueAddedTaxIncluded": False}}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.body, 'null')
+
     response = self.app.get('/contracts/{}'.format(self.contract_id))
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.content_type, 'application/json')
     # self.assertGreater(response.json['data']['amountPaid']['amount'], self.initial_data['amountPaid']['amount'])
     self.assertEqual(response.json["data"]["amountPaid"]["amount"], 500000)
+
+    response = self.app.get('/contracts/{}/milestones/{}'.format(self.contract_id, milestone['id']))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json["data"]["amountPaid"]["currency"],
+                     self.initial_data['milestones'][0]['amountPaid']['currency'])
+    self.assertEqual(response.json["data"]["amountPaid"]["valueAddedTaxIncluded"],
+                     self.initial_data['milestones'][0]['amountPaid']['valueAddedTaxIncluded'])
 
     # update of value is not allowed w/o pending change
     response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
@@ -1194,10 +1210,25 @@ def patch_milestone(self):
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json["data"]["value"]["amount"], 700000)
 
+    # can't update value currency and vat
+    response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+        self.contract_id, milestone['id'], self.contract_token), {'data': {
+            "value": {"currency": "USD", "valueAddedTaxIncluded": False}}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.body, 'null')
+
     response = self.app.get('/contracts/{}'.format(self.contract_id))
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.content_type, 'application/json')
     self.assertGreater(response.json['data']['value']['amount'], self.initial_data['value']['amount'])
+
+    response = self.app.get('/contracts/{}/milestones/{}'.format(self.contract_id, milestone['id']))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json["data"]["value"]["currency"],
+                     self.initial_data['milestones'][0]['value']['currency'])
+    self.assertEqual(response.json["data"]["value"]["valueAddedTaxIncluded"],
+                     self.initial_data['milestones'][0]['value']['valueAddedTaxIncluded'])
 
     # activate change - now there is no pending changes
     response = self.app.patch_json('/contracts/{}/changes/{}?acc_token={}'.format(
@@ -1306,12 +1337,14 @@ def patch_milestone(self):
             "title": "new title",
             "status": "scheduled",
             "description": "new description",
-            "value": {"amount": 500000}}})
+            "value": {"amount": 500000, "currency": "USD"}}})
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json["data"]["title"], "new title")
     self.assertEqual(response.json["data"]["description"], "new description")
     self.assertEqual(response.json["data"]["value"]["amount"], 500000)
+    self.assertEqual(response.json["data"]["value"]["currency"],
+                     self.initial_data['milestones'][2]['value']['currency'])
 
     response = self.app.get('/contracts/{}'.format(self.contract_id))
     self.assertEqual(response.status, '200 OK')
