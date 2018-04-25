@@ -92,3 +92,19 @@ def validate_scheduled_milestone_document_operation(request):
         for m in request.validated['contract'].milestones:
             if m.id == data['relatedItem'] and m.status == 'scheduled' and not pending_change:
                 raise_operation_error(request, "Can't add document to scheduled milestone without pending change")
+
+
+def validate_terminate_contract_milestone_statuses(request):
+    contract = request.context
+    data = request.validated['data']
+    if data['status'] != 'active' and \
+            any(milestone['status'] in ['pending', 'scheduled'] for milestone in contract.milestones):
+        raise_operation_error(request, "Contract have milestones in 'pending' or 'scheduled' statuses")
+
+
+def validate_terminate_contract_amount_paid(request):
+    data = request.validated['data']
+    contract = request.context
+    if data['status'] != 'active' and contract['value']['amount'] != contract['amountPaid']['amount'] and \
+            not data['terminationDetails']:
+        raise_operation_error(request, "terminationDetails is required.")
