@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+from decimal import Decimal
 from pytz import timezone
 from iso8601 import parse_date
 from datetime import datetime, timedelta
@@ -39,10 +40,8 @@ milestoneresource = partial(
 TZ = timezone(os.environ['TZ'] if 'TZ' in os.environ else 'Europe/Kiev')
 
 
-# TODO use to_decimal from op.t.esco.utils
 def to_decimal(fraction):
-    # return Decimal(fraction.numerator) / Decimal(fraction.denominator)
-    return float(fraction.numerator) / float(fraction.denominator)
+    return str(Decimal(fraction.numerator) / Decimal(fraction.denominator))
 
 
 def generate_milestones(contract):

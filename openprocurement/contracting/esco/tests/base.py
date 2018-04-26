@@ -14,8 +14,6 @@ from openprocurement.contracting.core.tests.base import documents
 from openprocurement.contracting.esco.utils import generate_milestones
 
 
-NBU_DISCOUNT_RATE = 0.135
-
 # test_contract_data = deepcopy(base_test_contract_data)
 contract_data_json = "{}/data/test_contract_data.json".format(
     os.path.dirname(__file__)
@@ -23,9 +21,6 @@ contract_data_json = "{}/data/test_contract_data.json".format(
 with open(contract_data_json) as f:
     test_contract_data = json.loads(f.read())
 test_contract_data['id'] = uuid4().hex
-test_contract_data['contractType'] = 'esco'
-test_contract_data['NBUdiscountRate'] = NBU_DISCOUNT_RATE
-test_contract_data["yearlyPaymentsPercentageRange"] = 0.8
 
 # dates generation
 now = get_now()

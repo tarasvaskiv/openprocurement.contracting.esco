@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from uuid import uuid4
+from decimal import Decimal
 from zope.interface import implementer
 from schematics.exceptions import ValidationError
 from schematics.transforms import whitelist, blacklist
@@ -28,7 +29,9 @@ from esculator import escp, npv
 
 
 contract_create_role = base_contract_create_role + \
-    whitelist('NBUdiscountRate', 'noticePublicationDate', 'yearlyPaymentsPercentageRange', 'minValue', 'milestones')
+    whitelist('NBUdiscountRate', 'noticePublicationDate',
+              'yearlyPaymentsPercentageRange', 'minValue', 'milestones',
+              'fundingKind')
 
 contract_edit_role = (whitelist(
     'title', 'title_en', 'title_ru', 'description', 'description_en',
@@ -56,12 +59,13 @@ class ESCOValue(BaseESCOValue):
             self.__parent__.noticePublicationDate,
             self.__parent__.NBUdiscountRate))
 
-    @serializable(serialized_name='amount', type=FloatType())
+    @serializable(serialized_name='amount', type=DecimalType(precision=-2))
     def amount_escp(self):
         return sum([milestone.value.amount for milestone in self.__parent__.milestones])
 
 
 class Value(BaseValue):
+    amount = DecimalType(required=True, precision=-2, min_value=Decimal('0'))
     class Options:
         roles = {
             'edit': whitelist('amount')
@@ -151,16 +155,21 @@ class Contract(BaseContract):
     """ ESCO Contract """
 
     contractType = StringType(default='esco')
-    fundingKind = StringType(choices=['budget', 'other'], default='other')
+    fundingKind = StringType(choices=['budget', 'other'], required=True)
     milestones = SifterListType(
         ModelType(Milestone), default=list(), filter_by='status',
         filter_in_values=['scheduled', 'pending', 'met', 'notMet', 'partiallyMet']
     )
-    minValue = ModelType(Value, required=True)
-    NBUdiscountRate = FloatType(required=True, min_value=0, max_value=0.99)
+    minValue = ModelType(
+        Value, required=False,
+        default={'amount': 0, 'currency': 'UAH', 'valueAddedTaxIncluded': True}
+    )
+    NBUdiscountRate = DecimalType(
+        required=True, min_value=Decimal('0'), max_value=Decimal('0.99'), precision=-5
+    )
     noticePublicationDate = IsoDateTimeType()
     value = ModelType(ESCOValue)
-    yearlyPaymentsPercentageRange = FloatType(required=True)
+    yearlyPaymentsPercentageRange = DecimalType(required=True)
     documents = ListType(ModelType(Document), default=list())
 
 

@@ -1,9 +1,11 @@
 {
   "status": "active",
+  "contractType": "esco",
   "tender_id": "4f90c49aa1684769b9a41c8196d875fe",
   "tender_token": "e60d286e5c6f43a990679660da817aec",
   "owner": "broker",
   "fundingKind": "other",
+  "NBUdiscountRate": 0.135,
   "procuringEntity": {
     "contactPoint": {
       "telephone": "+380933907440",

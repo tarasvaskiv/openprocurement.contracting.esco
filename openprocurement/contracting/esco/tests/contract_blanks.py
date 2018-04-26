@@ -263,7 +263,6 @@ def patch_tender_contract(self):
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.content_type, 'application/json')
     # value is calculated from milestones
-    # TODO check precision (decimal)!!!
     milestones_value = sum(x['value']['amount'] for x in response.json['data']['milestones'])
     self.assertEqual(response.json['data']['value']['amount'], round(milestones_value, 2))
     self.assertEqual(response.json['data']['value']['currency'], self.initial_data['value']['currency'])
@@ -332,7 +331,6 @@ def patch_tender_contract(self):
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json['data']["status"], "terminated")
     # value is calculated from milestones
-    # TODO check precision (decimal)!!!
     milestones_value = sum(x['value']['amount'] for x in response.json['data']['milestones'])
     self.assertEqual(response.json['data']['value']['amount'], round(milestones_value, 2))
     self.assertEqual(response.json['data']['period']['startDate'], custom_period_start_date)
@@ -377,7 +375,6 @@ def contract_administrator_change(self):
 
     response = self.app.get('/contracts/{}'.format(self.contract['id']))
     # value is calculated from milestones
-    # TODO check precision (decimal)!!!
     milestones_value = sum(x['value']['amount'] for x in response.json['data']['milestones'])
     self.assertEqual(response.json['data']['value']['amount'], round(milestones_value, 2))
     self.assertEqual(response.json['data']['id'], self.initial_data['id'])
