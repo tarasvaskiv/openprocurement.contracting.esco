@@ -32,7 +32,13 @@ def get_milestone_by_id(self):
     initial_milestone = self.initial_data['milestones'][1]
     milestone = response.json['data']
     for key in initial_milestone.keys():
-        self.assertEqual(initial_milestone[key], milestone[key])
+        # value.amount is special - it's decimal
+        if key == 'value':
+            self.assertEqual(round(float(initial_milestone[key]['amount']), 2), milestone[key]['amount'])
+            self.assertEqual(initial_milestone[key]['currency'], milestone[key]['currency'])
+            self.assertEqual(initial_milestone[key]['valueAddedTaxIncluded'], milestone[key]['valueAddedTaxIncluded'])
+        else:
+            self.assertEqual(initial_milestone[key], milestone[key])
     self.assertEqual(milestone['id'], milestone_id)
     self.assertEqual(milestone['status'], 'scheduled')
     self.assertEqual(
@@ -602,7 +608,7 @@ def patch_milestones_status_change(self):
 
     # Don't allow update milestone amountPaid.amount if sum of all milesones amountPaid.amount
     # greater than contract.value.amount
-    data['amountPaid']['amount'] = self.initial_data['milestones'][1]['value']['amount'] + 10000000
+    data['amountPaid']['amount'] = float(self.initial_data['milestones'][1]['value']['amount']) + 10000000
     response = self.app.patch_json(
         '/contracts/{}/milestones/{}?acc_token={}'.format(contract_id, pending_milestone_id, self.contract_token),
         {'data': data}, status=403
@@ -622,7 +628,7 @@ def patch_milestones_status_change(self):
     )
 
     # Patch second time first pending milestone amountPaid.amount and status and check changing date and dateModified
-    data['amountPaid']['amount'] = self.initial_data['milestones'][0]['value']['amount']
+    data['amountPaid']['amount'] = float(self.initial_data['milestones'][0]['value']['amount'])
     data['status'] = 'met'
     start_date = milestone['date']
     start_dateModified = milestone['dateModified']
@@ -694,7 +700,7 @@ def patch_milestones_status_change(self):
 
     # Don't allow set notMet status for milestone if amountPaid.amount greater than 0
     data['status'] = 'notMet'
-    data['amountPaid']['amount'] = self.initial_data['milestones'][1]['value']['amount'] - 10000
+    data['amountPaid']['amount'] = float(self.initial_data['milestones'][1]['value']['amount']) - 10000
     response = self.app.patch_json(
         '/contracts/{}/milestones/{}?acc_token={}'.format(contract_id, next_milestone_id, self.contract_token),
         {'data': data}, status=422
@@ -715,7 +721,7 @@ def patch_milestones_status_change(self):
 
     # Don't allow set partiallyMet status for milestone if amountPaid.amount is greater than milestone.value.amount
     data['status'] = 'partiallyMet'
-    data['amountPaid']['amount'] = self.initial_data['milestones'][1]['value']['amount'] + 10000
+    data['amountPaid']['amount'] = float(self.initial_data['milestones'][1]['value']['amount']) + 10000
     response = self.app.patch_json(
         '/contracts/{}/milestones/{}?acc_token={}'.format(contract_id, next_milestone_id, self.contract_token),
         {'data': data}, status=422
@@ -737,7 +743,7 @@ def patch_milestones_status_change(self):
 
     # Try to update pending milestone before it's period
     data['status'] = 'met'
-    data['amountPaid']['amount'] = self.initial_data['milestones'][1]['value']['amount']
+    data['amountPaid']['amount'] = float(self.initial_data['milestones'][1]['value']['amount'])
     response = self.app.patch_json(
         '/contracts/{}/milestones/{}?acc_token={}'.format(contract_id, next_milestone_id, self.contract_token),
         {'data': data}, status=403
