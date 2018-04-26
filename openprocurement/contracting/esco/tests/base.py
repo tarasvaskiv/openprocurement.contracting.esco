@@ -3,6 +3,7 @@ import os
 import json
 from copy import deepcopy
 from uuid import uuid4
+from datetime import timedelta
 
 from openprocurement.api.utils import get_now
 from openprocurement.contracting.api.tests.base import (
@@ -10,6 +11,7 @@ from openprocurement.contracting.api.tests.base import (
 )
 
 from openprocurement.contracting.core.tests.base import documents
+from openprocurement.contracting.esco.utils import generate_milestones
 
 
 NBU_DISCOUNT_RATE = 0.135
@@ -24,7 +26,19 @@ test_contract_data['id'] = uuid4().hex
 test_contract_data['contractType'] = 'esco'
 test_contract_data['NBUdiscountRate'] = NBU_DISCOUNT_RATE
 test_contract_data["yearlyPaymentsPercentageRange"] = 0.8
-test_contract_data["dateSigned"] = get_now().isoformat()
+
+# dates generation
+now = get_now()
+test_contract_data["dateSigned"] = now.isoformat()
+test_contract_data["noticePublicationDate"] = now.isoformat()
+test_contract_data["period"]["startDate"] = now.isoformat()
+
+days = test_contract_data["value"]["contractDuration"]["days"]
+years = test_contract_data["value"]["contractDuration"]["years"]
+contractEndDate = now.replace(year=now.year + years) + timedelta(days=days)
+test_contract_data["period"]["endDate"] = contractEndDate.isoformat()
+
+test_contract_data['milestones'] = generate_milestones(test_contract_data)
 
 
 class BaseWebTest(BaseBaseWebTest):

@@ -262,7 +262,10 @@ def patch_tender_contract(self):
     response = self.app.get('/contracts/{}'.format(self.contract['id']))
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.content_type, 'application/json')
-    self.assertEqual(response.json['data']['value']['amount'], self.initial_data['value']['amount'])
+    # value is calculated from milestones
+    # TODO check precision (decimal)!!!
+    milestones_value = sum(x['value']['amount'] for x in response.json['data']['milestones'])
+    self.assertEqual(response.json['data']['value']['amount'], round(milestones_value, 2))
     self.assertEqual(response.json['data']['value']['currency'], self.initial_data['value']['currency'])
     self.assertEqual(response.json['data']['value']['valueAddedTaxIncluded'], self.initial_data['value']['valueAddedTaxIncluded'])
 
@@ -328,7 +331,10 @@ def patch_tender_contract(self):
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json['data']["status"], "terminated")
-    self.assertEqual(response.json['data']["value"]['amount'], self.initial_data['value']['amount'])
+    # value is calculated from milestones
+    # TODO check precision (decimal)!!!
+    milestones_value = sum(x['value']['amount'] for x in response.json['data']['milestones'])
+    self.assertEqual(response.json['data']['value']['amount'], round(milestones_value, 2))
     self.assertEqual(response.json['data']['period']['startDate'], custom_period_start_date)
     self.assertEqual(response.json['data']['period']['endDate'], custom_period_end_date)
     self.assertEqual(response.json['data']['amountPaid']['amount'], 100000)
@@ -370,7 +376,10 @@ def contract_administrator_change(self):
     self.assertEqual(response.body, 'null')
 
     response = self.app.get('/contracts/{}'.format(self.contract['id']))
-    self.assertEqual(response.json['data']['value']['amount'], self.initial_data['value']['amount'])
+    # value is calculated from milestones
+    # TODO check precision (decimal)!!!
+    milestones_value = sum(x['value']['amount'] for x in response.json['data']['milestones'])
+    self.assertEqual(response.json['data']['value']['amount'], round(milestones_value, 2))
     self.assertEqual(response.json['data']['id'], self.initial_data['id'])
     self.assertEqual(response.json['data']['owner'], self.initial_data['owner'])
     self.assertEqual(response.json['data']['contractID'], self.initial_data['contractID'])

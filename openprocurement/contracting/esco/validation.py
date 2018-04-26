@@ -1,9 +1,14 @@
 # -*- coding: utf-8 -*-
-from openprocurement.api.utils import update_logging_context, raise_operation_error
+from openprocurement.api.utils import (
+    get_now,
+    raise_operation_error,
+    update_logging_context,
+)
 from openprocurement.api.validation import validate_data
 from openprocurement.contracting.esco.models import Milestone
 
 
+# milestones
 def validate_patch_milestone_data(request):
     return validate_data(request, Milestone, True)
 
@@ -63,6 +68,14 @@ def validate_update_milestone_amountPaid(request):
                 raise_operation_error(request, "Can't update 'amountPaid' for scheduled milestone")
 
 
+def validate_pending_milestone_update_period(request):
+    milestone = request.context
+    # import pdb; pdb.set_trace()
+    if milestone.status == 'pending' and milestone.period.startDate > get_now():
+        raise_operation_error(request, "Can't update milestone before period.startDate")
+
+
+# milestone documents
 def validate_terminated_milestone_document_operation(request):
     data = request.validated['data']
     if "relatedItem" in data and data.get('documentOf') == 'milestone':
