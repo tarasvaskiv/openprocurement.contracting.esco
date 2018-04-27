@@ -70,7 +70,6 @@ def validate_update_milestone_amountPaid(request):
 
 def validate_pending_milestone_update_period(request):
     milestone = request.context
-    # import pdb; pdb.set_trace()
     if milestone.status == 'pending' and milestone.period.startDate > get_now():
         raise_operation_error(request, "Can't update milestone before period.startDate")
 
@@ -99,7 +98,7 @@ def validate_terminate_contract_milestone_statuses(request):
     data = request.validated['data']
     if data['status'] != 'active' and \
             any(milestone['status'] in ['pending', 'scheduled'] for milestone in contract.milestones):
-        raise_operation_error(request, "Contract have milestones in 'pending' or 'scheduled' statuses")
+        raise_operation_error(request, "Contract has milestones in 'pending' or 'scheduled' statuses")
 
 
 def validate_terminate_contract_amount_paid(request):

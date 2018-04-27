@@ -2,6 +2,9 @@
 from copy import deepcopy
 from uuid import uuid4
 from datetime import timedelta
+
+from mock import patch
+
 from openprocurement.contracting.esco.models import Contract
 from openprocurement.api.utils import get_now
 
@@ -142,19 +145,18 @@ def patch_contract_NBUdiscountRate(self):
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json['data']['NBUdiscountRate'], self.initial_data['NBUdiscountRate'])
 
+
+def patch_terminated_contract_NBUdiscountRate(self):
     # check NBUdiscountRate patch for teminated contract
-    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(contract['id'], token),
-                                   {"data": {"status": "terminated",
-                                             "terminationDetails": "sink"}})
+    response = self.app.get('/contracts/{}'.format(self.contract_id))
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.json['data']['status'], 'terminated')
-    self.assertEqual(response.json['data']['terminationDetails'], 'sink')
 
-    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(contract['id'], token),
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(self.contract_id, self.contract_token),
                                    {'data': {'NBUdiscountRate': 0.33}}, status=403)
     self.assertEqual(response.status, '403 Forbidden')
 
-    response = self.app.get('/contracts/{}'.format(contract['id']))
+    response = self.app.get('/contracts/{}'.format(self.contract_id))
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json['data']['NBUdiscountRate'], self.initial_data['NBUdiscountRate'])
@@ -247,6 +249,8 @@ def patch_tender_contract(self):
     self.assertEqual(response.json['data']['amountPaid']['currency'], "UAH")
     self.assertEqual(response.json['data']['amountPaid']['valueAddedTaxIncluded'], True)
 
+    contract = response.json['data']
+
     # can't patch value amount, currency and vat
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
         self.contract['id'], token), {"data": {"value": {'amount': 1000}}})
@@ -293,28 +297,22 @@ def patch_tender_contract(self):
     self.assertEqual(len(response.json['data']['milestones']), len(milestones))
     self.assertEqual(response.json['data']['milestones'], milestones)
 
-    custom_period_start_date = get_now().isoformat()
-    custom_period_end_date = (get_now() + timedelta(days=3)).isoformat()
-    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
-        self.contract['id'], token), {"data": {
-            "period": {'startDate': custom_period_start_date,
-                       'endDate': custom_period_end_date}}})
-    self.assertEqual(response.status, '200 OK')
+    # TODO: Write new tests which don't allow change contract.period.startDate
+    # TODO: Tests for changing visible milestones when changing contract.period.endDate
 
-    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
-        self.contract['id'], token), {"data": {
-            "status": "terminated",
-            "terminationDetails": "sink"}})
+
+def patch_tender_terminated_contract(self):
+    response = self.app.get('/contracts/{}'.format(self.contract_id))
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.json['data']['status'], 'terminated')
-    self.assertEqual(response.json['data']['terminationDetails'], 'sink')
 
-    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
-        self.contract['id'], token), {"data": {"status": "active"}}, status=403)
+    response = self.app.patch_json(
+        '/contracts/{}?acc_token={}'.format(self.contract_id, self.contract_token),
+        {"data": {"status": "active"}}, status=403)
     self.assertEqual(response.status, '403 Forbidden')
 
-    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
-        self.contract['id'], token), {"data": {"title": "fff"}}, status=403)
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(self.contract_id, self.contract_token),
+                                   {"data": {"title": "fff"}}, status=403)
     self.assertEqual(response.status, '403 Forbidden')
 
     response = self.app.patch_json('/contracts/some_id', {"data": {"status": "active"}}, status=404)
@@ -325,18 +323,6 @@ def patch_tender_contract(self):
         {u'description': u'Not Found', u'location':
          u'url', u'name': u'contract_id'}
     ])
-
-    response = self.app.get('/contracts/{}'.format(self.contract['id']))
-    self.assertEqual(response.status, '200 OK')
-    self.assertEqual(response.content_type, 'application/json')
-    self.assertEqual(response.json['data']["status"], "terminated")
-    # value is calculated from milestones
-    milestones_value = sum(x['value']['amount'] for x in response.json['data']['milestones'])
-    self.assertEqual(response.json['data']['value']['amount'], round(milestones_value, 2))
-    self.assertEqual(response.json['data']['period']['startDate'], custom_period_start_date)
-    self.assertEqual(response.json['data']['period']['endDate'], custom_period_end_date)
-    self.assertEqual(response.json['data']['amountPaid']['amount'], 100000)
-    self.assertEqual(response.json['data']['terminationDetails'], 'sink')
 
 
 def contract_administrator_change(self):
@@ -383,13 +369,14 @@ def contract_administrator_change(self):
     self.assertEqual(response.json['data']['dateSigned'], self.initial_data['dateSigned'])
 
 
-def contract_status_change(self):
+def contract_status_change_with_termination_details(self):
     tender_token = self.initial_data['tender_token']
 
     response = self.app.get('/contracts/{}'.format(self.contract['id']))
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json['data']["status"], "active")
+    contract = response.json['data']
 
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
         self.contract['id'], tender_token), {"data": {"status": "active"}}, status=403)
@@ -401,7 +388,6 @@ def contract_status_change(self):
     token = response.json['access']['token']
 
     # active > terminated allowed
-    # set amountPaid - TODO - check rules later
     # get correct pending milestone
     response = self.app.get('/contracts/{}'.format(self.contract_id))
     self.assertEqual(response.status, '200 OK')
@@ -418,11 +404,268 @@ def contract_status_change(self):
     self.assertEqual(response.json["data"]["amountPaid"]["amount"], 100000)
 
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
-        self.contract['id'], token), {"data": {"status": "terminated"}})
+        self.contract['id'], token), {"data": {"status": "terminated"}}, status=403)
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(
+        response.json,
+        {
+            "status": "error",
+            "errors": [{
+                "location": "body",
+                "name": "data",
+                "description": "Contract has milestones in 'pending' or 'scheduled' statuses"
+            }]
+        }
+    )
+
+    # terminate all scheduled milestones in partiallyMet but first milestone in met
+    now = get_now()
+    # time travel to contract.period.endDate
+    with patch('openprocurement.contracting.esco.validation.get_now') as mocked_get_now:
+        contract_duration_years = self.initial_data['value']['contractDuration']['years']
+        contract_duration_days = self.initial_data['value']['contractDuration']['days']
+        mocked_get_now.return_value = \
+            now.replace(year=now.year + contract_duration_years) + timedelta(days=contract_duration_days)
+        for milestone in contract['milestones']:
+            if milestone['sequenceNumber'] == 1:
+                response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+                    self.contract_id, milestone['id'], token), {'data': {
+                        "amountPaid": {"amount": milestone['value']['amount']}, 'status': 'met'}})
+                self.assertEqual(response.status, '200 OK')
+                self.assertEqual(response.json['data']['status'], 'met')
+            else:
+                amount = milestone['value']['amount'] / 2
+                response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+                    self.contract_id, milestone['id'], token), {'data': {
+                        "amountPaid": {"amount": amount}, 'status': 'partiallyMet'}})
+                self.assertEqual(response.status, '200 OK')
+                self.assertEqual(response.json['data']['status'], 'partiallyMet')
+                self.assertEqual(response.json['data']['amountPaid']['amount'], amount)
+
+    # make sure that contract without non-terminated milestones
+    # and contact.amountPaid.amount less than contract.value.amount
+    contract = self.app.get('/contracts/{}'.format(self.contract['id'])).json['data']
+    self.assertLess(contract['amountPaid']['amount'], contract['value']['amount'])
+    self.assertEqual(
+        False,
+        any(milestone['status'] in ['pending', 'scheduled'] for milestone in contract['milestones'])
+    )
+
+    # try terminate contract without terminationDetails
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
+        self.contract['id'], token), {"data": {"status": "terminated"}}, status=403)
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(
+        response.json,
+        {
+            u'status': u'error',
+            u'errors': [{
+                u'description': u'terminationDetails is required.',
+                u'location': u'body',
+                u'name': u'data'
+            }]
+        }
+    )
+
+    termination_details = 'I\'m Scrooge McDuck'
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
+        self.contract['id'], token), {"data": {"status": "terminated", 'terminationDetails': termination_details}})
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.json['data']['status'], 'terminated')
+    self.assertEqual(response.json['data']['terminationDetails'], termination_details)
 
     # terminated > active not allowed
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
         self.contract['id'], token), {"data": {"status": "active"}}, status=403)
     self.assertEqual(response.status, '403 Forbidden')
+
+
+def contract_status_change_with_not_met(self):
+    tender_token = self.initial_data['tender_token']
+
+    response = self.app.get('/contracts/{}'.format(self.contract['id']))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['data']["status"], "active")
+    contract = response.json['data']
+
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
+        self.contract['id'], tender_token), {"data": {"status": "active"}}, status=403)
+    self.assertEqual(response.status, '403 Forbidden')
+
+    response = self.app.patch_json('/contracts/{}/credentials?acc_token={}'.format(
+        self.contract['id'], tender_token), {'data': ''})
+    self.assertEqual(response.status, '200 OK')
+    token = response.json['access']['token']
+
+    # active > terminated allowed
+    # get correct pending milestone
+    response = self.app.get('/contracts/{}'.format(self.contract_id))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    milestone = response.json['data']['milestones'][0]
+    # make sure it's pending milestone!
+    self.assertEqual(milestone['status'], 'pending')
+
+    response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+        self.contract_id, milestone['id'], token), {'data': {
+            "amountPaid": {"amount": 100000}}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json["data"]["amountPaid"]["amount"], 100000)
+
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
+        self.contract['id'], token), {"data": {"status": "terminated"}}, status=403)
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(
+        response.json,
+        {
+            "status": "error",
+            "errors": [{
+                "location": "body",
+                "name": "data",
+                "description": "Contract has milestones in 'pending' or 'scheduled' statuses"
+            }]
+        }
+    )
+
+    # terminate all scheduled milestones in notMet but first milestone in met
+    now = get_now()
+    # time travel to contract.period.endDate
+    with patch('openprocurement.contracting.esco.validation.get_now') as mocked_get_now:
+        contract_duration_years = self.initial_data['value']['contractDuration']['years']
+        contract_duration_days = self.initial_data['value']['contractDuration']['days']
+        mocked_get_now.return_value = \
+            now.replace(year=now.year + contract_duration_years) + timedelta(days=contract_duration_days)
+        for milestone in contract['milestones']:
+            if milestone['sequenceNumber'] == 1:
+                response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+                    self.contract_id, milestone['id'], token), {'data': {
+                        "amountPaid": {"amount": milestone['value']['amount']}, 'status': 'met'}})
+                self.assertEqual(response.status, '200 OK')
+                self.assertEqual(response.json['data']['status'], 'met')
+            else:
+                amount = 0
+                response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+                    self.contract_id, milestone['id'], token), {'data': {
+                        "amountPaid": {"amount": amount}, 'status': 'notMet'}})
+                self.assertEqual(response.status, '200 OK')
+                self.assertEqual(response.json['data']['status'], 'notMet')
+                self.assertEqual(response.json['data']['amountPaid']['amount'], amount)
+
+    # make sure that contract without non-terminated milestones
+    # and contact.amountPaid.amount equal 0
+    contract = self.app.get('/contracts/{}'.format(self.contract['id'])).json['data']
+    self.assertEqual(contract['amountPaid']['amount'], 0)
+    self.assertEqual(
+        False,
+        any(milestone['status'] in ['pending', 'scheduled'] for milestone in contract['milestones'])
+    )
+
+    # try terminate contract without terminationDetails
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
+        self.contract['id'], token), {"data": {"status": "terminated"}}, status=403)
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(
+        response.json,
+        {
+            u'status': u'error',
+            u'errors': [{
+                u'description': u'terminationDetails is required.',
+                u'location': u'body',
+                u'name': u'data'
+            }]
+        }
+    )
+
+    termination_details = 'I\'m Scrooge McDuck'
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
+        self.contract['id'], token), {"data": {"status": "terminated", 'terminationDetails': termination_details}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.json['data']['status'], 'terminated')
+    self.assertEqual(response.json['data']['terminationDetails'], termination_details)
+
+    # terminated > active not allowed
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
+        self.contract['id'], token), {"data": {"status": "active"}}, status=403)
+    self.assertEqual(response.status, '403 Forbidden')
+
+
+def contract_status_change_wo_termination_details(self):
+    tender_token = self.initial_data['tender_token']
+
+    response = self.app.get('/contracts/{}'.format(self.contract['id']))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['data']["status"], "active")
+    contract = response.json['data']
+
+    response = self.app.patch_json('/contracts/{}/credentials?acc_token={}'.format(
+        self.contract['id'], tender_token), {'data': ''})
+    self.assertEqual(response.status, '200 OK')
+    token = response.json['access']['token']
+
+    # active > terminated allowed
+    # get correct pending milestone
+    response = self.app.get('/contracts/{}'.format(self.contract_id))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    milestone = response.json['data']['milestones'][0]
+
+    # make sure that contract have non-terminated milestones
+    self.assertEqual(
+        True,
+        any(milestone['status'] in ['pending', 'spare', 'scheduled'] for milestone in contract['milestones'])
+    )
+
+    # Not allow terminate contract if available non-terminated milestones
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
+        self.contract['id'], token), {"data": {"status": "terminated"}}, status=403)
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(
+        response.json,
+        {
+            "status": "error",
+            "errors": [{
+                "location": "body",
+                "name": "data",
+                "description": "Contract has milestones in 'pending' or 'scheduled' statuses"
+            }]
+        }
+    )
+
+    # terminate all scheduled milestones in met
+    now = get_now()
+    # time travel to contract.period.endDate
+    with patch('openprocurement.contracting.esco.validation.get_now') as mocked_get_now:
+        contract_duration_years = self.initial_data['value']['contractDuration']['years']
+        contract_duration_days = self.initial_data['value']['contractDuration']['days']
+        mocked_get_now.return_value = \
+            now.replace(year=now.year + contract_duration_years) + timedelta(days=contract_duration_days)
+        for milestone in contract['milestones']:
+            response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+                self.contract_id, milestone['id'], token), {'data': {
+                    "amountPaid": {"amount": milestone['value']['amount']}, 'status': 'met'}})
+            self.assertEqual(response.status, '200 OK')
+            self.assertEqual(response.json['data']['status'], 'met')
+            self.assertEqual(response.json['data']['amountPaid']['amount'], milestone['value']['amount'])
+
+    # make sure that contract without non-terminated milestones
+    # and contact.amountPaid.amount equal contract.value.amount
+    contract = self.app.get('/contracts/{}'.format(self.contract['id'])).json['data']
+    self.assertEqual(contract['amountPaid']['amount'], contract['value']['amount'])
+    self.assertEqual(
+        False,
+        any(milestone['status'] in ['pending', 'scheduled'] for milestone in contract['milestones'])
+    )
+
+    # terminate contract without terminationDetails
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
+        self.contract['id'], token), {"data": {"status": "terminated"}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.json['data']['status'], 'terminated')

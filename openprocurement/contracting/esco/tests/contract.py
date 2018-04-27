@@ -8,7 +8,9 @@ from openprocurement.contracting.esco.tests.base import (
     test_contract_data,
     BaseWebTest,
     documents,
-    BaseContractWebTest
+    BaseContractWebTest,
+    BaseTerminatedContractWebTest,
+    BaseContractTerminatedMilestonesWebTest,
 )
 from openprocurement.contracting.esco.tests.contract_blanks import (
     # ContractESCOTest
@@ -17,13 +19,17 @@ from openprocurement.contracting.esco.tests.contract_blanks import (
     create_contract,
     create_contract_generated,
     patch_contract_NBUdiscountRate,
+    patch_terminated_contract_NBUdiscountRate,
     # ContractResource4AdministratorTest
     contract_administrator_change,
     # ContractResource4BrokersTest
     patch_tender_contract,
+    patch_tender_terminated_contract,
     contract_type_check,
     esco_contract_milestones_check,
-    contract_status_change,
+    contract_status_change_with_termination_details,
+    contract_status_change_wo_termination_details,
+    contract_status_change_with_not_met,
 )
 from openprocurement.contracting.common.tests.contract_blanks import (
     # ContractESCOResourceTest
@@ -67,6 +73,18 @@ class ContractResourceTest(BaseWebTest):
     test_patch_contract_NBUdiscountRate = snitch(patch_contract_NBUdiscountRate)
 
 
+class TerminatedContractResourceTest(BaseTerminatedContractWebTest):
+    """ terminated esco contract resource test """
+    initial_data = test_contract_data
+
+    contract_type = 'esco'
+
+    test_patch_terminated_contract_NBUdiscountRate = snitch(patch_terminated_contract_NBUdiscountRate)
+    test_patch_tender_terminated_contract = snitch(patch_tender_terminated_contract)
+    # TODO: Add all test which required terminated contract
+
+
+
 class ContractWDocumentsWithDSResourceTest(BaseWebTest):
     docservice = True
     initial_data = deepcopy(test_contract_data)
@@ -80,9 +98,11 @@ class ContractResource4BrokersTest(BaseContractWebTest):
     """ esco contract resource test """
     initial_auth = ('Basic', ('broker', ''))
 
-    test_contract_status_change = snitch(contract_status_change)
-    # test_contract_items_change = snitch(contract_items_change)
     test_patch_tender_contract = snitch(patch_tender_contract)
+    test_contract_status_change_with_termination_details = snitch(contract_status_change_with_termination_details)
+    test_contract_status_change_wo_termination_details = snitch(contract_status_change_wo_termination_details)
+    test_contract_status_change_with_not_met = snitch(contract_status_change_with_not_met)
+    # test_contract_items_change = snitch(contract_items_change)
 
 
 class ContractResource4AdministratorTest(BaseContractWebTest):
@@ -93,7 +113,7 @@ class ContractResource4AdministratorTest(BaseContractWebTest):
     test_contract_administrator_change = snitch(contract_administrator_change)
 
 
-class ContractCredentialsTest(BaseContractWebTest):
+class ContractCredentialsTest(BaseContractTerminatedMilestonesWebTest):
     """ esco contract credentials tests """
 
     initial_auth = ('Basic', ('broker', ''))
@@ -107,6 +127,8 @@ def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(ContractTest))
     suite.addTest(unittest.makeSuite(ContractResourceTest))
+    suite.addTest(unittest.makeSuite(TerminatedContractResourceTest))
+    suite.addTest(unittest.makeSuite(ContractWDocumentsWithDSResourceTest))
     suite.addTest(unittest.makeSuite(ContractCredentialsTest))
     suite.addTest(unittest.makeSuite(ContractResource4BrokersTest))
     suite.addTest(unittest.makeSuite(ContractResource4AdministratorTest))

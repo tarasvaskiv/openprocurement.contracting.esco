@@ -7,13 +7,11 @@ from openprocurement.api.tests.base import (
 
 from openprocurement.contracting.esco.tests.base import (
     BaseWebTest,
-    BaseContractContentWebTest,
+    BaseContractTerminatedMilestonesWebTest,
     test_contract_data
 )
+from openprocurement.contracting.esco.tests.change_blanks import no_items_contract_change
 from openprocurement.contracting.common.tests.change_blanks import (
-    # ContractNoItemsChangeTest
-    no_items_contract_change,
-    # ContractChangesResourceTest
     not_found,
     get_change,
     create_change_invalid,
@@ -31,7 +29,7 @@ class ContractNoItemsChangeTest(BaseWebTest):
     test_no_items_contract_change = snitch(no_items_contract_change)
 
 
-class ContractChangesResourceTest(BaseContractContentWebTest):
+class ContractChangesResourceTest(BaseContractTerminatedMilestonesWebTest):
     initial_auth = ('Basic', ('broker', ''))
 
     test_not_found = snitch(not_found)
