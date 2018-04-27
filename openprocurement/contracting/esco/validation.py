@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from datetime import timedelta
+from iso8601 import parse_date
 from openprocurement.api.utils import (
     get_now,
     raise_operation_error,
@@ -131,3 +133,37 @@ def validate_scheduled_milestone_document_operation(request):
                 raise_operation_error(request, "Can't {} document to scheduled milestone without pending change".format(
                     'update' if request.method == 'PUT' else 'add'))
 
+
+def validate_update_contract_end_date(request):
+    if 'period' in request.validated['data']:
+        contract_period_end_date = parse_date(request.validated['data']['period']['endDate'])
+        if request.context.period.endDate.date() != contract_period_end_date.date():
+            contract = request.context
+
+            changes = contract.changes
+            pending_change = True if len(changes) > 0 and changes[-1].status == 'pending' else False
+
+            if not pending_change:
+                raise_operation_error(request, "Can't update endDate of contract without pending change")
+
+            pending_milestones = [x for x in contract.milestones if
+                                  x.status == 'pending']
+            if len(pending_milestones) != 1:
+                raise_operation_error(request, "Can't update contract endDate, "
+                                               "all milestones are in terminated statuses")
+
+            if contract_period_end_date < pending_milestones[0].period.startDate:
+                raise_operation_error(request, "Can't update contract endDate, if "
+                                     "it is less than pending milestone startDate")
+
+            contract_max_end_date = contract.period.startDate.replace(
+                year=contract.period.startDate.year + 15)
+            if contract_period_end_date.date() > contract_max_end_date.date():
+                raise_operation_error(request,
+                                      "Contract period cannot be over 15 years")
+
+
+def validate_update_contract_start_date(request):
+    if 'period' in request.validated['data'] and \
+            request.validated['data']['period']['startDate'] != request.context.period.startDate.isoformat():
+        raise_operation_error(request, "Can't change startDate of contract")

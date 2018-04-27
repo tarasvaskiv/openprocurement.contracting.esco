@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
-from openprocurement.api.utils import json_view, context_unpack
+from openprocurement.api.utils import (
+    context_unpack,
+    json_view
+)
+
 from openprocurement.contracting.api.utils import (
     contractingresource,
     save_contract
@@ -13,8 +17,13 @@ from openprocurement.contracting.common.views.contract import (
     ContractResource as BaseContractResource,
 )
 from openprocurement.contracting.esco.validation import (
-    validate_terminate_contract_milestone_statuses, validate_terminate_contract_amount_paid
+    validate_terminate_contract_milestone_statuses,
+    validate_terminate_contract_amount_paid,
+    validate_update_contract_start_date,
+    validate_update_contract_end_date
 )
+
+from openprocurement.contracting.esco.utils import update_milestones_dates_and_statuses
 
 
 @contractingresource(name='esco:Contract',
@@ -25,11 +34,17 @@ class ContractResource(BaseContractResource):
     """ ESCO Contract Resource """
 
     @json_view(content_type="application/json", permission='edit_contract',
-               validators=(validate_patch_contract_data, validate_contract_update_not_in_allowed_status,
-                           validate_terminate_contract_milestone_statuses, validate_terminate_contract_amount_paid))
+               validators=(validate_patch_contract_data,
+                           validate_contract_update_not_in_allowed_status,
+                           validate_terminate_contract_milestone_statuses,
+                           validate_terminate_contract_amount_paid,
+                           validate_update_contract_start_date,
+                           validate_update_contract_end_date))
     def patch(self):
         """Contract Edit (partial)
         """
+        if 'period' in self.request.validated['data']:
+            update_milestones_dates_and_statuses(self.request)
         contract = self.request.validated['contract']
         apply_patch(self.request, save=False, src=self.request.validated['contract_src'])
 

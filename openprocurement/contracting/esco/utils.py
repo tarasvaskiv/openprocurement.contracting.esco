@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from decimal import Decimal
+from copy import deepcopy
 from pytz import timezone
 from iso8601 import parse_date
 from datetime import datetime, timedelta
@@ -126,3 +127,42 @@ def generate_milestones(contract):
         milestones.append(milestone)
 
     return milestones
+
+
+def update_milestones_dates_and_statuses(request):
+    contract = request.context
+    new_contract_end_date = parse_date(request.validated['data']['period']['endDate'])
+    milestones = request.context.milestones  # real milestones
+    target_milestones = deepcopy(request.validated['contract_src']['milestones'])
+    for number, m in enumerate(milestones):
+        if m.status in ['met', 'notMet', 'partiallyMet']:
+            continue
+        # stretch milestone period endDate
+        if m.period.startDate <= contract.period.endDate <= m.period.endDate:
+            if number + 1 < len(milestones):
+                target_milestones[number]['period']['endDate'] = \
+                    milestones[number+1].period.startDate.isoformat()
+            else:
+                target_milestones[number]['period']['endDate'] = \
+                    contract.period.startDate.replace(
+                        year=contract.period.startDate.year + 15).isoformat()
+        # shrink milestone period endDate
+        if target_milestones[number]['period']['startDate']\
+                <= request.validated['data']['period']['endDate'] <=\
+                target_milestones[number]['period']['endDate']:
+            target_milestones[number]['period']['endDate'] = new_contract_end_date
+        #  increase endDate, need open (spare-> scheduled) new milestones
+        if new_contract_end_date > contract.period.endDate:
+            if m.period.startDate <= new_contract_end_date:
+                if m.status == 'spare':
+                    target_milestones[number]['status'] = 'scheduled'
+        #  decrease endDate need to hide (scheduled -> spare) milestones
+        else:
+            if m.period.endDate > new_contract_end_date:
+                if m.status == 'scheduled':
+                    target_milestones[number]['status'] = 'spare'
+                if m.period.startDate <= new_contract_end_date:
+                    if m.status != 'pending':
+                        target_milestones[number]['status'] = 'scheduled'
+
+    request.validated['data']['milestones'] = target_milestones
