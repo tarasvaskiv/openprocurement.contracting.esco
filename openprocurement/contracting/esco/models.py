@@ -169,6 +169,7 @@ class Contract(BaseContract):
     )
     noticePublicationDate = IsoDateTimeType()
     value = ModelType(ESCOValue)
+    amountPaid = ModelType(Value)
     yearlyPaymentsPercentageRange = DecimalType(required=True)
     documents = ListType(ModelType(Document), default=list())
 
