@@ -135,6 +135,19 @@ def validate_scheduled_milestone_document_operation(request):
 
 
 def validate_update_contract_end_date(request):
+    """
+    Function suppose to validate contract.period.endDate(cPeD):
+    - cPeD can be changed only if pending change exist
+    - cPeD cannot be less than milestone-in-pending-status-startDate
+    - contract duration cannot be over 15 years, so cPeD should be less than
+      last-milestone-endDate
+    If conditions are not met, exception is raised, client gets
+     json['data']['errors'] with error description.
+    
+    :param request
+    :return: None
+    :rtype: None
+    """
     if 'period' in request.validated['data']:
         contract_period_end_date = parse_date(request.validated['data']['period']['endDate'])
         if request.context.period.endDate.date() != contract_period_end_date.date():

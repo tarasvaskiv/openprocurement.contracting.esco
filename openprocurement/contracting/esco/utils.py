@@ -130,6 +130,18 @@ def generate_milestones(contract):
 
 
 def update_milestones_dates_and_statuses(request):
+    """
+    Update milestones endDates and statuses, due changed contract period
+    endDate. Milestones are copied from request.validated['data']['milestones']
+    If endDate is increased, some spare milestones need to be opened (status
+    is changed to scheduled).
+    If endDate is decreased, some scheduled milestones need to be changed to
+    spare.
+
+    :param request
+    :return: None
+    :rtype: None
+    """
     contract = request.context
     new_contract_end_date = parse_date(request.validated['data']['period']['endDate'])
     milestones = request.context.milestones  # real milestones
