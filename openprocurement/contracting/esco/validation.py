@@ -74,25 +74,6 @@ def validate_pending_milestone_update_period(request):
         raise_operation_error(request, "Can't update milestone before period.startDate")
 
 
-# milestone documents
-def validate_terminated_milestone_document_operation(request):
-    data = request.validated['data']
-    if "relatedItem" in data and data.get('documentOf') == 'milestone':
-        for m in request.validated['contract'].milestones:
-            if m.id == data['relatedItem'] and m.status in ['met', 'notMet', 'partiallyMet']:
-                raise_operation_error(request, "Can't add document in current ({}) milestone status".format(m.status))
-
-
-def validate_scheduled_milestone_document_operation(request):
-    data = request.validated['data']
-    changes = request.context.__parent__.changes
-    pending_change = True if len(changes) > 0 and changes[-1].status == 'pending' else False
-    if "relatedItem" in data and data.get('documentOf') == 'milestone':
-        for m in request.validated['contract'].milestones:
-            if m.id == data['relatedItem'] and m.status == 'scheduled' and not pending_change:
-                raise_operation_error(request, "Can't add document to scheduled milestone without pending change")
-
-
 def validate_terminate_contract_milestone_statuses(request):
     contract = request.context
     data = request.validated['data']
@@ -107,3 +88,46 @@ def validate_terminate_contract_amount_paid(request):
     if data['status'] != 'active' and contract['value']['amount'] != contract['amountPaid']['amount'] and \
             not data['terminationDetails']:
         raise_operation_error(request, "terminationDetails is required.")
+
+
+# milestone documents
+def validate_terminated_milestone_document_operation(request):
+    # data check allows use same validator function for put, patch and post
+    if 'data' in request.validated:
+        data = request.validated['data']
+        # for DS patch/put - get all requeired info
+        if not "relatedItem" in data and "relatedItem" in request.context:
+            data['relatedItem'] = request.context['relatedItem']
+        if 'documentOf' in request.context and request.context['documentOf'] == 'milestone':
+            data['documentOf'] = request.context['documentOf']
+    else:
+        data = request.context
+    if "relatedItem" in data and data.get('documentOf') == 'milestone':
+        for m in request.validated['contract'].milestones:
+            if m.id == data['relatedItem'] and m.status in ['met', 'notMet', 'partiallyMet', 'spare']:
+                raise_operation_error(request, "Can't {} document in current ({}) milestone status".format(
+                    'update' if request.method == 'PUT' else 'add', m.status))
+
+
+def validate_scheduled_milestone_document_operation(request):
+    # data check allows use same validator function for put, patch and post
+    if 'data' in request.validated:
+        data = request.validated['data']
+        # for DS patch/put - get all requeired info
+        if not "relatedItem" in data and "relatedItem" in request.context:
+            data['relatedItem'] = request.context['relatedItem']
+        if 'documentOf' in request.context and request.context['documentOf'] == 'milestone':
+            data['documentOf'] = request.context['documentOf']
+    else:
+        data = request.context
+    # in case of POST context is contract, so changes are in request.context
+    # in case of PATCH or PUT context is document, so changes are in request.context.__parent__
+    changes = request.context.changes if hasattr(request.context, 'changes') else \
+        request.context.__parent__.changes
+    pending_change = True if len(changes) > 0 and changes[-1].status == 'pending' else False
+    if "relatedItem" in data and data.get('documentOf') == 'milestone':
+        for m in request.validated['contract'].milestones:
+            if m.id == data['relatedItem'] and m.status == 'scheduled' and not pending_change:
+                raise_operation_error(request, "Can't {} document to scheduled milestone without pending change".format(
+                    'update' if request.method == 'PUT' else 'add'))
+

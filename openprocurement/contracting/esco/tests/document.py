@@ -21,7 +21,9 @@ from openprocurement.contracting.esco.tests.base import (
 )
 from openprocurement.contracting.esco.tests.document_blanks import (
     # ContractDocumentResourceTest
-    contract_milestone_document
+    contract_milestone_document,
+    # ContractDocumentWithDSResourceTest
+    milestone_document_json,
 )
 
 
@@ -50,6 +52,7 @@ class ContractDocumentWithDSResourceTest(ContractDocumentResourceTest):
     test_create_contract_documnet_json_invalid = snitch(create_contract_document_json_invalid)
     test_create_contract_documnet_json = snitch(create_contract_document_json)
     test_put_contract_document_json = snitch(put_contract_document_json)
+    test_milestone_document_json = snitch(milestone_document_json)
 
 
 def suite():
