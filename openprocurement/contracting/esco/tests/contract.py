@@ -25,6 +25,7 @@ from openprocurement.contracting.esco.tests.contract_blanks import (
     # ContractResource4BrokersTest
     patch_tender_contract,
     patch_tender_terminated_contract,
+    patch_tender_contract_period,
     contract_type_check,
     esco_contract_milestones_check,
     contract_status_change_with_termination_details,
@@ -105,6 +106,7 @@ class ContractResource4BrokersTest(BaseContractWebTest):
     test_contract_status_change_with_not_met = snitch(contract_status_change_with_not_met)
     test_contract_patch_milestones_value_amount = snitch(contract_patch_milestones_value_amount)
     # test_contract_items_change = snitch(contract_items_change)
+    test_patch_tender_contract_period = snitch(patch_tender_contract_period)
 
 
 class ContractResource4AdministratorTest(BaseContractWebTest):
