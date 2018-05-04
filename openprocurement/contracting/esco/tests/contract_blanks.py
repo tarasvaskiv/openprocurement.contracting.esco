@@ -298,7 +298,68 @@ def patch_tender_contract(self):
     self.assertEqual(len(response.json['data']['milestones']), len(milestones))
     self.assertEqual(response.json['data']['milestones'], milestones)
 
-    # TODO: Write new tests which don't allow change contract.period.startDate
+    # testing that amountPaid and value doesn't include amount from spare milestones
+    response = self.app.get('/contracts/{}'.format(self.contract['id']))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertIn('milestones', response.json['data'])
+
+    contract_period = response.json['data']['period']
+    start_amountPaid = response.json['data']['amountPaid']['amount']
+    start_value = response.json['data']['value']['amount']
+    number_of_milestones = len(response.json['data']['milestones'])
+    end_date = parse_date(response.json['data']['period']['endDate'])
+
+    #  create pending change for patching contract
+    response = self.app.post_json('/contracts/{}/changes?acc_token={}'.format(
+        self.contract['id'], token), {'data': self.pending_change})
+    self.assertEqual(response.status, '201 Created')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['data']['status'], 'pending')
+
+    new_end_date = end_date.replace(end_date.year + 1)
+    contract_period['endDate'] = new_end_date.isoformat()
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
+            self.contract['id'], token), {"data": {"period": contract_period}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(len(response.json['data']['milestones']),
+                     number_of_milestones + 1)
+
+    target_milestone = response.json['data']['milestones'][number_of_milestones]
+    response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'
+                .format(self.contract['id'], target_milestone['id'], token),
+                   {'data': {"value": {"amount": 500}}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['data']['value']['amount'], 500.0)
+    # time travel to change milestone amountPaid amount, cant change with patch
+    contract = self.db.get(self.contract['id'])
+    contract['milestones'][number_of_milestones]['amountPaid']['amount'] = u'500.00'
+    self.db.save(contract)
+
+    # check that value and amountPaid are increased
+    response = self.app.get('/contracts/{}'.format(self.contract['id']))
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['data']['amountPaid']['amount'],
+                     start_amountPaid + 500)
+    self.assertEqual(response.json['data']['value']['amount'],
+                     start_value + 500)
+
+    #  now change endDate back for year to hide milestone to spare
+    #  and check amount and amountPaid are decreased
+    new_end_date = new_end_date.replace(new_end_date.year - 1)
+    contract_period['endDate'] = new_end_date.isoformat()
+    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
+        self.contract['id'], token), {"data": {"period": contract_period}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['data']['period']['endDate'],
+                     new_end_date.isoformat())
+    self.assertEqual(response.json['data']['amountPaid']['amount'],
+                     start_amountPaid)
+    self.assertEqual(response.json['data']['value']['amount'], start_value)
 
 
 def patch_tender_terminated_contract(self):
@@ -394,10 +455,7 @@ def patch_tender_contract_period(self):
 
     #  create pending change
     response = self.app.post_json('/contracts/{}/changes?acc_token={}'.format(
-        self.contract['id'], token), {'data': {
-        'rationale': u'причина зміни укр',
-        'rationale_en': 'change cause en',
-        'rationaleTypes': ['itemPriceVariation']}})
+        self.contract['id'], token), {'data': self.pending_change})
     self.assertEqual(response.status, '201 Created')
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json['data']['status'], 'pending')
