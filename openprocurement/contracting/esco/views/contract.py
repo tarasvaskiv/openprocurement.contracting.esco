@@ -345,7 +345,8 @@ class ContractResource(BaseContractResource):
             }
 
         """
-        if 'period' in self.request.validated['data']:
+        if 'period' in self.request.validated['data'] and \
+                self.context.period.endDate.isoformat() != self.request.validated['data']['period']['endDate']:
             update_milestones_dates_and_statuses(self.request)
         contract = self.request.validated['contract']
         apply_patch(self.request, save=False, src=self.request.validated['contract_src'])
