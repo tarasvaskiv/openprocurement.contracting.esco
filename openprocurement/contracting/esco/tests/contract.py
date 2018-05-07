@@ -99,6 +99,10 @@ class ContractWDocumentsWithDSResourceTest(BaseWebTest):
 class ContractResource4BrokersTest(BaseContractWebTest):
     """ esco contract resource test """
     initial_auth = ('Basic', ('broker', ''))
+    pending_change = {
+        'rationale': u'причина зміни укр',
+        'rationale_en': 'change cause en',
+        'rationaleTypes': ['itemPriceVariation']}
 
     test_patch_tender_contract = snitch(patch_tender_contract)
     test_contract_status_change_with_termination_details = snitch(contract_status_change_with_termination_details)

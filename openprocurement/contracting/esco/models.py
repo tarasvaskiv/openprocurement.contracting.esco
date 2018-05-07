@@ -23,7 +23,8 @@ from openprocurement.contracting.core.models import (
     contract_view_role, contract_administrator_role
 )
 from openprocurement.tender.esco.models import (
-    ESCOValue as BaseESCOValue, to_decimal
+    ESCOValue as BaseESCOValue, to_decimal,
+    view_value_role_esco as base_view_value_role_esco
 )
 from esculator import escp, npv
 
@@ -37,6 +38,7 @@ contract_edit_role = (whitelist(
     'title', 'title_en', 'title_ru', 'description', 'description_en',
     'description_ru', 'status', 'period', 'items', 'terminationDetails',
 ))
+view_value_role_esco = base_view_value_role_esco + whitelist('amount_escp')
 
 
 class IESCOContract(IContract):
@@ -44,6 +46,28 @@ class IESCOContract(IContract):
 
 
 class ESCOValue(BaseESCOValue):
+    class Options:
+        roles = {
+            'embedded': view_value_role_esco,
+            'view': view_value_role_esco,
+            'create': whitelist('amount', 'amount_escp', 'amountPerformance',
+                                'amountPerformance_npv', 'yearlyPaymentsPercentage',
+                                'annualCostsReduction', 'contractDuration',
+                                'currency', 'valueAddedTaxIncluded'),
+            'edit': whitelist('amount', 'amount_escp', 'amountPerformance', 'amountPerformance_npv',
+                              'yearlyPaymentsPercentage', 'annualCostsReduction', 'contractDuration',
+                              'currency', 'valueAddedTaxIncluded'),
+            'auction_view': whitelist('amountPerformance', 'yearlyPaymentsPercentage',
+                                      'annualCostsReduction', 'contractDuration',
+                                      'currency', 'valueAddedTaxIncluded'),
+            'auction_post': whitelist('amount_escp', 'amountPerformance_npv',
+                                      'yearlyPaymentsPercentage', 'contractDuration'),
+            'active.qualification': view_value_role_esco,
+            'active.awarded': view_value_role_esco,
+            'complete': view_value_role_esco,
+            'unsuccessful': view_value_role_esco,
+            'cancelled': view_value_role_esco,
+        }
 
     def validate_yearlyPaymentsPercentage(self, data, value):
         pass
@@ -61,7 +85,8 @@ class ESCOValue(BaseESCOValue):
 
     @serializable(serialized_name='amount', type=DecimalType(precision=-2))
     def amount_escp(self):
-        return sum([milestone.value.amount for milestone in self.__parent__.milestones])
+        return sum([milestone.value.amount for milestone in
+                    self.__parent__.milestones if milestone.status != 'spare'])
 
 
 class Value(BaseValue):
@@ -187,7 +212,8 @@ class Contract(BaseContract):
 
     @serializable(serialized_name='amountPaid', serialize_when_none=False, type=ModelType(Value))
     def contract_amountPaid(self):
-        amount = sum([milestone.amountPaid.amount for milestone in self.milestones])
+        amount = sum([milestone.amountPaid.amount for milestone in
+                      self.milestones if milestone.status != 'spare'])
         return Value(dict(amount=amount,
                           currency=self.value.currency,
                           valueAddedTaxIncluded=self.value.valueAddedTaxIncluded))
