@@ -2,6 +2,8 @@
     :target: https://coveralls.io/github/openprocurement/openprocurement.contracting.esco
 .. image:: https://travis-ci.org/openprocurement/openprocurement.contracting.esco.svg?branch=master
     :target: https://travis-ci.org/openprocurement/openprocurement.contracting.esco
+.. image:: https://img.shields.io/hexpm/l/plug.svg
+    :target: https://github.com/openprocurement/openprocurement.archivarius.contracts/blob/master/LICENSE
 
 openprocurement.contracting.esco
 =============================
