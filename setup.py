@@ -43,6 +43,6 @@ setup(name='openprocurement.contracting.esco',
       install_requires=requires,
       tests_require=test_requires,
       extras_require={'test': test_requires, 'docs': docs_requires},
-      test_suite="openprocurement.contract.esco.tests.main.suite",
+      test_suite="openprocurement.contracting.esco.tests.main.suite",
       entry_points=entry_points
       )

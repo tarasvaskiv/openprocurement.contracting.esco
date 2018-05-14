@@ -13,3 +13,8 @@ areas that were not covered by it.
 
 
    contract
+   document
+   organization
+   item
+   milestone
+   util

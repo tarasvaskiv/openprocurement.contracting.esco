@@ -1,0 +1,251 @@
+PATCH /api/2.4/contracts/05285a1b38494dcaaf0e47408f5913f9?acc_token=20d3ef355ba342caaacd6590d712c6eb HTTP/1.0
+Authorization: Basic YnJva2VyOg==
+Content-Length: 1594
+Content-Type: application/json
+Host: api-sandbox.openprocurement.org
+DATA:
+{
+  "data": {
+    "items": [
+      {
+        "description": "ЕНергосервіс будівлі Комунальної установи Сумська загальноосвітня школа І-ІІІ ступенів № 26 м. Суми, Сумської області", 
+        "classification": {
+          "scheme": "ДК021", 
+          "description": "Не відображене в інших розділах", 
+          "id": "99999999-9"
+        }, 
+        "description_en": "Energy service of the public institution building of Sumy secondary school Nr 26", 
+        "additionalClassifications": [
+          {
+            "scheme": "specialNorms", 
+            "id": "000", 
+            "description": "Специальные нормы и другое"
+          }
+        ], 
+        "deliveryAddress": {
+          "postalCode": "40007", 
+          "countryName": "Україна", 
+          "streetAddress": "Охтирська, 21", 
+          "region": "Сумська обл.", 
+          "locality": "Суми"
+        }, 
+        "id": "660e66a4ffd0486f8f90041f36105f05", 
+        "quantity": 2
+      }
+    ]
+  }
+}
+
+Response: 200 OK
+Content-Type: application/json; charset=UTF-8
+{
+  "data": {
+    "period": {
+      "startDate": "2018-05-15T15:33:40.975673+03:00", 
+      "endDate": "2019-06-09T15:33:44.047088+03:00"
+    }, 
+    "procuringEntity": {
+      "contactPoint": {
+        "email": "e.zhogan@ksteplo.com.ua", 
+        "telephone": "+380933907440", 
+        "availableLanguage": "en", 
+        "name": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\""
+      }, 
+      "identifier": {
+        "scheme": "UA-EDR", 
+        "id": "40957551", 
+        "legalName": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\""
+      }, 
+      "name": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\"", 
+      "address": {
+        "postalCode": "", 
+        "countryName": "Україна", 
+        "streetAddress": "01004, м.Київ, БЕССАРАБСЬКА ПЛОЩА, будинок 9/1 Б, офіс 2", 
+        "region": "", 
+        "locality": ""
+      }, 
+      "additionalContactPoints": [
+        {
+          "name": "Державне управління справами2", 
+          "telephone": "0440000001"
+        }
+      ]
+    }, 
+    "owner": "broker", 
+    "id": "05285a1b38494dcaaf0e47408f5913f9", 
+    "tender_id": "4f3f52df56274163b5cf22a00cd71478", 
+    "documents": [
+      {
+        "hash": "md5:00000000000000000000000000000000", 
+        "title": "contract_changes.doc", 
+        "url": "http://public.docs-sandbox.openprocurement.org/get/7882203e7dd2449b856fb16794b40871?KeyID=f988f514&Signature=csn2SA0Ek1NCRBlkQg2ScezTysfJgdml5SRGjU3jAcrhq5e%2FSNu5hsUSf6f5VIJgiCIP8PxPdf8NiLOv%2FMmHBg%253D%253D", 
+        "format": "application/msword", 
+        "documentOf": "change", 
+        "datePublished": "2018-05-15T15:33:43.835245+03:00", 
+        "id": "0200c8217aef4e1c83f8360503b716cc", 
+        "relatedItem": "6a1ec221b3164000a0066c409a38eecd", 
+        "dateModified": "2018-05-15T15:33:43.835277+03:00"
+      }
+    ], 
+    "title": "Енергосервіс будівлі Комунальної установи Сумська загальноосвітня школа І-ІІІ ступенів № 26 м.Суми, Сумсбкої області", 
+    "contractNumber": "17", 
+    "dateModified": "2018-05-15T15:33:44.679543+03:00", 
+    "status": "active", 
+    "description": "", 
+    "NBUdiscountRate": 0.135, 
+    "dateSigned": "2018-05-15T15:33:40.975673+03:00", 
+    "contractType": "esco", 
+    "amountPaid": {
+      "currency": "UAH", 
+      "amount": 0, 
+      "valueAddedTaxIncluded": true
+    }, 
+    "milestones": [
+      {
+        "status": "pending", 
+        "description": "Milestone #1 of year 2018", 
+        "sequenceNumber": 1, 
+        "title": "Milestone #1 of year 2018", 
+        "period": {
+          "startDate": "2018-05-15T15:33:40.975673+03:00", 
+          "endDate": "2019-01-01T00:00:00+02:02"
+        }, 
+        "value": {
+          "currency": "UAH", 
+          "amount": 0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "id": "11adcde8e697459a9d13e1ac780ac7d9", 
+        "date": "2018-05-15T15:33:40.977358+03:00", 
+        "amountPaid": {
+          "currency": "UAH", 
+          "amount": 0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "dateModified": "2018-05-15T15:33:40.977358+03:00"
+      }, 
+      {
+        "status": "scheduled", 
+        "description": "Milestone #2 of year 2019", 
+        "sequenceNumber": 2, 
+        "title": "Milestone #2 of year 2019", 
+        "period": {
+          "startDate": "2019-01-01T00:00:00+02:02", 
+          "endDate": "2019-06-09T15:33:44.047088+03:00"
+        }, 
+        "value": {
+          "currency": "UAH", 
+          "amount": 164677.28, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "id": "78bcdc52d73d4f97b0824f3965a3639b", 
+        "date": "2018-05-15T15:33:40.977464+03:00", 
+        "amountPaid": {
+          "currency": "UAH", 
+          "amount": 0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "dateModified": "2018-05-15T15:33:40.977464+03:00"
+      }
+    ], 
+    "items": [
+      {
+        "description": "ЕНергосервіс будівлі Комунальної установи Сумська загальноосвітня школа І-ІІІ ступенів № 26 м. Суми, Сумської області", 
+        "classification": {
+          "scheme": "ДК021", 
+          "description": "Не відображене в інших розділах", 
+          "id": "99999999-9"
+        }, 
+        "description_en": "Energy service of the public institution building of Sumy secondary school Nr 26", 
+        "additionalClassifications": [
+          {
+            "scheme": "specialNorms", 
+            "id": "000", 
+            "description": "Специальные нормы и другое"
+          }
+        ], 
+        "deliveryAddress": {
+          "postalCode": "40007", 
+          "countryName": "Україна", 
+          "streetAddress": "Охтирська, 21", 
+          "region": "Сумська обл.", 
+          "locality": "Суми"
+        }, 
+        "id": "660e66a4ffd0486f8f90041f36105f05", 
+        "quantity": 2
+      }
+    ], 
+    "suppliers": [
+      {
+        "contactPoint": {
+          "email": "e.zhogan@ksteplo.com.ua", 
+          "telephone": "+380933907440", 
+          "name": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\""
+        }, 
+        "identifier": {
+          "scheme": "UA-EDR", 
+          "id": "40957551", 
+          "legalName": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\""
+        }, 
+        "name": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\"", 
+        "address": {
+          "postalCode": "", 
+          "countryName": "Україна", 
+          "streetAddress": "01004, м.Київ, БЕССАРАБСЬКА ПЛОЩА, будинок 9/1 Б, офіс 2", 
+          "region": "", 
+          "locality": ""
+        }
+      }
+    ], 
+    "value": {
+      "yearlyPaymentsPercentage": 0.92, 
+      "valueAddedTaxIncluded": true, 
+      "currency": "UAH", 
+      "amount": 164677.28, 
+      "contractDuration": {
+        "days": 310, 
+        "years": 6
+      }, 
+      "amountPerformance": 446748.31, 
+      "annualCostsReduction": [
+        0, 
+        178997.04, 
+        225643.72, 
+        225643.72, 
+        225643.72, 
+        225643.72, 
+        225643.72, 
+        225643.72, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47
+      ]
+    }, 
+    "awardID": "29c01dd058c347f38e381f13d4a6a118", 
+    "changes": [
+      {
+        "status": "pending", 
+        "rationaleTypes": [
+          "volumeCuts", 
+          "priceReduction"
+        ], 
+        "rationale_en": "Contract change cause", 
+        "rationale": "Друга і третя поставка має бути розфасована", 
+        "date": "2018-05-15T15:33:43.478089+03:00", 
+        "id": "6a1ec221b3164000a0066c409a38eecd"
+      }
+    ], 
+    "contractID": "UA-2017-11-21-001567-c-a1"
+  }
+}
+
