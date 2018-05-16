@@ -1,0 +1,351 @@
+GET /api/2.4/contracts/05285a1b38494dcaaf0e47408f5913f9 HTTP/1.0
+Host: api-sandbox.openprocurement.org
+
+Response: 200 OK
+Content-Type: application/json; charset=UTF-8
+{
+  "data": {
+    "status": "active", 
+    "milestones": [
+      {
+        "status": "pending", 
+        "description": "Milestone #1 of year 2018", 
+        "sequenceNumber": 1, 
+        "title": "Milestone #1 of year 2018", 
+        "period": {
+          "startDate": "2018-05-15T15:33:40.975673+03:00", 
+          "endDate": "2019-01-01T00:00:00+02:02"
+        }, 
+        "value": {
+          "currency": "UAH", 
+          "amount": 0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "id": "11adcde8e697459a9d13e1ac780ac7d9", 
+        "date": "2018-05-15T15:33:40.977358+03:00", 
+        "amountPaid": {
+          "currency": "UAH", 
+          "amount": 0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "dateModified": "2018-05-15T15:33:40.977358+03:00"
+      }, 
+      {
+        "status": "scheduled", 
+        "description": "Milestone #2 of year 2019", 
+        "sequenceNumber": 2, 
+        "title": "Milestone #2 of year 2019", 
+        "period": {
+          "startDate": "2019-01-01T00:00:00+02:02", 
+          "endDate": "2020-01-01T00:00:00+02:02"
+        }, 
+        "value": {
+          "currency": "UAH", 
+          "amount": 164677.28, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "id": "78bcdc52d73d4f97b0824f3965a3639b", 
+        "date": "2018-05-15T15:33:40.977464+03:00", 
+        "amountPaid": {
+          "currency": "UAH", 
+          "amount": 0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "dateModified": "2018-05-15T15:33:40.977464+03:00"
+      }, 
+      {
+        "status": "scheduled", 
+        "description": "Milestone #3 of year 2020", 
+        "sequenceNumber": 3, 
+        "title": "Milestone #3 of year 2020", 
+        "period": {
+          "startDate": "2020-01-01T00:00:00+02:02", 
+          "endDate": "2021-01-01T00:00:00+02:02"
+        }, 
+        "value": {
+          "currency": "UAH", 
+          "amount": 207592.22, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "id": "a00405ba321e4e568c76f883162408e6", 
+        "date": "2018-05-15T15:33:40.977567+03:00", 
+        "amountPaid": {
+          "currency": "UAH", 
+          "amount": 0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "dateModified": "2018-05-15T15:33:40.977567+03:00"
+      }, 
+      {
+        "status": "scheduled", 
+        "description": "Milestone #4 of year 2021", 
+        "sequenceNumber": 4, 
+        "title": "Milestone #4 of year 2021", 
+        "period": {
+          "startDate": "2021-01-01T00:00:00+02:02", 
+          "endDate": "2022-01-01T00:00:00+02:02"
+        }, 
+        "value": {
+          "currency": "UAH", 
+          "amount": 207592.22, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "id": "fcdac6a0757144cdb3af2d3722b8df85", 
+        "date": "2018-05-15T15:33:40.977662+03:00", 
+        "amountPaid": {
+          "currency": "UAH", 
+          "amount": 0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "dateModified": "2018-05-15T15:33:40.977662+03:00"
+      }, 
+      {
+        "status": "scheduled", 
+        "description": "Milestone #5 of year 2022", 
+        "sequenceNumber": 5, 
+        "title": "Milestone #5 of year 2022", 
+        "period": {
+          "startDate": "2022-01-01T00:00:00+02:02", 
+          "endDate": "2023-01-01T00:00:00+02:02"
+        }, 
+        "value": {
+          "currency": "UAH", 
+          "amount": 207592.22, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "id": "4dd8b1c5b21f44dfbbdb2e41ad5c36fe", 
+        "date": "2018-05-15T15:33:40.977756+03:00", 
+        "amountPaid": {
+          "currency": "UAH", 
+          "amount": 0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "dateModified": "2018-05-15T15:33:40.977756+03:00"
+      }, 
+      {
+        "status": "scheduled", 
+        "description": "Milestone #6 of year 2023", 
+        "sequenceNumber": 6, 
+        "title": "Milestone #6 of year 2023", 
+        "period": {
+          "startDate": "2023-01-01T00:00:00+02:02", 
+          "endDate": "2024-01-01T00:00:00+02:02"
+        }, 
+        "value": {
+          "currency": "UAH", 
+          "amount": 207592.22, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "id": "46cf457e504144c1844ebf9ee06a84a1", 
+        "date": "2018-05-15T15:33:40.977848+03:00", 
+        "amountPaid": {
+          "currency": "UAH", 
+          "amount": 0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "dateModified": "2018-05-15T15:33:40.977848+03:00"
+      }, 
+      {
+        "status": "scheduled", 
+        "description": "Milestone #7 of year 2024", 
+        "sequenceNumber": 7, 
+        "title": "Milestone #7 of year 2024", 
+        "period": {
+          "startDate": "2024-01-01T00:00:00+02:02", 
+          "endDate": "2025-01-01T00:00:00+02:02"
+        }, 
+        "value": {
+          "currency": "UAH", 
+          "amount": 207592.22, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "id": "90afa0125af7498b94d5b3befeab912f", 
+        "date": "2018-05-15T15:33:40.977939+03:00", 
+        "amountPaid": {
+          "currency": "UAH", 
+          "amount": 0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "dateModified": "2018-05-15T15:33:40.977939+03:00"
+      }, 
+      {
+        "status": "scheduled", 
+        "description": "Milestone #8 of year 2025", 
+        "sequenceNumber": 8, 
+        "title": "Milestone #8 of year 2025", 
+        "period": {
+          "startDate": "2025-01-01T00:00:00+02:02", 
+          "endDate": "2025-03-21T00:00:00+02:02"
+        }, 
+        "value": {
+          "currency": "UAH", 
+          "amount": 45499.67, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "id": "a8fbf05dc0d4480e96bedc0a2a118f22", 
+        "date": "2018-05-15T15:33:40.978064+03:00", 
+        "amountPaid": {
+          "currency": "UAH", 
+          "amount": 0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "dateModified": "2018-05-15T15:33:40.978064+03:00"
+      }
+    ], 
+    "description": "", 
+    "title": "Енергосервіс будівлі Комунальної установи Сумська загальноосвітня школа І-ІІІ ступенів № 26 м.Суми, Сумсбкої області", 
+    "items": [
+      {
+        "description": "ЕНергосервіс будівлі Комунальної установи Сумська загальноосвітня школа І-ІІІ ступенів № 26 м. Суми, Сумської області", 
+        "classification": {
+          "scheme": "ДК021", 
+          "description": "Не відображене в інших розділах", 
+          "id": "99999999-9"
+        }, 
+        "description_en": "Energy service of the public institution building of Sumy secondary school Nr 26", 
+        "additionalClassifications": [
+          {
+            "scheme": "specialNorms", 
+            "id": "000", 
+            "description": "Специальные нормы и другое"
+          }
+        ], 
+        "deliveryAddress": {
+          "postalCode": "40007", 
+          "countryName": "Україна", 
+          "streetAddress": "Охтирська, 21", 
+          "region": "Сумська обл.", 
+          "locality": "Суми"
+        }, 
+        "id": "660e66a4ffd0486f8f90041f36105f05"
+      }, 
+      {
+        "description": "ЕНергосервіс будівлі Комунальної установи Сумська загальноосвітня школа І-ІІІ ступенів № 26 м. Суми, Сумської області", 
+        "classification": {
+          "scheme": "ДК021", 
+          "description": "Не відображене в інших розділах", 
+          "id": "99999999-9"
+        }, 
+        "description_en": "Energy service of the public institution building of Sumy secondary school Nr 26", 
+        "additionalClassifications": [
+          {
+            "scheme": "specialNorms", 
+            "id": "000", 
+            "description": "Специальные нормы и другое"
+          }
+        ], 
+        "deliveryAddress": {
+          "postalCode": "40007", 
+          "countryName": "Україна", 
+          "streetAddress": "Охтирська, 21", 
+          "region": "Сумська обл.", 
+          "locality": "Суми"
+        }, 
+        "id": "ebcf62a6c70e4951b602cc99e7ea745a"
+      }
+    ], 
+    "suppliers": [
+      {
+        "contactPoint": {
+          "email": "e.zhogan@ksteplo.com.ua", 
+          "telephone": "+380933907440", 
+          "name": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\""
+        }, 
+        "identifier": {
+          "scheme": "UA-EDR", 
+          "id": "40957551", 
+          "legalName": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\""
+        }, 
+        "name": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\"", 
+        "address": {
+          "postalCode": "", 
+          "countryName": "Україна", 
+          "streetAddress": "01004, м.Київ, БЕССАРАБСЬКА ПЛОЩА, будинок 9/1 Б, офіс 2", 
+          "region": "", 
+          "locality": ""
+        }
+      }
+    ], 
+    "contractNumber": "17", 
+    "period": {
+      "startDate": "2018-05-15T15:33:40.975673+03:00", 
+      "endDate": "2025-03-21T15:33:40.975673+03:00"
+    }, 
+    "value": {
+      "yearlyPaymentsPercentage": 0.92, 
+      "valueAddedTaxIncluded": true, 
+      "currency": "UAH", 
+      "amount": 1248138.05, 
+      "contractDuration": {
+        "days": 310, 
+        "years": 6
+      }, 
+      "amountPerformance": 446748.31, 
+      "annualCostsReduction": [
+        0, 
+        178997.04, 
+        225643.72, 
+        225643.72, 
+        225643.72, 
+        225643.72, 
+        225643.72, 
+        225643.72, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47
+      ]
+    }, 
+    "id": "05285a1b38494dcaaf0e47408f5913f9", 
+    "procuringEntity": {
+      "contactPoint": {
+        "email": "e.zhogan@ksteplo.com.ua", 
+        "telephone": "+380933907440", 
+        "availableLanguage": "en", 
+        "name": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\""
+      }, 
+      "identifier": {
+        "scheme": "UA-EDR", 
+        "id": "40957551", 
+        "legalName": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\""
+      }, 
+      "name": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\"", 
+      "address": {
+        "postalCode": "", 
+        "countryName": "Україна", 
+        "streetAddress": "01004, м.Київ, БЕССАРАБСЬКА ПЛОЩА, будинок 9/1 Б, офіс 2", 
+        "region": "", 
+        "locality": ""
+      }, 
+      "additionalContactPoints": [
+        {
+          "name": "Державне управління справами2", 
+          "telephone": "0440000001"
+        }
+      ]
+    }, 
+    "dateSigned": "2018-05-15T15:33:40.975673+03:00", 
+    "contractID": "UA-2017-11-21-001567-c-a1", 
+    "NBUdiscountRate": 0.135, 
+    "owner": "broker", 
+    "contractType": "esco", 
+    "awardID": "29c01dd058c347f38e381f13d4a6a118", 
+    "amountPaid": {
+      "currency": "UAH", 
+      "amount": 0, 
+      "valueAddedTaxIncluded": true
+    }, 
+    "dateModified": "2018-05-15T15:33:43.207642+03:00", 
+    "tender_id": "4f3f52df56274163b5cf22a00cd71478"
+  }
+}
+

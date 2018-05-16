@@ -1,0 +1,256 @@
+PATCH /api/2.4/contracts/05285a1b38494dcaaf0e47408f5913f9?acc_token=20d3ef355ba342caaacd6590d712c6eb HTTP/1.0
+Authorization: Basic YnJva2VyOg==
+Content-Length: 34
+Content-Type: application/json
+Host: api-sandbox.openprocurement.org
+DATA:
+{
+  "data": {
+    "status": "terminated"
+  }
+}
+
+Response: 200 OK
+Content-Type: application/json; charset=UTF-8
+{
+  "data": {
+    "period": {
+      "startDate": "2018-05-15T15:33:40.975673+03:00", 
+      "endDate": "2019-06-09T15:33:44.047088+03:00"
+    }, 
+    "procuringEntity": {
+      "contactPoint": {
+        "email": "e.zhogan@ksteplo.com.ua", 
+        "telephone": "+380933907440", 
+        "availableLanguage": "en", 
+        "name": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\""
+      }, 
+      "identifier": {
+        "scheme": "UA-EDR", 
+        "id": "40957551", 
+        "legalName": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\""
+      }, 
+      "name": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\"", 
+      "address": {
+        "postalCode": "", 
+        "countryName": "Україна", 
+        "streetAddress": "01004, м.Київ, БЕССАРАБСЬКА ПЛОЩА, будинок 9/1 Б, офіс 2", 
+        "region": "", 
+        "locality": ""
+      }, 
+      "additionalContactPoints": [
+        {
+          "name": "Державне управління справами2", 
+          "telephone": "0440000001"
+        }
+      ]
+    }, 
+    "owner": "broker", 
+    "id": "05285a1b38494dcaaf0e47408f5913f9", 
+    "tender_id": "4f3f52df56274163b5cf22a00cd71478", 
+    "documents": [
+      {
+        "hash": "md5:00000000000000000000000000000000", 
+        "title": "contract_changes.doc", 
+        "url": "http://public.docs-sandbox.openprocurement.org/get/7882203e7dd2449b856fb16794b40871?KeyID=f988f514&Signature=csn2SA0Ek1NCRBlkQg2ScezTysfJgdml5SRGjU3jAcrhq5e%2FSNu5hsUSf6f5VIJgiCIP8PxPdf8NiLOv%2FMmHBg%253D%253D", 
+        "format": "application/msword", 
+        "documentOf": "change", 
+        "datePublished": "2018-05-15T15:33:43.835245+03:00", 
+        "id": "0200c8217aef4e1c83f8360503b716cc", 
+        "relatedItem": "6a1ec221b3164000a0066c409a38eecd", 
+        "dateModified": "2018-05-15T15:33:43.835277+03:00"
+      }, 
+      {
+        "hash": "md5:00000000000000000000000000000000", 
+        "title": "contract.doc", 
+        "url": "http://public.docs-sandbox.openprocurement.org/get/20a4791e40f24bb9bbdd688fa8bc2f13?KeyID=f988f514&Signature=cNCVdbMCUxF4hXqy9k64x1q09HkgbHR%2FEnQxNnK82uVVM1XqCiTkSCgQZpbLPzUMqeDzWwry3MtXJb5ZAVoIAg%253D%253D", 
+        "format": "application/msword", 
+        "documentOf": "contract", 
+        "datePublished": "2018-05-15T15:33:45.177625+03:00", 
+        "id": "3efa9c657c4a4a9f99d7cafa42a066de", 
+        "dateModified": "2018-05-15T15:33:45.177680+03:00"
+      }, 
+      {
+        "hash": "md5:00000000000000000000000000000000", 
+        "title": "contract_additional_docs.doc", 
+        "url": "http://public.docs-sandbox.openprocurement.org/get/b3744f12d30c49c39ca898bf686165a9?KeyID=f988f514&Signature=RVmrw7tntELPSnp8cZ9KKT5NqIeb%2FBABgH%252B1cugmIMYkhfhY9vW7BHCkXtqK4T9XawphWI%252BCLlCnzvqUkIOPDw%253D%253D", 
+        "format": "application/msword", 
+        "documentOf": "contract", 
+        "datePublished": "2018-05-15T15:33:45.328565+03:00", 
+        "id": "a9d0e984f4c141dfa8c3cf3b8a011d66", 
+        "dateModified": "2018-05-15T15:33:45.328590+03:00"
+      }, 
+      {
+        "hash": "md5:00000000000000000000000000000000", 
+        "title": "contract_additional_docs.doc", 
+        "url": "http://public.docs-sandbox.openprocurement.org/get/05962f459aa446ab9cc48cd7250ff92e?KeyID=f988f514&Signature=Nkb001pFt%2FCsdBKKXDlNitKftBOIDMBppfbtht20a0cRBRLfvfKj1dizY7Y1tTnG4FWl8yhxMTlXJK6FNylIAQ%253D%253D", 
+        "format": "application/msword", 
+        "documentOf": "contract", 
+        "datePublished": "2018-05-15T15:33:45.328565+03:00", 
+        "id": "a9d0e984f4c141dfa8c3cf3b8a011d66", 
+        "dateModified": "2018-05-15T15:33:45.435325+03:00"
+      }
+    ], 
+    "title": "Енергосервіс будівлі Комунальної установи Сумська загальноосвітня школа І-ІІІ ступенів № 26 м.Суми, Сумсбкої області", 
+    "contractNumber": "17", 
+    "dateModified": "2018-05-15T15:33:46.054388+03:00", 
+    "status": "terminated", 
+    "description": "", 
+    "NBUdiscountRate": 0.135, 
+    "dateSigned": "2018-05-15T15:33:40.975673+03:00", 
+    "contractType": "esco", 
+    "amountPaid": {
+      "currency": "UAH", 
+      "amount": 100.0, 
+      "valueAddedTaxIncluded": true
+    }, 
+    "milestones": [
+      {
+        "status": "met", 
+        "description": "Milestone #1 of year 2018", 
+        "sequenceNumber": 1, 
+        "title": "Milestone #1 of year 2018", 
+        "period": {
+          "startDate": "2018-05-15T15:33:40.975673+03:00", 
+          "endDate": "2019-01-01T00:00:00+02:02"
+        }, 
+        "value": {
+          "currency": "UAH", 
+          "amount": 0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "id": "11adcde8e697459a9d13e1ac780ac7d9", 
+        "date": "2018-05-15T15:33:45.624067+03:00", 
+        "amountPaid": {
+          "currency": "UAH", 
+          "amount": 0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "dateModified": "2018-05-15T15:33:45.624067+03:00"
+      }, 
+      {
+        "status": "met", 
+        "description": "Milestone #2 of year 2019", 
+        "sequenceNumber": 2, 
+        "title": "Milestone #2 of year 2019", 
+        "period": {
+          "startDate": "2019-01-01T00:00:00+02:02", 
+          "endDate": "2019-06-09T15:33:44.047088+03:00"
+        }, 
+        "value": {
+          "currency": "UAH", 
+          "amount": 100.0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "id": "78bcdc52d73d4f97b0824f3965a3639b", 
+        "date": "2018-05-15T15:33:45.739779+03:00", 
+        "amountPaid": {
+          "currency": "UAH", 
+          "amount": 100.0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "dateModified": "2018-05-15T15:33:45.739779+03:00"
+      }
+    ], 
+    "items": [
+      {
+        "description": "ЕНергосервіс будівлі Комунальної установи Сумська загальноосвітня школа І-ІІІ ступенів № 26 м. Суми, Сумської області", 
+        "classification": {
+          "scheme": "ДК021", 
+          "description": "Не відображене в інших розділах", 
+          "id": "99999999-9"
+        }, 
+        "description_en": "Energy service of the public institution building of Sumy secondary school Nr 26", 
+        "additionalClassifications": [
+          {
+            "scheme": "specialNorms", 
+            "id": "000", 
+            "description": "Специальные нормы и другое"
+          }
+        ], 
+        "deliveryAddress": {
+          "postalCode": "40007", 
+          "countryName": "Україна", 
+          "streetAddress": "Охтирська, 21", 
+          "region": "Сумська обл.", 
+          "locality": "Суми"
+        }, 
+        "id": "660e66a4ffd0486f8f90041f36105f05", 
+        "quantity": 2
+      }
+    ], 
+    "suppliers": [
+      {
+        "contactPoint": {
+          "email": "e.zhogan@ksteplo.com.ua", 
+          "telephone": "+380933907440", 
+          "name": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\""
+        }, 
+        "identifier": {
+          "scheme": "UA-EDR", 
+          "id": "40957551", 
+          "legalName": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\""
+        }, 
+        "name": "ТОВАРИСТВО З ОБМЕЖЕНОЮ ВІДПОВІДАЛЬНІСТЮ \"ЄВРОПЕЙСЬКА ЕНЕРГОСЕРВІСНА КОМПАНІЯ\"", 
+        "address": {
+          "postalCode": "", 
+          "countryName": "Україна", 
+          "streetAddress": "01004, м.Київ, БЕССАРАБСЬКА ПЛОЩА, будинок 9/1 Б, офіс 2", 
+          "region": "", 
+          "locality": ""
+        }
+      }
+    ], 
+    "value": {
+      "yearlyPaymentsPercentage": 0.92, 
+      "valueAddedTaxIncluded": true, 
+      "currency": "UAH", 
+      "amount": 100.0, 
+      "contractDuration": {
+        "days": 310, 
+        "years": 6
+      }, 
+      "amountPerformance": 446748.31, 
+      "annualCostsReduction": [
+        0, 
+        178997.04, 
+        225643.72, 
+        225643.72, 
+        225643.72, 
+        225643.72, 
+        225643.72, 
+        225643.72, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47, 
+        141782.47
+      ]
+    }, 
+    "awardID": "29c01dd058c347f38e381f13d4a6a118", 
+    "changes": [
+      {
+        "status": "active", 
+        "rationaleTypes": [
+          "volumeCuts", 
+          "priceReduction"
+        ], 
+        "rationale_en": "Contract change cause", 
+        "dateSigned": "2018-05-15T15:33:44.935674+03:00", 
+        "rationale": "Друга і третя поставка має бути розфасована", 
+        "date": "2018-05-15T15:33:44.988077+03:00", 
+        "id": "6a1ec221b3164000a0066c409a38eecd"
+      }
+    ], 
+    "contractID": "UA-2017-11-21-001567-c-a1"
+  }
+}
+

@@ -22,7 +22,6 @@ contract_data_json = "{}/data/test_contract_data.json".format(
 )
 with open(contract_data_json) as f:
     test_contract_data = json.loads(f.read())
-test_contract_data['id'] = uuid4().hex
 
 # dates generation
 now = get_now()

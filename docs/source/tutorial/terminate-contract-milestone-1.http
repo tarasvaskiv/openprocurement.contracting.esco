@@ -1,0 +1,43 @@
+PATCH /api/2.4/contracts/05285a1b38494dcaaf0e47408f5913f9/milestones/11adcde8e697459a9d13e1ac780ac7d9?acc_token=20d3ef355ba342caaacd6590d712c6eb HTTP/1.0
+Authorization: Basic YnJva2VyOg==
+Content-Length: 56
+Content-Type: application/json
+Host: api-sandbox.openprocurement.org
+DATA:
+{
+  "data": {
+    "status": "met", 
+    "amountPaid": {
+      "amount": 0
+    }
+  }
+}
+
+Response: 200 OK
+Content-Type: application/json; charset=UTF-8
+{
+  "data": {
+    "status": "met", 
+    "description": "Milestone #1 of year 2018", 
+    "sequenceNumber": 1, 
+    "title": "Milestone #1 of year 2018", 
+    "period": {
+      "startDate": "2018-05-15T15:33:40.975673+03:00", 
+      "endDate": "2019-01-01T00:00:00+02:02"
+    }, 
+    "value": {
+      "currency": "UAH", 
+      "amount": 0, 
+      "valueAddedTaxIncluded": true
+    }, 
+    "id": "11adcde8e697459a9d13e1ac780ac7d9", 
+    "date": "2018-05-15T15:33:45.624067+03:00", 
+    "amountPaid": {
+      "currency": "UAH", 
+      "amount": 0, 
+      "valueAddedTaxIncluded": true
+    }, 
+    "dateModified": "2018-05-15T15:33:45.624067+03:00"
+  }
+}
+

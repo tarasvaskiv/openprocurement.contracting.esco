@@ -1,7 +1,9 @@
 {
+  "_id": "05285a1b38494dcaaf0e47408f5913f9",
   "status": "active",
+  "id": "05285a1b38494dcaaf0e47408f5913f9",
   "contractType": "esco",
-  "tender_id": "4f90c49aa1684769b9a41c8196d875fe",
+  "tender_id": "4f3f52df56274163b5cf22a00cd71478",
   "tender_token": "e60d286e5c6f43a990679660da817aec",
   "owner": "broker",
   "fundingKind": "other",

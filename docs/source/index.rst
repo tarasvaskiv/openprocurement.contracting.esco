@@ -1,12 +1,12 @@
 .. title:: OpenProcurement Contracting
 
-Welcome to openprocurement.contract.esco's documentation!
+Welcome to openprocurement.contracting.esco's documentation!
 ==========================================================
 
 Please report any problems or suggestions for improvement either via the
 `mailing list <http://groups.google.com/group/open-procurement-general>`_ or
 the `issue tracker
-<https://github.com/openprocurement/openprocurement.contract.esco/issues>`_.
+<https://github.com/openprocurement/openprocurement.contracting.esco/issues>`_.
 
 Contents:
 

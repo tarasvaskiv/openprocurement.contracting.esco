@@ -50,7 +50,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'openprocurement.contract.esco'
+project = u'openprocurement.contracting.esco'
 copyright = u'2014-2017, Quintagroup, Ltd'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -203,7 +203,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', 'openprocurementcontractesco.tex', u'openprocurement.contract.esco Documentation',
+  ('index', 'openprocurementcontractesco.tex', u'openprocurement.contracting.esco Documentation',
    u'Myroslav Opyr', 'manual'),
 ]
 
@@ -233,7 +233,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'openprocurementcontractesco', u'openprocurement.contract.esco Documentation',
+    ('index', 'openprocurementcontractingesco', u'openprocurement.contracting.esco Documentation',
      [u'Myroslav Opyr'], 1)
 ]
 
@@ -247,8 +247,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'openprocurementcontractesco', u'openprocurement.contract.esco Documentation',
-   u'Myroslav Opyr', 'openprocurementcontractesco', 'One line description of project.',
+  ('index', 'openprocurementcontractingesco', u'openprocurement.contracting.esco Documentation',
+   u'Myroslav Opyr', 'openprocurementcontractingesco', 'One line description of project.',
    'Miscellaneous'),
 ]
 

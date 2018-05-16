@@ -1,0 +1,20 @@
+GET /api/2.4/contracts/05285a1b38494dcaaf0e47408f5913f9/changes/6a1ec221b3164000a0066c409a38eecd HTTP/1.0
+Authorization: Basic YnJva2VyOg==
+Host: api-sandbox.openprocurement.org
+
+Response: 200 OK
+Content-Type: application/json; charset=UTF-8
+{
+  "data": {
+    "status": "pending", 
+    "rationaleTypes": [
+      "volumeCuts", 
+      "priceReduction"
+    ], 
+    "rationale_en": "Contract change cause", 
+    "rationale": "Опис причини змін контракту", 
+    "date": "2018-05-15T15:33:43.478089+03:00", 
+    "id": "6a1ec221b3164000a0066c409a38eecd"
+  }
+}
+
