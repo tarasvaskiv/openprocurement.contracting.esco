@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+from calendar import isleap
 from decimal import Decimal
 from copy import deepcopy
 from pytz import timezone
@@ -129,6 +130,15 @@ def generate_milestones(contract):
     return milestones
 
 
+def get_contract_max_endDate(contract_period_startDate):
+    day = contract_period_startDate.day - 1 if contract_period_startDate.day == 29 \
+                                               and contract_period_startDate.month == 2 \
+                                               and not isleap(contract_period_startDate.year + 15) \
+        else contract_period_startDate.day
+    return contract_period_startDate.replace(contract_period_startDate.year + 15, day=day)
+
+
+
 def update_milestones_dates_and_statuses(request):
     """
     Update milestones endDates and statuses, due changed contract period
@@ -155,9 +165,12 @@ def update_milestones_dates_and_statuses(request):
                 target_milestones[number]['period']['endDate'] = \
                     milestones[number+1].period.startDate.isoformat()
             else:
-                target_milestones[number]['period']['endDate'] = \
-                    contract.period.startDate.replace(
-                        year=contract.period.startDate.year + 15).isoformat()
+                target_milestones[number]['period']['endDate'] = get_contract_max_endDate(contract.period.startDate
+                                                                                          ).isoformat()
+                if contract.mode:
+                    days_diff = (get_contract_max_endDate(contract.period.startDate) - contract.period.startDate).days
+                    target_milestones[number]['period']['endDate'] = contract.period.startDate + timedelta(
+                        seconds=days_diff)
         # shrink milestone period endDate
         if target_milestones[number]['period']['startDate']\
                 <= request.validated['data']['period']['endDate'] <=\

@@ -8,6 +8,7 @@ from openprocurement.api.utils import (
 )
 from openprocurement.api.validation import validate_data
 from openprocurement.contracting.esco.models import Milestone
+from openprocurement.contracting.esco.utils import get_contract_max_endDate
 
 
 # milestones
@@ -169,8 +170,10 @@ def validate_update_contract_end_date(request):
                 raise_operation_error(request, "Can't update contract endDate, if "
                                      "it is less than pending milestone startDate")
 
-            contract_max_end_date = contract.period.startDate.replace(
-                year=contract.period.startDate.year + 15)
+            contract_max_end_date = get_contract_max_endDate(contract.period.startDate).isoformat()
+            if contract.mode:
+                days_difference = (get_contract_max_endDate(contract) - contract.period.startDate).days
+                contract_max_end_date = contract.period.startDate + timedelta(seconds=days_difference)
             if contract_period_end_date.date() > contract_max_end_date.date():
                 raise_operation_error(request,
                                       "Contract period cannot be over 15 years")
