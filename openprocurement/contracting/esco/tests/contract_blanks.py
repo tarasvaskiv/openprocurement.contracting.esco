@@ -414,10 +414,11 @@ def patch_tender_contract_period(self):
     milestone_startDate = parse_date(pending_milestone['period']['startDate'])
 
     # contract period endDate = pending milestone startDate - timedelta days = 1
+    delta = timedelta(days=1)
     if 'mode' in self.initial_data and self.initial_data['mode'] == u'test':
-        contract_period['endDate'] = (milestone_startDate - timedelta(seconds=1)).isoformat()
-    else:
-        contract_period['endDate'] = (milestone_startDate - timedelta(days=1)).isoformat()
+        delta = timedelta(seconds=delta.total_seconds() / ACCELERATOR)
+    contract_period['endDate'] = (milestone_startDate - delta).isoformat()
+
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
         self.contract['id'], token),
         {"data": {"period": contract_period}}, status=422)
@@ -425,8 +426,8 @@ def patch_tender_contract_period(self):
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json['errors'], [{u'description': {
         u'startDate': [u'period should begin before its end']},
-                                                u'location': u'body',
-                                                u'name': u'period'}])
+        u'location': u'body',
+        u'name': u'period'}])
 
     # update first milestone to notMet, second becomes pending
     response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
@@ -445,10 +446,11 @@ def patch_tender_contract_period(self):
     milestone_startDate = parse_date(pending_milestone['period']['startDate'])
 
     # contract period endDate == pending milestone startDate
+    delta = timedelta(days=1)
     if 'mode' in self.initial_data and self.initial_data['mode'] == u'test':
-        contract_period['endDate'] = (milestone_startDate - timedelta(seconds=1)).isoformat()
-    else:
-        contract_period['endDate'] = (milestone_startDate - timedelta(days=1)).isoformat()
+        delta = timedelta(seconds=delta.total_seconds() / ACCELERATOR)
+    contract_period['endDate'] = (milestone_startDate - delta).isoformat()
+
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
         self.contract['id'], token),
         {"data": {"period": contract_period}}, status=403)
@@ -479,10 +481,11 @@ def patch_tender_contract_period(self):
     #  test cant change contract period startDate, timedelta 1 day
     temp_startDate = contract_period['startDate']
     contract_period['endDate'] = milestone_startDate.isoformat()
+    delta = timedelta(days=1)
     if 'mode' in self.initial_data and self.initial_data['mode'] == u'test':
-        contract_period['startDate'] = (parse_date(contract_period['endDate']) - timedelta(seconds=1)).isoformat()
-    else:
-        contract_period['startDate'] = (parse_date(contract_period['endDate']) - timedelta(days=1)).isoformat()
+        delta = timedelta(seconds=delta.total_seconds() / ACCELERATOR)
+    contract_period['startDate'] = (parse_date(contract_period['endDate']) - delta).isoformat()
+
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
         self.contract['id'], token), {"data": {"period": contract_period}},
         status=403)
@@ -508,10 +511,11 @@ def patch_tender_contract_period(self):
         contract_period['endDate'])
 
     # change endDate +2 days only, no years
+    delta = timedelta(days=2)
     if 'mode' in self.initial_data and self.initial_data['mode'] == u'test':
-        contract_period['endDate'] = (parse_date(contract_period['endDate']) + timedelta(seconds=2)).isoformat()
-    else:
-        contract_period['endDate'] = (parse_date(contract_period['endDate']) + timedelta(days=2)).isoformat()
+        delta = timedelta(seconds=delta.total_seconds() / ACCELERATOR)
+    contract_period['endDate'] = (parse_date(contract_period['endDate']) + delta).isoformat()
+
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
         self.contract['id'], token), {"data": {"period": contract_period}})
     self.assertEqual(response.status, '200 OK')
@@ -543,12 +547,10 @@ def patch_tender_contract_period(self):
         u'location': u'body', u'name': u'data'}])
 
     #  test change endDate of contract is 15 years from startDate
+    delta = timedelta(days=DAYS_PER_YEAR * count_sheduled_milestones)
     if 'mode' in self.initial_data and self.initial_data['mode'] == u'test':
-        contract_period_end_date = contract_period_start_date + timedelta(
-            seconds=DAYS_PER_YEAR * count_sheduled_milestones)
-    else:
-        contract_period_end_date = contract_period_start_date + timedelta(
-            days=DAYS_PER_YEAR * count_sheduled_milestones)
+        delta = timedelta(seconds=delta.total_seconds() / ACCELERATOR)
+    contract_period_end_date = contract_period_start_date + delta
 
     contract_period['endDate'] = contract_period_end_date.isoformat()
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
@@ -560,18 +562,14 @@ def patch_tender_contract_period(self):
     self.assertEqual(
         [x['status'] for x in response.json['data']['milestones']],
         [u'notMet', u'pending'] + [u'scheduled'] * (
-                    count_sheduled_milestones - 1))
+                count_sheduled_milestones - 1))
     self.assertLess(len(response.json['data']['milestones']), 17)
 
     #  test shrinking last milestone for 3 days
+    delta = timedelta(days=DAYS_PER_YEAR * count_sheduled_milestones) - timedelta(days=3)
     if 'mode' in self.initial_data and self.initial_data['mode'] == u'test':
-        contract_period_end_date = contract_period_start_date + timedelta(
-            seconds=DAYS_PER_YEAR * count_sheduled_milestones) \
-                                   - timedelta(seconds=3)
-    else:
-        contract_period_end_date = contract_period_start_date + timedelta(
-            days=DAYS_PER_YEAR * count_sheduled_milestones) \
-                                   - timedelta(days=3)
+        delta = timedelta(seconds=delta.total_seconds() / ACCELERATOR)
+    contract_period_end_date = contract_period_start_date + delta
 
     contract_period['endDate'] = contract_period_end_date.isoformat()
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
@@ -583,16 +581,14 @@ def patch_tender_contract_period(self):
     self.assertEqual(
         [x['status'] for x in response.json['data']['milestones']],
         [u'notMet', u'pending'] + [u'scheduled'] * (
-                    count_sheduled_milestones - 1))
+                count_sheduled_milestones - 1))
 
     #  test for shrinking milestones, for 4 years
     count_sheduled_milestones -= 4
+    delta = timedelta(days=DAYS_PER_YEAR * count_sheduled_milestones)
     if 'mode' in self.initial_data and self.initial_data['mode'] == u'test':
-        contract_period_end_date = contract_period_start_date + timedelta(
-            seconds=DAYS_PER_YEAR * count_sheduled_milestones)
-    else:
-        contract_period_end_date = contract_period_start_date + timedelta(
-            days=DAYS_PER_YEAR * count_sheduled_milestones)
+        delta = timedelta(seconds=delta.total_seconds() / ACCELERATOR)
+    contract_period_end_date = contract_period_start_date + delta
     contract_period['endDate'] = contract_period_end_date.isoformat()
 
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(

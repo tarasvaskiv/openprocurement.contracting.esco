@@ -211,12 +211,10 @@ def update_milestones_dates_and_statuses(request):
                 target_milestones[number]['period']['endDate'] = \
                     milestones[number+1].period.startDate.isoformat()
             else:
+                delta = timedelta(days=DAYS_PER_YEAR*15)
                 if contract.mode and contract.mode == 'test':
-                    target_milestones[number]['period']['endDate'] = (
-                                contract.period.startDate + timedelta(seconds=DAYS_PER_YEAR*15)).isoformat()
-                else:
-                    target_milestones[number]['period']['endDate'] = (
-                            contract.period.startDate + timedelta(days=DAYS_PER_YEAR*15)).isoformat()
+                    delta = timedelta(seconds=delta.total_seconds() / ACCELERATOR)
+                target_milestones[number]['period']['endDate'] = (contract.period.startDate + delta).isoformat()
         # shrink milestone period endDate
         if target_milestones[number]['period']['startDate']\
                 <= request.validated['data']['period']['endDate'] <=\
