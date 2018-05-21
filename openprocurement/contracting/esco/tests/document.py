@@ -42,7 +42,7 @@ class ContractTerminatedMilestonesDocumentResourceTest(BaseContractTerminatedMil
     test_put_contract_document = snitch(put_contract_document)
     test_contract_change_document = snitch(contract_change_document)
     test_contract_item_document = snitch(contract_item_document)
-    test_create_contract_documnet = snitch(create_contract_document)
+    test_create_contract_document = snitch(create_contract_document)
     test_patch_contract_document = snitch(patch_contract_document)
 
 

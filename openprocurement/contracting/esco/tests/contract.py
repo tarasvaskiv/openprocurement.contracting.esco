@@ -49,6 +49,7 @@ from openprocurement.contracting.common.tests.contract_blanks import (
     get_credentials,
     generate_credentials,
 )
+from openprocurement.contracting.esco.utils import generate_milestones
 
 
 class ContractTest(BaseWebTest):
@@ -110,6 +111,26 @@ class ContractResource4BrokersTest(BaseContractWebTest):
     test_contract_status_change_with_not_met = snitch(contract_status_change_with_not_met)
     test_contract_patch_milestones_value_amount = snitch(contract_patch_milestones_value_amount)
     # test_contract_items_change = snitch(contract_items_change)
+    test_patch_tender_contract_period = snitch(patch_tender_contract_period)
+
+
+class ContractResource4BrokersTestModeTest(BaseContractWebTest):
+    """ esco contract resource test with test mode"""
+    initial_auth = ('Basic', ('broker', ''))
+
+    pending_change = {
+        'rationale': u'причина зміни укр',
+        'rationale_en': 'change cause en',
+        'rationaleTypes': ['itemPriceVariation']}
+
+    def setUp(self):
+        self.initial_data = deepcopy(self.initial_data)
+        self.initial_data["mode"] = u"test"
+        del self.initial_data['milestones']
+        self.initial_data['milestones'] = generate_milestones(self.initial_data)
+
+        super(ContractResource4BrokersTestModeTest, self).setUp()
+
     test_patch_tender_contract_period = snitch(patch_tender_contract_period)
 
 

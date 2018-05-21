@@ -79,10 +79,9 @@ class ContractMilestoneResource(APIResource):
                 self.request.context.sequenceNumber < 16:
             milestone.date = date_modified
             next_milestone = contract.milestones[self.request.context.sequenceNumber]
-            next_milestone_end_year = next_milestone.period.endDate.year
-            if contract.period.endDate.year >= next_milestone_end_year:
-                next_milestone.dateModified = next_milestone.date = date_modified
+            if next_milestone.status != u"spare":
                 next_milestone.status = u"pending"
+                next_milestone.dateModified = next_milestone.date = date_modified
         if apply_patch(self.request, src=self.request.context.serialize()):
             self.LOGGER.info(
                 'Updated contract milestone {}'.format(self.request.context.id),
