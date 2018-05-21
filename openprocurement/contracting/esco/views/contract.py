@@ -17,7 +17,6 @@ from openprocurement.contracting.common.views.contract import (
     ContractResource as BaseContractResource,
 )
 from openprocurement.contracting.esco.validation import (
-    validate_terminate_contract_milestone_statuses,
     validate_terminate_contract_amount_paid,
     validate_update_contract_start_date,
     validate_update_contract_end_date
@@ -36,7 +35,6 @@ class ContractResource(BaseContractResource):
     @json_view(content_type="application/json", permission='edit_contract',
                validators=(validate_patch_contract_data,
                            validate_contract_update_not_in_allowed_status,
-                           validate_terminate_contract_milestone_statuses,
                            validate_terminate_contract_amount_paid,
                            validate_update_contract_start_date,
                            validate_update_contract_end_date))

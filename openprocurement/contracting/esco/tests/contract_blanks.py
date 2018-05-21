@@ -728,22 +728,6 @@ def contract_status_change_with_termination_details(self):
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json["data"]["amountPaid"]["amount"], 100000)
 
-    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
-        self.contract['id'], token), {"data": {"status": "terminated"}}, status=403)
-    self.assertEqual(response.status, '403 Forbidden')
-    self.assertEqual(response.content_type, 'application/json')
-    self.assertEqual(
-        response.json,
-        {
-            "status": "error",
-            "errors": [{
-                "location": "body",
-                "name": "data",
-                "description": "Contract has milestones in 'pending' or 'scheduled' statuses"
-            }]
-        }
-    )
-
     # terminate all scheduled milestones in partiallyMet but first milestone in met
     now = get_now()
     # time travel to contract.period.endDate
@@ -842,21 +826,6 @@ def contract_status_change_with_not_met(self):
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json["data"]["amountPaid"]["amount"], 100000)
 
-    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
-        self.contract['id'], token), {"data": {"status": "terminated"}}, status=403)
-    self.assertEqual(response.status, '403 Forbidden')
-    self.assertEqual(response.content_type, 'application/json')
-    self.assertEqual(
-        response.json,
-        {
-            "status": "error",
-            "errors": [{
-                "location": "body",
-                "name": "data",
-                "description": "Contract has milestones in 'pending' or 'scheduled' statuses"
-            }]
-        }
-    )
 
     # terminate all scheduled milestones in notMet but first milestone in met
     now = get_now()
@@ -946,23 +915,6 @@ def contract_status_change_wo_termination_details(self):
     self.assertEqual(
         True,
         any(milestone['status'] in ['pending', 'spare', 'scheduled'] for milestone in contract['milestones'])
-    )
-
-    # Not allow terminate contract if available non-terminated milestones
-    response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
-        self.contract['id'], token), {"data": {"status": "terminated"}}, status=403)
-    self.assertEqual(response.status, '403 Forbidden')
-    self.assertEqual(response.content_type, 'application/json')
-    self.assertEqual(
-        response.json,
-        {
-            "status": "error",
-            "errors": [{
-                "location": "body",
-                "name": "data",
-                "description": "Contract has milestones in 'pending' or 'scheduled' statuses"
-            }]
-        }
     )
 
     # terminate all scheduled milestones in met
