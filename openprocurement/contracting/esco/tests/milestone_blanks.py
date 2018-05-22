@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import timedelta
+from openprocurement.contracting.esco.constants import ACCELERATOR
 from openprocurement.api.utils import get_now
 
 
@@ -592,7 +593,10 @@ def patch_milestones_status_change(self):
 
     # Don't allow change period
     many_days = timedelta(days=2000)
+    if 'mode' in self.initial_data and self.initial_data['mode'] == u'test':
+        many_days = timedelta(seconds=many_days.total_seconds() / ACCELERATOR)
     end_date = (get_now() + many_days).isoformat()
+
     response = self.app.patch_json(
         '/contracts/{}/milestones/{}?acc_token={}'.format(contract_id, pending_milestone_id, self.contract_token),
         {'data': {'period': {'endDate': end_date}}},
@@ -734,7 +738,7 @@ def patch_milestones_status_change(self):
             u'status': u'error',
             u'errors': [{
                 u'description': [u"Milestone can't be in status 'partiallyMet' if amountPaid.amount not greater then 0 "
-                    "or not less value.amount"],
+                                 "or not less value.amount"],
                 u'location': u'body',
                 u'name': u'status'
             }]

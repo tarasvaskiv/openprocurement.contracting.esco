@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import unittest
+from copy import deepcopy
 
 from openprocurement.api.tests.base import snitch
 from openprocurement.contracting.esco.tests.base import BaseContractWebTest
+from openprocurement.contracting.esco.utils import generate_milestones
 
 from openprocurement.contracting.esco.tests.milestone_blanks import (
     listing_milestones,
@@ -19,11 +21,7 @@ from openprocurement.contracting.esco.tests.milestone_blanks import (
 )
 
 
-class ContractMilestoneResourceTest(BaseContractWebTest):
-    """ ESCO contract milestones resource test """
-
-    initial_auth = ('Basic', ('broker', ''))
-
+class ContractMilestoneResourceMixin(object):
     test_listing_milestones = snitch(listing_milestones)
     test_get_milestone_by_id = snitch(get_milestone_by_id)
     test_patch_milestones_status_change = snitch(patch_milestones_status_change)
@@ -37,9 +35,30 @@ class ContractMilestoneResourceTest(BaseContractWebTest):
     test_patch_milestone_title = snitch(patch_milestone_title)
 
 
+class ContractMilestoneResourceTest(BaseContractWebTest, ContractMilestoneResourceMixin):
+    """ ESCO contract milestones resource test """
+
+    initial_auth = ('Basic', ('broker', ''))
+
+
+class ContractMilestoneResourceTestModeTest(BaseContractWebTest, ContractMilestoneResourceMixin):
+    """ ESCO contract milestones resource test """
+
+    initial_auth = ('Basic', ('broker', ''))
+
+    def setUp(self):
+        self.initial_data = deepcopy(self.initial_data)
+        self.initial_data["mode"] = u"test"
+        del self.initial_data['milestones']
+        self.initial_data['milestones'] = generate_milestones(self.initial_data)
+
+        super(ContractMilestoneResourceTestModeTest, self).setUp()
+
+
 def suite():
     suite = unittest.TestSuite()
     suite.addTest(unittest.makeSuite(ContractMilestoneResourceTest))
+    suite.addTest(unittest.makeSuite(ContractMilestoneResourceTestModeTest))
     return suite
 
 

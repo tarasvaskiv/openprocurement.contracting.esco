@@ -87,7 +87,6 @@ class TerminatedContractResourceTest(BaseTerminatedContractWebTest):
     # TODO: Add all test which required terminated contract
 
 
-
 class ContractWDocumentsWithDSResourceTest(BaseWebTest):
     docservice = True
     initial_data = deepcopy(test_contract_data)
@@ -97,7 +96,16 @@ class ContractWDocumentsWithDSResourceTest(BaseWebTest):
     test_create_contract_w_documents = snitch(create_contract_w_documents)
 
 
-class ContractResource4BrokersTest(BaseContractWebTest):
+class ContractResource4BrokersTestMixin(object):
+    test_patch_tender_contract = snitch(patch_tender_contract)
+    test_contract_status_change_with_termination_details = snitch(contract_status_change_with_termination_details)
+    test_contract_status_change_wo_termination_details = snitch(contract_status_change_wo_termination_details)
+    test_contract_status_change_with_not_met = snitch(contract_status_change_with_not_met)
+    test_contract_patch_milestones_value_amount = snitch(contract_patch_milestones_value_amount)
+    test_patch_tender_contract_period = snitch(patch_tender_contract_period)
+
+
+class ContractResource4BrokersTest(BaseContractWebTest, ContractResource4BrokersTestMixin):
     """ esco contract resource test """
     initial_auth = ('Basic', ('broker', ''))
     pending_change = {
@@ -105,16 +113,8 @@ class ContractResource4BrokersTest(BaseContractWebTest):
         'rationale_en': 'change cause en',
         'rationaleTypes': ['itemPriceVariation']}
 
-    test_patch_tender_contract = snitch(patch_tender_contract)
-    test_contract_status_change_with_termination_details = snitch(contract_status_change_with_termination_details)
-    test_contract_status_change_wo_termination_details = snitch(contract_status_change_wo_termination_details)
-    test_contract_status_change_with_not_met = snitch(contract_status_change_with_not_met)
-    test_contract_patch_milestones_value_amount = snitch(contract_patch_milestones_value_amount)
-    # test_contract_items_change = snitch(contract_items_change)
-    test_patch_tender_contract_period = snitch(patch_tender_contract_period)
 
-
-class ContractResource4BrokersTestModeTest(BaseContractWebTest):
+class ContractResource4BrokersTestModeTest(BaseContractWebTest, ContractResource4BrokersTestMixin):
     """ esco contract resource test with test mode"""
     initial_auth = ('Basic', ('broker', ''))
 
@@ -130,8 +130,6 @@ class ContractResource4BrokersTestModeTest(BaseContractWebTest):
         self.initial_data['milestones'] = generate_milestones(self.initial_data)
 
         super(ContractResource4BrokersTestModeTest, self).setUp()
-
-    test_patch_tender_contract_period = snitch(patch_tender_contract_period)
 
 
 class ContractResource4AdministratorTest(BaseContractWebTest):
@@ -160,6 +158,7 @@ def suite():
     suite.addTest(unittest.makeSuite(ContractWDocumentsWithDSResourceTest))
     suite.addTest(unittest.makeSuite(ContractCredentialsTest))
     suite.addTest(unittest.makeSuite(ContractResource4BrokersTest))
+    suite.addTest(unittest.makeSuite(ContractResource4BrokersTestModeTest))
     suite.addTest(unittest.makeSuite(ContractResource4AdministratorTest))
     return suite
 

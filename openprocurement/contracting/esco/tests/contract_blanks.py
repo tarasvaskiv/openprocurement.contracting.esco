@@ -210,7 +210,10 @@ def patch_tender_contract(self):
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
         self.contract['id'], token), {"data": {"title": "New Title"}})
     self.assertEqual(response.status, '200 OK')
-    self.assertEqual(response.json['data']['title'], "New Title")
+    if 'mode' in self.initial_data and self.initial_data['mode'] == u'test':
+        self.assertEqual(response.json['data']['title'], u"[ТЕСТУВАННЯ] New Title")
+    else:
+        self.assertEqual(response.json['data']['title'], "New Title")
 
     # can't patch contract amountPaid amount, currency and vat
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
@@ -319,19 +322,20 @@ def patch_tender_contract(self):
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json['data']['status'], 'pending')
 
-    new_end_date = end_date.replace(end_date.year + 1)
+    delta = timedelta(days=DAYS_PER_YEAR)
+    if 'mode' in self.initial_data and self.initial_data['mode'] == u'test':
+        delta = timedelta(seconds=delta.total_seconds() / ACCELERATOR)
+    new_end_date = end_date + delta
     contract_period['endDate'] = new_end_date.isoformat()
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
             self.contract['id'], token), {"data": {"period": contract_period}})
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.content_type, 'application/json')
-    self.assertEqual(len(response.json['data']['milestones']),
-                     number_of_milestones + 1)
+    self.assertEqual(len(response.json['data']['milestones']), number_of_milestones + 1)
 
     target_milestone = response.json['data']['milestones'][number_of_milestones]
-    response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'
-                .format(self.contract['id'], target_milestone['id'], token),
-                   {'data': {"value": {"amount": 500}}})
+    response = self.app.patch_json('/contracts/{}/milestones/{}?acc_token={}'.format(
+        self.contract['id'], target_milestone['id'], token), {'data': {"value": {"amount": 500}}})
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(response.json['data']['value']['amount'], 500.0)
@@ -344,23 +348,23 @@ def patch_tender_contract(self):
     response = self.app.get('/contracts/{}'.format(self.contract['id']))
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.content_type, 'application/json')
-    self.assertEqual(response.json['data']['amountPaid']['amount'],
-                     start_amountPaid + 500)
-    self.assertEqual(response.json['data']['value']['amount'],
-                     start_value + 500)
+    self.assertEqual(response.json['data']['amountPaid']['amount'], start_amountPaid + 500)
+    self.assertEqual(response.json['data']['value']['amount'], start_value + 500)
 
     #  now change endDate back for year to hide milestone to spare
     #  and check amount and amountPaid are decreased
-    new_end_date = new_end_date.replace(new_end_date.year - 1)
+    delta = timedelta(days=DAYS_PER_YEAR)
+    if 'mode' in self.initial_data and self.initial_data['mode'] == u'test':
+        delta = timedelta(seconds=delta.total_seconds() / ACCELERATOR)
+    new_end_date = new_end_date - delta
     contract_period['endDate'] = new_end_date.isoformat()
+
     response = self.app.patch_json('/contracts/{}?acc_token={}'.format(
         self.contract['id'], token), {"data": {"period": contract_period}})
     self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.content_type, 'application/json')
-    self.assertEqual(response.json['data']['period']['endDate'],
-                     new_end_date.isoformat())
-    self.assertEqual(response.json['data']['amountPaid']['amount'],
-                     start_amountPaid)
+    self.assertEqual(response.json['data']['period']['endDate'], new_end_date.isoformat())
+    self.assertEqual(response.json['data']['amountPaid']['amount'], start_amountPaid)
     self.assertEqual(response.json['data']['value']['amount'], start_value)
 
 
