@@ -138,9 +138,24 @@ Request example for cases when contract has several items:
 .. include:: tutorial/delete-contract-item.http
    :code:
 
-* update scheduled milestone
+* update scheduled milestone #2
 
-.. include:: tutorial/update-contract-milestone.http
+.. include:: tutorial/update-contract-milestone-1.http
+   :code:
+
+* update scheduled milestone #3
+
+.. include:: tutorial/update-contract-milestone-2.http
+   :code:
+
+* update scheduled milestone #4
+
+.. include:: tutorial/update-contract-milestone-3.http
+   :code:
+
+* update scheduled milestone #5
+
+.. include:: tutorial/update-contract-milestone-4.http
    :code:
 
 
@@ -224,7 +239,34 @@ Let's view all contract milestones
 
 Can complete milestone only in `pending` status and if `milestone.period.startDate` is less than now.
 
+* complete first milestone
+
 .. include:: tutorial/terminate-contract-milestone-1.http
+   :code:
+
+* report payment in second milestone
+
+.. include:: tutorial/notify-contract-milestone-2.http
+   :code:
+
+* complete second milestone with overpay
+
+.. include:: tutorial/terminate-contract-milestone-2.http
+   :code:
+
+* complete third milestone with partially met
+
+.. include:: tutorial/terminate-contract-milestone-3.http
+   :code:
+
+* try complete fourth milestone when `contract.value.amount` will be less than `contract.amountPaid.amount`
+
+.. include:: tutorial/terminate-contract-milestone-4-failed.http
+   :code:
+
+* complete fourth milestone with partially met
+
+.. include:: tutorial/terminate-contract-milestone-4.http
    :code:
 
 Let's perform these actions in single request:

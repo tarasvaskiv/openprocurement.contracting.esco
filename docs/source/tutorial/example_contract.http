@@ -83,10 +83,10 @@ Content-Type: application/json; charset=UTF-8
     ], 
     "contractNumber": "17", 
     "period": {
-      "startDate": "2018-05-15T15:33:40.975673+03:00", 
-      "endDate": "2025-03-21T15:33:40.975673+03:00"
+      "startDate": "2018-05-23T09:37:39.577948+03:00", 
+      "endDate": "2025-03-29T09:37:39.577948+03:00"
     }, 
-    "dateSigned": "2018-05-15T15:33:40.975673+03:00", 
+    "dateSigned": "2018-05-23T09:37:39.577948+03:00", 
     "value": {
       "yearlyPaymentsPercentage": 0.92, 
       "valueAddedTaxIncluded": true, 

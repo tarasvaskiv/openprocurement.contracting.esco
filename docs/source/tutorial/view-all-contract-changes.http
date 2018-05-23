@@ -13,10 +13,10 @@ Content-Type: application/json; charset=UTF-8
         "priceReduction"
       ], 
       "rationale_en": "Contract change cause", 
-      "dateSigned": "2018-05-15T15:33:44.935674+03:00", 
+      "dateSigned": "2018-05-23T09:37:44.046886+03:00", 
       "rationale": "Друга і третя поставка має бути розфасована", 
-      "date": "2018-05-15T15:33:44.988077+03:00", 
-      "id": "6a1ec221b3164000a0066c409a38eecd"
+      "date": "2018-05-23T09:37:44.097032+03:00", 
+      "id": "2012fa38548546dcbda1601ce90c91bb"
     }
   ]
 }

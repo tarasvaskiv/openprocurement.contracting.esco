@@ -1,22 +1,22 @@
-POST /api/2.4/contracts/05285a1b38494dcaaf0e47408f5913f9/documents?acc_token=20d3ef355ba342caaacd6590d712c6eb HTTP/1.0
+POST /api/2.4/contracts/05285a1b38494dcaaf0e47408f5913f9/documents?acc_token=a8a4bcfba9ca45edb7bd7c99e651804b HTTP/1.0
 Authorization: Basic YnJva2VyOg==
 Content-Length: 215
-Content-Type: multipart/form-data; boundary=----------a_BoUnDaRy731616923363$
+Content-Type: multipart/form-data; boundary=----------a_BoUnDaRy382879852489$
 Host: api-sandbox.openprocurement.org
 
 Response: 201 Created
 Content-Type: application/json; charset=UTF-8
-Location: http://api-sandbox.openprocurement.org/api/2.4/contracts/05285a1b38494dcaaf0e47408f5913f9/documents/a9d0e984f4c141dfa8c3cf3b8a011d66
+Location: http://api-sandbox.openprocurement.org/api/2.4/contracts/05285a1b38494dcaaf0e47408f5913f9/documents/97f13f29e49342d1bc9d1847f7b2ec4e
 {
   "data": {
     "hash": "md5:00000000000000000000000000000000", 
     "title": "contract_additional_docs.doc", 
-    "url": "http://public.docs-sandbox.openprocurement.org/get/b3744f12d30c49c39ca898bf686165a9?KeyID=f988f514&Signature=RVmrw7tntELPSnp8cZ9KKT5NqIeb%2FBABgH%252B1cugmIMYkhfhY9vW7BHCkXtqK4T9XawphWI%252BCLlCnzvqUkIOPDw%253D%253D", 
+    "url": "http://public.docs-sandbox.openprocurement.org/get/7ad5367892fe4b979f7ffc3fcf13f82a?KeyID=a4f1bd8c&Signature=xRgZF6IA07IS%252BT6IhVa8MyE1Acsouqd4OO%252BjDWlk0F0HAOhg0GXctbtt8sx6xINAYxirKqGNwhvnEv6zfMRwCw%253D%253D", 
     "format": "application/msword", 
     "documentOf": "contract", 
-    "datePublished": "2018-05-15T15:33:45.328565+03:00", 
-    "id": "a9d0e984f4c141dfa8c3cf3b8a011d66", 
-    "dateModified": "2018-05-15T15:33:45.328590+03:00"
+    "datePublished": "2018-05-23T09:37:44.454405+03:00", 
+    "id": "97f13f29e49342d1bc9d1847f7b2ec4e", 
+    "dateModified": "2018-05-23T09:37:44.454434+03:00"
   }
 }
 
