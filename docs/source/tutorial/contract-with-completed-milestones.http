@@ -7,8 +7,8 @@ Content-Type: application/json; charset=UTF-8
 {
   "data": {
     "period": {
-      "startDate": "2018-05-15T15:33:40.975673+03:00", 
-      "endDate": "2019-06-09T15:33:44.047088+03:00"
+      "startDate": "2018-05-23T09:37:39.577948+03:00", 
+      "endDate": "2022-05-23T09:37:39.577948+03:00"
     }, 
     "procuringEntity": {
       "contactPoint": {
@@ -44,56 +44,56 @@ Content-Type: application/json; charset=UTF-8
       {
         "hash": "md5:00000000000000000000000000000000", 
         "title": "contract_changes.doc", 
-        "url": "http://public.docs-sandbox.openprocurement.org/get/7882203e7dd2449b856fb16794b40871?KeyID=f988f514&Signature=csn2SA0Ek1NCRBlkQg2ScezTysfJgdml5SRGjU3jAcrhq5e%2FSNu5hsUSf6f5VIJgiCIP8PxPdf8NiLOv%2FMmHBg%253D%253D", 
+        "url": "http://public.docs-sandbox.openprocurement.org/get/8eb69ce6ba9a4a2d8b88896e044ec33c?KeyID=a4f1bd8c&Signature=1zwKSb%252BoFvaANPSDNiiuGOldad5b%2F60GxkzEVXp94vW%252BxfullpS6oV0MSf02m%2FIxFIHc2ka78W82OYUovFHSCQ%253D%253D", 
         "format": "application/msword", 
         "documentOf": "change", 
-        "datePublished": "2018-05-15T15:33:43.835245+03:00", 
-        "id": "0200c8217aef4e1c83f8360503b716cc", 
-        "relatedItem": "6a1ec221b3164000a0066c409a38eecd", 
-        "dateModified": "2018-05-15T15:33:43.835277+03:00"
+        "datePublished": "2018-05-23T09:37:42.564053+03:00", 
+        "id": "daafead1c21b43dcb7dfebbeaaacdfa1", 
+        "relatedItem": "2012fa38548546dcbda1601ce90c91bb", 
+        "dateModified": "2018-05-23T09:37:42.564083+03:00"
       }, 
       {
         "hash": "md5:00000000000000000000000000000000", 
         "title": "contract.doc", 
-        "url": "http://public.docs-sandbox.openprocurement.org/get/20a4791e40f24bb9bbdd688fa8bc2f13?KeyID=f988f514&Signature=cNCVdbMCUxF4hXqy9k64x1q09HkgbHR%2FEnQxNnK82uVVM1XqCiTkSCgQZpbLPzUMqeDzWwry3MtXJb5ZAVoIAg%253D%253D", 
+        "url": "http://public.docs-sandbox.openprocurement.org/get/c0e452839f834d68965b3a02a1c6413d?KeyID=a4f1bd8c&Signature=PAhwnmC4kKkPFrA7M7PEbfJktSU%2FN62HQHFWJYL%2FFNlCSNuHgtm2VGDPHTlLuHpMGt5QxJRkEXCyJNlNfMIbDA%253D%253D", 
         "format": "application/msword", 
         "documentOf": "contract", 
-        "datePublished": "2018-05-15T15:33:45.177625+03:00", 
-        "id": "3efa9c657c4a4a9f99d7cafa42a066de", 
-        "dateModified": "2018-05-15T15:33:45.177680+03:00"
+        "datePublished": "2018-05-23T09:37:44.296267+03:00", 
+        "id": "6594bbd6fcb54180b4a6d59ae63864ae", 
+        "dateModified": "2018-05-23T09:37:44.296294+03:00"
       }, 
       {
         "hash": "md5:00000000000000000000000000000000", 
         "title": "contract_additional_docs.doc", 
-        "url": "http://public.docs-sandbox.openprocurement.org/get/b3744f12d30c49c39ca898bf686165a9?KeyID=f988f514&Signature=RVmrw7tntELPSnp8cZ9KKT5NqIeb%2FBABgH%252B1cugmIMYkhfhY9vW7BHCkXtqK4T9XawphWI%252BCLlCnzvqUkIOPDw%253D%253D", 
+        "url": "http://public.docs-sandbox.openprocurement.org/get/7ad5367892fe4b979f7ffc3fcf13f82a?KeyID=a4f1bd8c&Signature=xRgZF6IA07IS%252BT6IhVa8MyE1Acsouqd4OO%252BjDWlk0F0HAOhg0GXctbtt8sx6xINAYxirKqGNwhvnEv6zfMRwCw%253D%253D", 
         "format": "application/msword", 
         "documentOf": "contract", 
-        "datePublished": "2018-05-15T15:33:45.328565+03:00", 
-        "id": "a9d0e984f4c141dfa8c3cf3b8a011d66", 
-        "dateModified": "2018-05-15T15:33:45.328590+03:00"
+        "datePublished": "2018-05-23T09:37:44.454405+03:00", 
+        "id": "97f13f29e49342d1bc9d1847f7b2ec4e", 
+        "dateModified": "2018-05-23T09:37:44.454434+03:00"
       }, 
       {
         "hash": "md5:00000000000000000000000000000000", 
         "title": "contract_additional_docs.doc", 
-        "url": "http://public.docs-sandbox.openprocurement.org/get/05962f459aa446ab9cc48cd7250ff92e?KeyID=f988f514&Signature=Nkb001pFt%2FCsdBKKXDlNitKftBOIDMBppfbtht20a0cRBRLfvfKj1dizY7Y1tTnG4FWl8yhxMTlXJK6FNylIAQ%253D%253D", 
+        "url": "http://public.docs-sandbox.openprocurement.org/get/fedc409919d94c4bbb1f1194d2f0660f?KeyID=a4f1bd8c&Signature=CQVfQtIIB3NjY2kqIzsZufZ18vCdoUNq8K%2Fwv7jTPxZvDr8xx46AbYVOJ9JP88Vxae35Mz9vB1MIme6Yrug%252BCg%253D%253D", 
         "format": "application/msword", 
         "documentOf": "contract", 
-        "datePublished": "2018-05-15T15:33:45.328565+03:00", 
-        "id": "a9d0e984f4c141dfa8c3cf3b8a011d66", 
-        "dateModified": "2018-05-15T15:33:45.435325+03:00"
+        "datePublished": "2018-05-23T09:37:44.454405+03:00", 
+        "id": "97f13f29e49342d1bc9d1847f7b2ec4e", 
+        "dateModified": "2018-05-23T09:37:44.566759+03:00"
       }
     ], 
     "title": "Енергосервіс будівлі Комунальної установи Сумська загальноосвітня школа І-ІІІ ступенів № 26 м.Суми, Сумсбкої області", 
     "contractNumber": "17", 
-    "dateModified": "2018-05-15T15:33:45.759581+03:00", 
+    "dateModified": "2018-05-23T09:37:45.339660+03:00", 
     "status": "active", 
     "description": "", 
     "NBUdiscountRate": 0.135, 
-    "dateSigned": "2018-05-15T15:33:40.975673+03:00", 
+    "dateSigned": "2018-05-23T09:37:39.577948+03:00", 
     "contractType": "esco", 
     "amountPaid": {
       "currency": "UAH", 
-      "amount": 100.0, 
+      "amount": 320000.0, 
       "valueAddedTaxIncluded": true
     }, 
     "milestones": [
@@ -103,22 +103,22 @@ Content-Type: application/json; charset=UTF-8
         "sequenceNumber": 1, 
         "title": "Milestone #1 of year 2018", 
         "period": {
-          "startDate": "2018-05-15T15:33:40.975673+03:00", 
-          "endDate": "2019-01-01T00:00:00+02:02"
+          "startDate": "2018-05-23T09:37:39.577948+03:00", 
+          "endDate": "2019-01-01T00:00:00+02:00"
         }, 
         "value": {
           "currency": "UAH", 
           "amount": 0, 
           "valueAddedTaxIncluded": true
         }, 
-        "id": "11adcde8e697459a9d13e1ac780ac7d9", 
-        "date": "2018-05-15T15:33:45.624067+03:00", 
+        "id": "44770bd916b14d5ab6d9eea0527e5e20", 
+        "date": "2018-05-23T09:37:44.772057+03:00", 
         "amountPaid": {
           "currency": "UAH", 
           "amount": 0, 
           "valueAddedTaxIncluded": true
         }, 
-        "dateModified": "2018-05-15T15:33:45.624067+03:00"
+        "dateModified": "2018-05-23T09:37:44.772057+03:00"
       }, 
       {
         "status": "met", 
@@ -126,22 +126,91 @@ Content-Type: application/json; charset=UTF-8
         "sequenceNumber": 2, 
         "title": "Milestone #2 of year 2019", 
         "period": {
-          "startDate": "2019-01-01T00:00:00+02:02", 
-          "endDate": "2019-06-09T15:33:44.047088+03:00"
+          "startDate": "2019-01-01T00:00:00+02:00", 
+          "endDate": "2020-01-01T00:00:00+02:00"
         }, 
         "value": {
           "currency": "UAH", 
-          "amount": 100.0, 
+          "amount": 80000.0, 
           "valueAddedTaxIncluded": true
         }, 
-        "id": "78bcdc52d73d4f97b0824f3965a3639b", 
-        "date": "2018-05-15T15:33:45.739779+03:00", 
+        "id": "74ed371ed450417caed14aaf2ab6687b", 
+        "date": "2018-05-23T09:37:45.019170+03:00", 
         "amountPaid": {
           "currency": "UAH", 
-          "amount": 100.0, 
+          "amount": 240000.0, 
           "valueAddedTaxIncluded": true
         }, 
-        "dateModified": "2018-05-15T15:33:45.739779+03:00"
+        "dateModified": "2018-05-23T09:37:45.019170+03:00"
+      }, 
+      {
+        "status": "partiallyMet", 
+        "description": "Milestone #3 of year 2020", 
+        "sequenceNumber": 3, 
+        "title": "Milestone #3 of year 2020", 
+        "period": {
+          "startDate": "2020-01-01T00:00:00+02:00", 
+          "endDate": "2021-01-01T00:00:00+02:00"
+        }, 
+        "value": {
+          "currency": "UAH", 
+          "amount": 80000.0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "id": "6cab1f95bb904a2183e2f0de1f0a6063", 
+        "date": "2018-05-23T09:37:45.141633+03:00", 
+        "amountPaid": {
+          "currency": "UAH", 
+          "amount": 40000.0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "dateModified": "2018-05-23T09:37:45.141633+03:00"
+      }, 
+      {
+        "status": "partiallyMet", 
+        "description": "Milestone #4 of year 2021", 
+        "sequenceNumber": 4, 
+        "title": "Milestone #4 of year 2021", 
+        "period": {
+          "startDate": "2021-01-01T00:00:00+02:00", 
+          "endDate": "2022-01-01T00:00:00+02:00"
+        }, 
+        "value": {
+          "currency": "UAH", 
+          "amount": 80000.0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "id": "7ab535cad7ef4516bfa9c6f18608bb50", 
+        "date": "2018-05-23T09:37:45.326186+03:00", 
+        "amountPaid": {
+          "currency": "UAH", 
+          "amount": 40000.0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "dateModified": "2018-05-23T09:37:45.326186+03:00"
+      }, 
+      {
+        "status": "pending", 
+        "description": "Milestone #5 of year 2022", 
+        "sequenceNumber": 5, 
+        "title": "Milestone #5 of year 2022", 
+        "period": {
+          "startDate": "2022-01-01T00:00:00+02:00", 
+          "endDate": "2022-05-23T09:37:39.577948+03:00"
+        }, 
+        "value": {
+          "currency": "UAH", 
+          "amount": 80000.0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "id": "981bd581b42b4e5ea9822d8af43d794d", 
+        "date": "2018-05-23T09:37:45.326186+03:00", 
+        "amountPaid": {
+          "currency": "UAH", 
+          "amount": 0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "dateModified": "2018-05-23T09:37:45.326186+03:00"
       }
     ], 
     "items": [
@@ -197,12 +266,12 @@ Content-Type: application/json; charset=UTF-8
       "yearlyPaymentsPercentage": 0.92, 
       "valueAddedTaxIncluded": true, 
       "currency": "UAH", 
-      "amount": 100.0, 
+      "amount": 320000.0, 
       "contractDuration": {
         "days": 310, 
         "years": 6
       }, 
-      "amountPerformance": 446748.31, 
+      "amountPerformance": 446471.27, 
       "annualCostsReduction": [
         0, 
         178997.04, 
@@ -236,10 +305,10 @@ Content-Type: application/json; charset=UTF-8
           "priceReduction"
         ], 
         "rationale_en": "Contract change cause", 
-        "dateSigned": "2018-05-15T15:33:44.935674+03:00", 
+        "dateSigned": "2018-05-23T09:37:44.046886+03:00", 
         "rationale": "Друга і третя поставка має бути розфасована", 
-        "date": "2018-05-15T15:33:44.988077+03:00", 
-        "id": "6a1ec221b3164000a0066c409a38eecd"
+        "date": "2018-05-23T09:37:44.097032+03:00", 
+        "id": "2012fa38548546dcbda1601ce90c91bb"
       }
     ], 
     "contractID": "UA-2017-11-21-001567-c-a1"

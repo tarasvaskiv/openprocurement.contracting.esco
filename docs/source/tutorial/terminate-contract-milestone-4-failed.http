@@ -1,0 +1,28 @@
+PATCH /api/2.4/contracts/05285a1b38494dcaaf0e47408f5913f9/milestones/7ab535cad7ef4516bfa9c6f18608bb50?acc_token=a8a4bcfba9ca45edb7bd7c99e651804b HTTP/1.0
+Authorization: Basic YnJva2VyOg==
+Content-Length: 63
+Content-Type: application/json
+Host: api-sandbox.openprocurement.org
+DATA:
+{
+  "data": {
+    "status": "met", 
+    "amountPaid": {
+      "amount": 160000.0
+    }
+  }
+}
+
+Response: 403 Forbidden
+Content-Type: application/json; charset=UTF-8
+{
+  "status": "error", 
+  "errors": [
+    {
+      "description": "The sum of milestones amountPaid.amount can't be greater than contract.value.amount", 
+      "location": "body", 
+      "name": "data"
+    }
+  ]
+}
+

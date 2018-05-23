@@ -6,6 +6,7 @@ import openprocurement.contracting.esco.tests.base as base_test
 
 from copy import deepcopy
 from datetime import timedelta
+from iso8601 import parse_date
 from uuid import uuid4
 
 from mock import patch
@@ -190,17 +191,17 @@ class ContractResourceTest(BaseContractWebTest):
         self.assertEqual(len(response.json['data']['milestones']), 8)
 
         with open('docs/source/tutorial/contracts-patch.http', 'w') as self.app.file_obj:
-            custom_period_end_date = (get_now() + timedelta(days=390)).isoformat()
+            period_start_date = parse_date(response.json['data']['period']['startDate'])
+            custom_period_end_date = period_start_date.replace(year=period_start_date.year + 4)
             response = self.app.patch_json(
                 '/contracts/{}?acc_token={}'.format(self.contract_id, self.contract_token),
-                {"data": {"period": {'endDate': custom_period_end_date}}}
+                {"data": {"period": {'endDate': custom_period_end_date.isoformat()}}}
             )
             self.assertEqual(response.status, '200 OK')
 
-        self.assertEqual(len(response.json['data']['milestones']), 2)
+        self.assertEqual(len(response.json['data']['milestones']), 5)
         milestones = response.json['data']['milestones']
-        scheduled_milestone_id = milestones[1]['id']
-        self.assertEqual(response.json['data']['period']['endDate'], custom_period_end_date)
+        self.assertEqual(response.json['data']['period']['endDate'], custom_period_end_date.isoformat())
 
         # update item
         with open('docs/source/tutorial/update-contract-item.http', 'w') as self.app.file_obj:
@@ -217,15 +218,17 @@ class ContractResourceTest(BaseContractWebTest):
             self.assertEqual(response.status, '200 OK')
             self.assertEqual(len(response.json['data']['items']), 1)
 
-        # Change value in scheduled milestone
-        with open('docs/source/tutorial/update-contract-milestone.http', 'w') as self.app.file_obj:
-            response = self.app.patch_json(
-                '/contracts/{}/milestones/{}?acc_token={}'.format(self.contract_id, scheduled_milestone_id,
-                                                                  self.contract_token),
-                {'data': {'value': {'amount': 100}}}
-            )
-            self.assertEqual(response.status, '200 OK')
-            self.assertEqual(response.json['data']['value']['amount'], 100)
+        # Change value in scheduled milestones
+        for i in xrange(1, 5):
+            with open('docs/source/tutorial/update-contract-milestone-{}.http'.format(i), 'w') as self.app.file_obj:
+                response = self.app.patch_json(
+                    '/contracts/{}/milestones/{}?acc_token={}'.format(self.contract_id, milestones[i]['id'],
+                                                                      self.contract_token),
+                    {'data': {'value': {'amount': 80000}}}
+                )
+                self.assertEqual(response.status, '200 OK')
+                self.assertEqual(response.json['data']['value']['amount'], 80000)
+                self.assertEqual(response.json['data']['status'], 'scheduled')
 
         # apply contract change
         with open('docs/source/tutorial/apply-contract-change.http', 'w') as self.app.file_obj:
@@ -281,7 +284,8 @@ class ContractResourceTest(BaseContractWebTest):
         # view all contract milestones
         with open('docs/source/tutorial/contract-all-milestones.http', 'w') as self.app.file_obj:
             response = self.app.get('/contracts/{}/milestones'.format(self.contract_id))
-            self.assertEqual(len(response.json['data']), 2)
+            self.assertEqual(len(response.json['data']), 5)
+        milestones = response.json['data']
 
         # terminate milestones
         with open('docs/source/tutorial/terminate-contract-milestone-1.http', 'w') as self.app.file_obj:
@@ -298,11 +302,64 @@ class ContractResourceTest(BaseContractWebTest):
             contract_duration_days = self.initial_data['value']['contractDuration']['days']
             mocked_get_now.return_value = \
                 now.replace(year=now.year + contract_duration_years) + timedelta(days=contract_duration_days)
-            response = self.app.patch_json(
-                '/contracts/{}/milestones/{}?acc_token={}'.format(self.contract_id, milestones[1]['id'],
-                                                                  self.contract_token),
-                {'data': {'amountPaid': {'amount': 100}, 'status': 'met'}}
+            with open('docs/source/tutorial/notify-contract-milestone-2.http', 'w') as self.app.file_obj:
+                response = self.app.patch_json(
+                    '/contracts/{}/milestones/{}?acc_token={}'.format(self.contract_id, milestones[1]['id'],
+                                                                      self.contract_token),
+                    {'data': {'amountPaid': {'amount': milestones[1]['value']['amount']}}}
+                )
+            self.assertEqual(response.json['data']['amountPaid']['amount'], response.json['data']['value']['amount'])
+
+            with open('docs/source/tutorial/terminate-contract-milestone-2.http', 'w') as self.app.file_obj:
+                amount = milestones[1]['value']['amount'] * 3
+                response = self.app.patch_json(
+                    '/contracts/{}/milestones/{}?acc_token={}'.format(self.contract_id, milestones[1]['id'],
+                                                                     self.contract_token),
+                    {'data': {'amountPaid': {'amount': amount}, 'status': 'met'}}
+                )
+            self.assertEqual(response.json['data']['amountPaid']['amount'], amount)
+            self.assertEqual(response.json['data']['status'], 'met')
+
+            with open('docs/source/tutorial/terminate-contract-milestone-3.http', 'w') as self.app.file_obj:
+                amount = milestones[2]['value']['amount'] / 2
+                response = self.app.patch_json(
+                    '/contracts/{}/milestones/{}?acc_token={}'.format(self.contract_id, milestones[2]['id'],
+                                                                     self.contract_token),
+                    {'data': {'amountPaid': {'amount': amount}, 'status': 'partiallyMet'}}
+                )
+            self.assertEqual(response.json['data']['amountPaid']['amount'], amount)
+            self.assertEqual(response.json['data']['status'], 'partiallyMet')
+
+            with open('docs/source/tutorial/terminate-contract-milestone-4-failed.http', 'w') as self.app.file_obj:
+                amount = milestones[2]['value']['amount'] * 2
+                response = self.app.patch_json(
+                    '/contracts/{}/milestones/{}?acc_token={}'.format(self.contract_id, milestones[3]['id'],
+                                                                     self.contract_token),
+                    {'data': {'amountPaid': {'amount': amount}, 'status': 'met'}},
+                    status=403
+                )
+            self.assertEqual(
+                response.json,
+                {
+                    "status": "error",
+                    "errors": [{
+                        "location": "body",
+                        "name": "data",
+                        "description": "The sum of milestones amountPaid.amount can't be greater than "
+                        "contract.value.amount"
+                    }]
+                }
             )
+
+            with open('docs/source/tutorial/terminate-contract-milestone-4.http', 'w') as self.app.file_obj:
+                amount = milestones[1]['value']['amount'] / 2
+                response = self.app.patch_json(
+                    '/contracts/{}/milestones/{}?acc_token={}'.format(self.contract_id, milestones[3]['id'],
+                                                                     self.contract_token),
+                    {'data': {'amountPaid': {'amount': amount}, 'status': 'partiallyMet'}}
+                )
+            self.assertEqual(response.json['data']['amountPaid']['amount'], amount)
+            self.assertEqual(response.json['data']['status'], 'partiallyMet')
 
         # view contract with completed milestones
         with open('docs/source/tutorial/contract-with-completed-milestones.http', 'w') as self.app.file_obj:
