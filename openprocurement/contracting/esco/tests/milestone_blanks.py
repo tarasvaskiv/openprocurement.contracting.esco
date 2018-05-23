@@ -745,6 +745,22 @@ def patch_milestones_status_change(self):
         }
     )
 
+    if 'mode' in self.initial_data and self.initial_data['mode'] == u'test':
+        #  make second milestone notMet, because when mode==test, cant change 2 milestone, now-time came
+        contract = self.db.get(self.contract['id'])
+
+        milestone_id = contract['milestones'][2]['id']
+        milestone_period = contract['milestones'][2]['period']
+        from copy import deepcopy
+        contract['milestones'][2] = deepcopy(contract['milestones'][1])
+
+        contract['milestones'][1]['status'] = u'notMet'
+        contract['milestones'][2]['id'] = milestone_id
+        contract['milestones'][2]['period'] = milestone_period
+
+        self.db.save(contract)
+        next_milestone_id = milestone_id
+
     # Try to update pending milestone before it's period
     data['status'] = 'met'
     data['amountPaid']['amount'] = float(self.initial_data['milestones'][1]['value']['amount'])
