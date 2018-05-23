@@ -8,6 +8,7 @@ from openprocurement.api.utils import (
 )
 from openprocurement.api.validation import validate_data
 from openprocurement.contracting.esco.models import Milestone
+from openprocurement.contracting.esco.constants import ACCELERATOR, DAYS_PER_YEAR
 
 
 # milestones
@@ -76,14 +77,6 @@ def validate_pending_milestone_update_period(request):
         raise_operation_error(request, "Can't update milestone before period.startDate")
 
 
-def validate_terminate_contract_milestone_statuses(request):
-    contract = request.context
-    data = request.validated['data']
-    if data['status'] != 'active' and \
-            any(milestone['status'] in ['pending', 'scheduled'] for milestone in contract.milestones):
-        raise_operation_error(request, "Contract has milestones in 'pending' or 'scheduled' statuses")
-
-
 def validate_terminate_contract_amount_paid(request):
     data = request.validated['data']
     contract = request.context
@@ -150,7 +143,7 @@ def validate_update_contract_end_date(request):
     """
     if 'period' in request.validated['data']:
         contract_period_end_date = parse_date(request.validated['data']['period']['endDate'])
-        if request.context.period.endDate.date() != contract_period_end_date.date():
+        if request.context.period.endDate != contract_period_end_date:
             contract = request.context
 
             changes = contract.changes
@@ -169,11 +162,12 @@ def validate_update_contract_end_date(request):
                 raise_operation_error(request, "Can't update contract endDate, if "
                                      "it is less than pending milestone startDate")
 
-            contract_max_end_date = contract.period.startDate.replace(
-                year=contract.period.startDate.year + 15)
-            if contract_period_end_date.date() > contract_max_end_date.date():
-                raise_operation_error(request,
-                                      "Contract period cannot be over 15 years")
+            delta = timedelta(days=DAYS_PER_YEAR * 15)
+            if contract.mode and contract.mode == 'test':
+                delta = timedelta(seconds=delta.total_seconds() / ACCELERATOR)
+            contract_max_end_date = contract.period.startDate + delta
+            if contract_period_end_date > contract_max_end_date:
+                raise_operation_error(request, "Contract period cannot be over 15 years")
 
 
 def validate_update_contract_start_date(request):
