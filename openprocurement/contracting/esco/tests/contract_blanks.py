@@ -78,6 +78,12 @@ def create_contract(self):
     self.assertEqual(response.content_type, 'application/json')
     self.assertEqual(set(response.json['data']), set(contract))
     self.assertEqual(response.json['data'], contract)
+    self.assertEqual(set(response.json['data'].keys()),
+                     {u'status', u'milestones', u'tender_id', u'description', u'title', u'items', u'suppliers',
+                      u'contractNumber', u'period', u'value', u'dateModified', u'owner', u'procuringEntity',
+                      u'NBUdiscountRate', u'dateSigned', u'contractType', u'awardID', u'amountPaid', u'id',
+                      u'contractID', u'fundingKind', u'yearlyPaymentsPercentageRange', u'noticePublicationDate'}
+                     )
 
     data = deepcopy(self.initial_data)
     data['id'] = uuid4().hex
@@ -116,7 +122,7 @@ def create_contract_generated(self):
         u'contractNumber', u'period', u'dateSigned', u'value', u'awardID',
         u'items', u'owner', u'tender_id', u'procuringEntity', u'contractType',
         u'NBUdiscountRate', u'value', u'description', u'title', u'milestones',
-        u'amountPaid']))
+        u'amountPaid', u'noticePublicationDate', u'fundingKind', u'yearlyPaymentsPercentageRange']))
     self.assertEqual(data['id'], contract['id'])
     self.assertNotEqual(data['doc_id'], contract['id'])
     self.assertEqual(data['contractID'], contract['contractID'])

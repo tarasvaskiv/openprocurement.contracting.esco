@@ -205,7 +205,8 @@ class Contract(BaseContract):
             'create': contract_create_role,
             'edit_active': contract_edit_role,
             'edit_terminated': whitelist(),
-            'view': contract_view_role + whitelist('NBUdiscountRate', 'contractType', 'milestones'),
+            'view': contract_view_role + whitelist('NBUdiscountRate', 'contractType', 'milestones', 'fundingKind',
+                                                   'noticePublicationDate', 'yearlyPaymentsPercentageRange'),
             'Administrator': contract_administrator_role,
             'default': schematics_default_role,
         }
