@@ -32,6 +32,8 @@ def get_milestone_by_id(self):
     self.assertEqual(response.status, '200 OK')
     initial_milestone = self.initial_data['milestones'][1]
     milestone = response.json['data']
+    self.assertEqual(set(milestone.keys()), {u'status', u'description', u'sequenceNumber', u'title', u'period',
+                                             u'value', u'id', u'date', u'amountPaid', u'dateModified'})
     for key in initial_milestone.keys():
         # value.amount is special - it's decimal
         if key == 'value':
